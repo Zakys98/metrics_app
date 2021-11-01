@@ -76,7 +76,7 @@
 \fi
 \usepackage{amsmath}
 \usepackage{amssymb}
-\usepackage[czech,slovak,english]{babel}
+\usepackage[czech]{babel}
 \usepackage[utf8]{inputenc} %kodovani / encoding
 \usepackage{cmap}
 \usepackage[T1]{fontenc}
@@ -1199,8 +1199,8 @@ Management}{\@fit@EN}%
 
 % Balíčky
 % Packages
-\usepackage[czech,slovak,english]{babel}
-\usepackage[]{opensans}
+\usepackage[czech]{babel}
+% \usepackage[]{opensans}
 \usepackage{float}
 \usepackage{calc}
 \usepackage{longtable,booktabs}

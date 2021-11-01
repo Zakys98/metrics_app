@@ -4,8 +4,7 @@
 # E-mail: bidlom AT fit vutbr cz
 # Edited by: dytrych AT fit vutbr cz
 #===========================================
-# asi budete chtit prejmenovat / you will probably rename:
-CO=projekt
+CO=metrics_app
 
 all: $(CO).pdf
 

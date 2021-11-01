@@ -3,10 +3,8 @@
 % this file should be used as a base for the thesis
 % Autoři / Authors: 2008 Michal Bidlo, 2019 Jaroslav Dytrych
 % Kontakt pro dotazy a připomínky: sablona@fit.vutbr.cz
-% Contact for questions and comments: sablona@fit.vutbr.cz
 %==============================================================================
 % kodovani: UTF-8 (zmena prikazem iconv, recode nebo cstocs)
-% encoding: UTF-8 (you can change it by command iconv, recode or cstocs)
 %------------------------------------------------------------------------------
 % zpracování / processing: make, make pdf, make clean
 %==============================================================================
@@ -27,18 +25,12 @@
 %\documentclass[english,zadani,cprint]{fitthesis} % for the print - links are black, logo is color
 % * Je-li práce psaná v anglickém jazyce, je zapotřebí u třídy použít 
 %   parametr english následovně:
-%   If thesis is written in English, it is necessary to use 
-%   parameter english as follows:
 %      \documentclass[english]{fitthesis}
 % * Je-li práce psaná ve slovenském jazyce, je zapotřebí u třídy použít 
 %   parametr slovak následovně:
-%   If the work is written in the Slovak language, it is necessary 
-%   to use parameter slovak as follows:
 %      \documentclass[slovak]{fitthesis}
 % * Je-li práce psaná v anglickém jazyce se slovenským abstraktem apod., 
 %   je zapotřebí u třídy použít parametry english a enslovak následovně:
-%   If the work is written in English with the Slovak abstract, etc., 
-%   it is necessary to use parameters english and enslovak as follows:
 %      \documentclass[english,enslovak]{fitthesis}
 
 % Základní balíčky jsou dole v souboru šablony fitthesis.cls
@@ -46,7 +38,6 @@
 % zde můžeme vložit vlastní balíčky / you can place own packages here
 
 % Kompilace po částech (rychlejší, ale v náhledu nemusí být vše aktuální)
-% Compilation piecewise (faster, but not all parts in preview will be up-to-date)
 % \usepackage{subfiles}
 
 % Nastavení cesty k obrázkům
@@ -66,7 +57,6 @@
 % disables function of the template which replaces quotation marks
 % to avoid unnecessary replacements in the API descriptions etc.
 \csdoublequotesoff
-
 
 
 \usepackage{url}
@@ -127,8 +117,8 @@
   %sectitle.length={14.5cm}, % nastavení délky bloku s druhým titulkem pro úpravu zalomení řádku (lze definovat zde nebo níže) / setting the length of a block with a second thesis title for adjusting a line break (can be defined here or below)
   %dectitle.length={14.5cm}, % nastavení délky bloku s titulkem nad prohlášením pro úpravu zalomení řádku (lze definovat zde nebo níže) / setting the length of a block with a thesis title above declaration for adjusting a line break (can be defined here or below)
   %Autor / Author
-  author.name={Jméno},   % jméno autora / author name
-  author.surname={Příjmení},   % příjmení autora / author surname 
+  author.name={Jiří},   % jméno autora / author name
+  author.surname={Žák},   % příjmení autora / author surname 
   %author.title.p={Bc.}, % titul před jménem (nepovinné) / title before the name (optional)
   %author.title.a={Ph.D.}, % titul za jménem (nepovinné) / title after the name (optional)
   %Ustav / Department
@@ -203,7 +193,6 @@ Uvedl jsem všechny literární prameny, publikace a další zdroje, ze kterých
   {\hypersetup{hidelinks}\tableofcontents}
   
   % Seznam obrazku a tabulek (pokud prace obsahuje velke mnozstvi obrazku, tak se to hodi)
-  % List of figures and list of tables (if the thesis contains a lot of pictures, it is good)
   \ifczech
     \renewcommand\listfigurename{Seznam obrázků}
   \fi
@@ -241,7 +230,6 @@ Uvedl jsem všechny literární prameny, publikace a další zdroje, ze kterých
   \fi
   
   % Kompilace po částech (viz výše, nutno odkomentovat)
-  % Compilation piecewise (see above, it is necessary to uncomment it)
   %\subfile{projekt-01-uvod-introduction}
   % ...
   %\subfile{chapters/projekt-05-conclusion}
@@ -273,7 +261,6 @@ Uvedl jsem všechny literární prameny, publikace a další zdroje, ze kterých
   \end{flushleft}
 
   % vynechani stranky v oboustrannem rezimu
-  % Skip the page in the two-sided mode
   \iftwoside
     \cleardoublepage
   \fi
@@ -294,7 +281,6 @@ Uvedl jsem všechny literární prameny, publikace a další zdroje, ze kterých
 %  \appendixpage
 
 % vynechani stranky v oboustrannem rezimu
-% Skip the page in the two-sided mode
 %\iftwoside
 %  \cleardoublepage
 %\fi
@@ -327,14 +313,6 @@ Uvedl jsem všechny literární prameny, publikace a další zdroje, ze kterých
     \cleardoublepage
   \fi
   
-  % Přílohy / Appendices
-  \ifenglish
-    \input{projekt-30-prilohy-appendices-en}
-  \else
-    \input{projekt-30-prilohy-appendices}
-  \fi
-  
-  % Kompilace po částech (viz výše, nutno odkomentovat)
   % Compilation piecewise (see above, it is necessary to uncomment it)
   %\subfile{projekt-30-prilohy-appendices}
   

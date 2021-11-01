@@ -1,5 +1,12 @@
 build
 
+# Latex
+*.toc
+*.ptc
+*.log
+*.aux
+*.pdf
+
 # Prerequisites
 *.d
 
