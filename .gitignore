@@ -1,11 +1,11 @@
 build
+*metrics_app.pdf
 
 # Latex
 *.toc
 *.ptc
 *.log
 *.aux
-*.pdf
 
 # Prerequisites
 *.d
