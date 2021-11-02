@@ -115,10 +115,6 @@
 \newtoggle{slovak_used}
 \togglefalse{slovak_used}
 
-\ifslovak
-  \toggletrue{slovak_used}
-\fi
-
 \newtoggle{english_used}
 \togglefalse{english_used}
 
@@ -128,10 +124,6 @@
 
 \newtoggle{enslovak_used}
 \togglefalse{enslovak_used}
-
-\ifenslovak
-  \toggletrue{enslovak_used}
-\fi
 
 \newtoggle{czech_used}
 \togglefalse{czech_used}
@@ -286,15 +278,15 @@
  \ifEqString{#1}{FIT}{Fakulta informačních technologií}{\@fit@CS}%
  \ifEqString{#1}{FIT}{Fakulta informačních technologií}{\@fit@SK}%
  \ifEqString{#1}{FIT}{Faculty of Information Technology}{\@fit@EN}%
- \ifEqString{#1}{FEKT}{Fakulta elektrotechniky 
+ \ifEqString{#1}{FEKT}{Fakulta elektrotechniky
 a komunikačních technologií}{\@fit@CS}%
- \ifEqString{#1}{FEKT}{Fakulta elektrotechniky 
+ \ifEqString{#1}{FEKT}{Fakulta elektrotechniky
 a komunikačních technologií}{\@fit@SK}%
- \ifEqString{#1}{FEKT}{Faculty of Electrical Engineering 
+ \ifEqString{#1}{FEKT}{Faculty of Electrical Engineering
 and Communication}{\@fit@EN}%
  \ifEqString{#1}{FSI}{Fakulta strojního inženýrství}{\@fit@CS}%
  \ifEqString{#1}{FSI}{Fakulta strojního inženýrství}{\@fit@SK}%
- \ifEqString{#1}{FSI}{Faculty of Mechanical 
+ \ifEqString{#1}{FSI}{Faculty of Mechanical
 Engineering}{\@fit@EN}%
  \ifEqString{#1}{FA}{Fakulta architektury}{\@fit@CS}%
  \ifEqString{#1}{FA}{Fakulta architektury}{\@fit@SK}%
@@ -304,7 +296,7 @@ Engineering}{\@fit@EN}%
  \ifEqString{#1}{FCH}{Faculty of Chemistry}{\@fit@EN}%
  \ifEqString{#1}{FP}{Fakulta podnikatelská}{\@fit@CS}%
  \ifEqString{#1}{FP}{Fakulta podnikatelská}{\@fit@SK}%
- \ifEqString{#1}{FP}{Faculty of Business and 
+ \ifEqString{#1}{FP}{Faculty of Business and
 Management}{\@fit@EN}%
  \ifEqString{#1}{FAST}{Fakulta stavební}{\@fit@CS}%
  \ifEqString{#1}{FAST}{Fakulta stavební}{\@fit@SK}%
@@ -372,7 +364,7 @@ Management}{\@fit@EN}%
 %-----------------------------------------------------------------------------
 % Projectinfo - parametrizace sablony / template parameters
 %-----------------------------------------------------------------------------
-%Parametry 
+%Parametry
 \define@key{projinfo}{title.cs}{\global\def\@title@CS{#1}}
 \define@key{projinfo}{title.en}{\global\def\@title@EN{#1}}
 \define@key{projinfo}{faculty.cs}{\def\@faculty@CS{#1}}
@@ -407,10 +399,10 @@ Management}{\@fit@EN}%
 
 %Vychozi hodnoty / Default values
 \setkeys{projinfo}{
-  title.cs={Název práce (česky)},title.en={Název práce(anglicky)}, 
-  date=\today, project=BP, department=DEF, declaration=, 
+  title.cs={Název práce (česky)},title.en={Název práce(anglicky)},
+  date=\today, project=BP, department=DEF, declaration=,
   abstract.cs=, abstract.en=, keywords.cs=, keywords.en=,
-  author.name=Jméno, author.surname=Příjmení, supervisor.name=Jméno, 
+  author.name=Jméno, author.surname=Příjmení, supervisor.name=Jméno,
   supervisor.surname=Příjmení, extendedabstract=, extabstract.odd=,
   department.cs=,department.en=,title.length=,
   sectitle.length=,dectitle.length=,
@@ -502,7 +494,7 @@ Management}{\@fit@EN}%
 \setlength{\parskip}{0pt}
 
 \fontfamily{qhv}\selectfont%
-%  
+%
 
 \addtolength{\voffset}{-0.95cm}
 
@@ -643,7 +635,7 @@ Management}{\@fit@EN}%
   %Pro rozšířený abstrakt začínající na liché stránce / For extended abstract starting on the odd page
   \newtoggle{extabstract_odd}
   \togglefalse{extabstract_odd}
-  
+
   \ifx\@extabstracto\@empty
   \else
     \toggletrue{extabstract_odd}
@@ -789,7 +781,7 @@ Management}{\@fit@EN}%
 \iftoggle{phd_summary}{
 
   \vspace{5mm}
-  
+
   \iftoggle{slovak_used}{
     \mkuctxtt{16}{\@vut@SK}
     \mkuctxtt{9}{\@vut@EN}
@@ -834,9 +826,9 @@ Management}{\@fit@EN}%
   }
 
 }{ % !phd_summary
-    
+
   \vspace{10mm}
-  
+
   \iftoggle{slovak_used}{
     \mkuctxtt{18}{\@vut@SK}
     \mkuctxtt{11}{\@vut@EN}
@@ -879,7 +871,7 @@ Management}{\@fit@EN}%
       \mkuctxtt{11}{\ifczech\@departmentname@EN\else\@departmentname@CS\fi}
     }
   }
-  
+
 } % !phd_summary
 
 \vspace{5mm}
@@ -963,7 +955,7 @@ Management}{\@fit@EN}%
   \fi
 
 }{ % !phd_summary
-    
+
   % Název práce / Thesis title
   \iftoggle{long_title}{
     \mkuctxttl{18}{\@titlelen}{\ifslovak\@title@CS\else\ifczech\@title@CS\else\@title@EN\fi\fi}
@@ -1165,7 +1157,7 @@ Management}{\@fit@EN}%
 %
 \csdoublequoteson
 
-% Zarovnání v seznamu typu description 
+% Zarovnání v seznamu typu description
 % Alignment in description list
 % http://tex.stackexchange.com/questions/7008/change-hanging-indent-in-description-list
 \makeatletter
