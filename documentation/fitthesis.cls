@@ -1192,7 +1192,7 @@ Management}{\@fit@EN}%
 % Balíčky
 % Packages
 \usepackage[czech]{babel}
-% \usepackage[]{opensans}
+\usepackage[]{opensans}
 \usepackage{float}
 \usepackage{calc}
 \usepackage{longtable,booktabs}
