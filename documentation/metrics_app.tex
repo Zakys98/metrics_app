@@ -1,11 +1,11 @@
 % kodovani: UTF-8 (zmena prikazem iconv, recode nebo cstocs)
 %------------------------------------------------------------------------------
-% zpracování / processing: make, make pdf, make clean
+% zpracování: make, make pdf, make clean
 %==============================================================================
-% Soubory, které je nutné upravit nebo smazat: / Files which have to be edited or deleted:
-%   projekt-20-literatura-bibliography.bib - literatura / bibliography
-%   projekt-01-kapitoly-chapters.tex - obsah práce / the thesis content
-%   projekt-30-prilohy-appendices.tex - přílohy / appendices
+% Soubory, které je nutné upravit nebo smazat:
+%   projekt-20-literatura-bibliography.bib - literatura
+%   projekt-01-kapitoly-chapters.tex - obsah práce
+%   projekt-30-prilohy-appendices.tex - přílohy
 %==============================================================================
 \documentclass[]{fitthesis} % bez zadání - pro začátek práce, aby nebyl problém s překladem
 %\documentclass[english]{fitthesis} % without assignment - for the work start to avoid compilation problem
@@ -30,7 +30,7 @@
 %\graphicspath{{obrazky-figures/}{../obrazky-figures/}}
 
 %---rm---------------
-\renewcommand{\rmdefault}{lmr}%zavede Latin Modern Roman jako rm / set Latin Modern Roman as rm
+\renewcommand{\rmdefault}{lmr}%zavede Latin Modern Roman jako rm
 %---sf---------------
 \renewcommand{\sfdefault}{qhv}%zavede TeX Gyre Heros jako sf
 %---tt------------
@@ -49,7 +49,7 @@
 % problém je, že balíček hyperref musí být uveden jako poslední, takže nemůže
 % být v šabloně
 \ifWis
-\ifx\pdfoutput\undefined % nejedeme pod pdflatexem / we are not using pdflatex
+\ifx\pdfoutput\undefined % nejedeme pod pdflatexem
 \else
   \usepackage{color}
   \usepackage[unicode,colorlinks,hyperindex,plainpages=false,pdftex]{hyperref}
@@ -62,11 +62,11 @@
 	filecolor=magenta,
 	urlcolor=hrcolor-urls
   }
-  \def\pdfBorderAttrs{/Border [0 0 0] }  % bez okrajů kolem odkazů / without margins around links
+  \def\pdfBorderAttrs{/Border [0 0 0] }  % bez okrajů kolem odkazů
   \pdfcompresslevel=9
 \fi
-\else % pro tisk budou odkazy, na které se dá klikat, černé / for the print clickable links will be black
-\ifx\pdfoutput\undefined % nejedeme pod pdflatexem / we are not using pdflatex
+\else % pro tisk budou odkazy, na které se dá klikat, černé
+\ifx\pdfoutput\undefined % nejedeme pod pdflatexem
 \else
   \usepackage{color}
   \usepackage[unicode,colorlinks,hyperindex,plainpages=false,pdftex,urlcolor=black,linkcolor=black,citecolor=black]{hyperref}
@@ -74,52 +74,52 @@
   \definecolor{anchors}{rgb}{0,0,0}
   \def\AnchorColor{anchors}
   \def\LinkColor{links}
-  \def\pdfBorderAttrs{/Border [0 0 0] } % bez okrajů kolem odkazů / without margins around links
+  \def\pdfBorderAttrs{/Border [0 0 0] } % bez okrajů kolem odkazů
   \pdfcompresslevel=9
 \fi
 \fi
 % Řešení problému, kdy klikací odkazy na obrázky vedou za obrázek
 \usepackage[all]{hypcap}
 
-% Informace o práci/projektu / Information about the thesis
+% Informace o práci/projektu
 %---------------------------------------------------------------------------
 \projectinfo{
-  %Prace / Thesis
-  project={BP},            %typ práce BP/SP/DP/DR  / thesis type (SP = term project)
-  year={2022},             % rok odevzdání / year of submission
-  date=\today,             % datum odevzdání / submission date
+  %Prace
+  project={BP},            %typ práce BP/SP/DP/DR
+  year={2022},             % rok odevzdání
+  date=\today,             % datum odevzdání
   %Nazev prace
-  title.cs={Název práce},  % název práce v češtině či slovenštině (dle zadání) / thesis title in czech language (according to assignment)
-  title.en={Thesis title}, % název práce v angličtině / thesis title in english
-  %title.length={14.5cm}, % nastavení délky bloku s titulkem pro úpravu zalomení řádku (lze definovat zde nebo níže) / setting the length of a block with a thesis title for adjusting a line break (can be defined here or below)
-  %sectitle.length={14.5cm}, % nastavení délky bloku s druhým titulkem pro úpravu zalomení řádku (lze definovat zde nebo níže) / setting the length of a block with a second thesis title for adjusting a line break (can be defined here or below)
-  %dectitle.length={14.5cm}, % nastavení délky bloku s titulkem nad prohlášením pro úpravu zalomení řádku (lze definovat zde nebo níže) / setting the length of a block with a thesis title above declaration for adjusting a line break (can be defined here or below)
+  title.cs={Systém pro ověření minimálních potřebných zdrojů pro běh aplikace},  % název práce v češtině či slovenštině (dle zadání)
+  title.en={System for Verifying the Minimum Resources Required to Run an Application}, % název práce v angličtině
+  %title.length={14.5cm}, % nastavení délky bloku s titulkem pro úpravu zalomení řádku (lze definovat zde nebo níže)
+  %sectitle.length={14.5cm}, % nastavení délky bloku s druhým titulkem pro úpravu zalomení řádku (lze definovat zde nebo níže)
+  %dectitle.length={14.5cm}, % nastavení délky bloku s titulkem nad prohlášením pro úpravu zalomení řádku (lze definovat zde nebo níže)
   %Autor / Author
-  author.name={Jiří},   % jméno autora / author name
-  author.surname={Žák},   % příjmení autora / author surname
-  %Ustav / Department
+  author.name={Jiří},   % jméno autora
+  author.surname={Žák},   % příjmení autora
+  %Ustav
   department={UPGM},
-  % Školitel / supervisor
-  supervisor.name={Pavel},   % jméno školitele / supervisor name
-  supervisor.surname={Smrž},   % příjmení školitele / supervisor surname
-  supervisor.title.p={doc. RNDr.},   %titul před jménem (nepovinné) / title before the name (optional)
-  supervisor.title.a={Ph.D.},    %titul za jménem (nepovinné) / title after the name (optional)
-  % Klíčová slova / keywords
+  % Školitel
+  supervisor.name={Pavel},   % jméno školitele
+  supervisor.surname={Smrž},   % příjmení školitele
+  supervisor.title.p={doc. RNDr.},   %titul před jménem (nepovinné)
+  supervisor.title.a={Ph.D.},    %titul za jménem (nepovinné)
+  % Klíčová slova
   keywords.cs={Sem budou zapsána jednotlivá klíčová slova v českém (slovenském) jazyce, oddělená čárkami.},
   keywords.en={Sem budou zapsána jednotlivá klíčová slova v anglickém jazyce, oddělená čárkami.},
-  % Abstrakt / Abstract
+  % Abstrakt
   abstract.cs={Do tohoto odstavce bude zapsán výtah (abstrakt) práce v českém (slovenském) jazyce.},
   abstract.en={Do tohoto odstavce bude zapsán výtah (abstrakt) práce v anglickém jazyce.},
-  % Prohlášení (u anglicky psané práce anglicky, u slovensky psané práce slovensky) / Declaration (for thesis in english should be in english)
+  % Prohlášení (u anglicky psané práce anglicky, u slovensky psané práce slovensky)
   declaration={Prohlašuji, že jsem tuto bakalářskou práci vypracoval samostatně pod vedením pana X...
 Další informace mi poskytli...
 Uvedl jsem všechny literární prameny, publikace a další zdroje, ze kterých jsem čerpal.},
-  % Poděkování (nepovinné, nejlépe v jazyce práce) / Acknowledgement (optional, ideally in the language of the thesis)
+  % Poděkování (nepovinné, nejlépe v jazyce práce)
   acknowledgment={V této sekci je možno uvést poděkování vedoucímu práce a těm, kteří poskytli odbornou pomoc
 (externí zadavatel, konzultant apod.).},
-  % Rozšířený abstrakt (cca 3 normostrany) - lze definovat zde nebo níže / Extended abstract (approximately 3 standard pages) - can be defined here or below
+  % Rozšířený abstrakt (cca 3 normostrany) - lze definovat zde nebo níže
   %extendedabstract={Do tohoto odstavce bude zapsán rozšířený výtah (abstrakt) práce v českém (slovenském) jazyce.},
-  %extabstract.odd={true}, % Začít rozšířený abstrakt na liché stránce? / Should extended abstract start on the odd page?
+  %extabstract.odd={true}, % Začít rozšířený abstrakt na liché stránce?
   %faculty={FIT}, % FIT/FEKT/FSI/FA/FCH/FP/FAST/FAVU/USI/DEF
   faculty.cs={Fakulta informačních technologií}, % Fakulta v češtině - pro využití této položky výše zvolte fakultu DEF
   faculty.en={Faculty of Information Technology}, % Fakulta v angličtině - pro využití této položky výše zvolte fakultu DEF
@@ -127,9 +127,9 @@ Uvedl jsem všechny literární prameny, publikace a další zdroje, ze kterých
   department.en={Institute of Mathematics} % Ústav v angličtině - pro využití této položky výše zvolte ústav DEF nebo jej zakomentujte
 }
 
-% Rozšířený abstrakt (cca 3 normostrany) - lze definovat zde nebo výše / Extended abstract (approximately 3 standard pages) - can be defined here or above
+% Rozšířený abstrakt (cca 3 normostrany) - lze definovat zde nebo výše
 %\extendedabstract{Do tohoto odstavce bude zapsán výtah (abstrakt) práce v českém (slovenském) jazyce.}
-% Začít rozšířený abstrakt na liché stránce? / Should extended abstract start on the odd page?
+% Začít rozšířený abstrakt na liché stránce?
 %\extabstractodd{true}
 
 % nastavení délky bloku s titulkem pro úpravu zalomení řádku - lze definovat zde nebo výše
@@ -151,7 +151,7 @@ Uvedl jsem všechny literární prameny, publikace a další zdroje, ze kterých
 % \raggedbottom
 
 \begin{document}
-  % Vysazeni titulnich stran / Typesetting of the title pages
+  % Vysazeni titulnich stran
   % ----------------------------------------------
   \maketitle
   % Obsah
@@ -180,6 +180,8 @@ Uvedl jsem všechny literární prameny, publikace a další zdroje, ze kterých
 
   % Text prace / Thesis text
   % ----------------------------------------------
+  \input{task01.tex}
+
   \input{projekt-01-kapitoly-chapters}
 
   % Kompilace po částech (viz výše, nutno odkomentovat)
