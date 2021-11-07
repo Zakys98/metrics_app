@@ -1,8 +1,18 @@
 \chapter{Rozbor řešené problematiky}
 
-\section{Zparacování přehled nástrojů Linuxu pro zjištování využití / omezování zdrojů, simulace HW prostředí, odhad rychlosti běhu na dané platformě, doporučování optimalizace a propojit je s požadavky firmy}
+\section{Zpracování přehled nástrojů Linuxu pro zjištování využití / omezování zdrojů, simulace HW prostředí, odhad rychlosti běhu na dané platformě, doporučování optimalizace a propojit je s požadavky firmy}
 
-\subsection{BPF}
+\subsection{Berkeley Packet Filter}
+
+Berkeley Packet Filter nebo také BPF je technologie v unixových systémech pro zajištění sledování využití systému čí sledování síťového provozu.
+BPF poskytuje rozhranní k datové lince, což umožňuje odesílání a přijímání paketů spojové vrstvy. BPF je k dispozici na většině unixových operačních systémů
+a extended BPF je také k dispozici pro Microsoft Windows. BPF podporuje filtrování paketů a umožňuje userspace(vysvětlit proč jsem to napsal anglicky) procesům,
+aby si samy vyfiltrovaly pakety, které chtějí obdržet a které naopak zahodit. Toto může vést ke zvýšení výkonu operačního systému, protože se tím zamezí kopírování nepotřebných paketů.
+
+\subsection*{Verze BPF}
+BPF má více verzí. Výše zmíňenou extended BPF (eBPF) nebo také classic BPF (cBPF).
+
+Vysvětlit co je userspace
 
 \subsection{Netem}
 Netem je softwarová utilita pomocí které lze vykonávat síťovou emulaci. Síťovou emulaci lze využít k omezení internetových zdrojů pro měřenou aplikaci pro lepší testování.
@@ -10,7 +20,7 @@ Netem umí simulovat zpomalení, ztrátu, poškození nebo duplikaci paketů a p
 Jeho aktuální distribuce je multiplatformě podporována.
 
 \subsection*{Zpoždění paketů}
-asdasd
+
 
 \subsection*{Ztráta paketů}
 
@@ -25,3 +35,5 @@ https://wiki.linuxfoundation.org/networking/netem
 \subsection{Virtuální počítač s omezenými zdroji}
 
 Pro zajištění testování na více platformách, kter
+
+\subsection{Raspberry pi}
