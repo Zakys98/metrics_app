@@ -4,12 +4,12 @@
 
 \subsection{Berkeley Packet Filter}
 
-Berkeley Packet Filter nebo také BPF je technologie, která umožňuje spouštět programy v jádře operačního systému na linuxových systémech. 
+Berkeley Packet Filter nebo také BPF je technologie, která umožňuje spouštět programy v jádře operačního systému na linuxových systémech.
 Efektivně a bezpečně rozšíří schopnosti jádra bez nutnosti měnit zdrojový kód jádra. Tato schopnost je často použita ke sledování využití systému či sledování síťového provozu.
 BPF je k dispozici na většině unixových operačních systémů a extended BPF je také k dispozici pro Microsoft Windows.
 
 \subsection*{Sledování síťového provozu}
-BPF poskytuje rozhranní k datové lince, což umožňuje odesílání a přijímání paketů spojové vrstvy. BPF podporuje filtrování paketů a umožňuje userspace(vysvětlit proč jsem to napsal anglicky) procesům,
+BPF poskytuje rozhranní k datové lince, což umožňuje odesílání a přijímání paketů spojové vrstvy. BPF podporuje filtrování paketů a umožňuje user space(vysvětlit proč jsem to napsal anglicky) procesům,
 aby si samy vyfiltrovaly pakety, které chtějí obdržet a které naopak zahodit. Toto může vést ke zvýšení výkonu operačního systému, protože se tím zamezí kopírování nepotřebných paketů.
 
 \subsection*{Verze BPF}
@@ -28,7 +28,15 @@ Classic BPF je jenom přejmenovaná originální verze BPF.
 https://man7.org/linux/man-pages/man2/bpf.2.html
 https://ebpf.io/
 
-Vysvětlit co je userspace
+\subsection{Rozdíl mezi user spacem a kernal spacem}
+\subsection*{kernel space}
+Kernel space je prostor kde je uložen kód kernelu a kde je vykonáván.
+
+\subsection*{user space}
+User space je sada míst, kde běží uživatelské procesy(všechno ostatní kromě jádra). Jádro řídí aplikace v tomto prostoru tak, aby se nepletly mezi sebou.
+Procesy, které běží v user spacu mají omezenou část paměti a také nemají přístup ke kernel spacu. Procesy běžící v user spacu mohou přistupovat do kernel spacu
+jedině přes rozhranní vystavenný kernel spacem - systémová volání. Pokud proces provede systémové volání, tak se do jádra odešle systémové přerušení a jádro poté obslouží
+příslušný proces. Jádro pokračuje ve své práci až po dokončení přerušení.
 
 \subsection{Netem}
 Netem je softwarová utilita pomocí které lze vykonávat síťovou emulaci. Síťovou emulaci lze využít k omezení internetových zdrojů pro měřenou aplikaci pro lepší testování.
@@ -38,44 +46,48 @@ Jeho aktuální distribuce je multiplatformě podporována.
 \subsection*{Zpoždění paketů}
 Tento příkaz přidá zpoždění všech paketů o 100 milisekund. Toto nastavení je ještě omezeno rozlišením jádra.
 \begin{lstlisting}[language=bash]
-    $ tc qdisc add dev eth0 root netem delay 100ms
+    $ tc qdisc add dev <interface> root netem delay 100ms
 \end{lstlisting}
 
 Lze i nastavit zpoždění pomocí rozdělení. Příklad s normalním rozdělením:
 \begin{lstlisting}[language=bash]
-    $ tc qdisc change dev eth0 root netem delay 100ms 20ms distribution normal
+    $ tc qdisc change dev <interface> root netem delay 100ms 20ms distribution normal
 \end{lstlisting}
 
 \subsection*{Ztráta paketů}
-Tento příkaz zajistí ztrátu paketů. 1 paket z 1000 je zahozen. nejnižší možná nastavitelná hodnota je 0.0000000232%.  
+Tento příkaz zajistí ztrátu paketů. 1 paket z 1000 je zahozen. nejnižší možná nastavitelná hodnota je 0.0000000232%.
 \begin{lstlisting}[language=bash]
-    $ tc qdisc change dev eth0 root netem loss 0.1%
+    $ tc qdisc change dev <interface> root netem loss 0.1%
 \end{lstlisting}
 
 \subsection*{Duplikace paketů}
 Příkaz pro duplikaci paketů je podobný jako příkaz pro ztrátu paketů.
 \begin{lstlisting}[language=bash]
-    $ tc qdisc change dev eth0 root netem duplicate 1%
+    $ tc qdisc change dev <interface> root netem duplicate 1%
 \end{lstlisting}
 
 \subsection*{Poškození paketů}
-Tímto příkazem lze nastavit poškození paketů. Ten zavede bitovou chybu v náhodném offsetu v paketu. 
+Tímto příkazem lze nastavit poškození paketů. Ten zavede bitovou chybu v náhodném offsetu v paketu.
 \begin{lstlisting}[language=bash]
-    $ tc qdisc change dev eth0 root netem corrupt 0.1%
+    $ tc qdisc change dev <interface> root netem corrupt 0.1%
 \end{lstlisting}
 
 \subsection*{Přeuspořádání paketů}
-Jsou dva způsoby jak nastavit přeuřpořádání paketů.
+Existují dva způsoby jak nastavit přeuřpořádání paketů.
 První způsob je pomocí metody gap, která používá přednastavenou sequekci a změní pořadí každého Ntýho paketu.
 \begin{lstlisting}[language=bash]
-    $ tc qdisc change dev eth0 root netem gap 5 delay 10ms
+    $ tc qdisc change dev <interface> root netem gap 5 delay 10ms
 \end{lstlisting}
 Druhá metoda je reorder způsobí, že určité procento paketů se špatně seřadí.
 \begin{lstlisting}[language=bash]
-    $ tc qdisc change dev eth0 root netem delay 10ms reorder 25% 50%
+    $ tc qdisc change dev <interface> root netem delay 10ms reorder 25% 50%
 \end{lstlisting}
 
 \subsection*{Obnovení rozhranní}
+Tento příkaz smaže všechno nastavení na rozhranní. Rozhranní bude poté fungovat jako by na něm žádné nastavení nebylo.
+\begin{lstlisting}[language=bash]
+    sudo tc qdisc del dev <interface> root
+\end{lstlisting}
 
 https://wiki.linuxfoundation.org/networking/netem
 
