@@ -3,7 +3,7 @@
 \chapter{Rozbor řešené problematiky}
 
 Počítačový výkon je ůčinnost daného systému neboli jak dobře funguje, když se vezmou v úvahu všechny možné aspokty.
-Hodnocení výkonu počítače je definováno jako proces při kterém se posuzují zdroje a výstupy počítače, aby se zjistilo, 
+Hodnocení výkonu počítače je definováno jako proces při kterém se posuzují zdroje a výstupy počítače, aby se zjistilo,
 jestli systém funguje na optimální úrovni.
 
 Počítačové vyhodnocování je složitý proces. Při vyhodnoconváůní výkonu počítače se k určení využívá řada aspektů.
@@ -23,7 +23,7 @@ Počítačové vyhodnocování je složitý proces. Při vyhodnoconváůní výk
 Napsat to do vysvetlivek a vysvetlit i zbytek, popsat jeste nejake metriky nize
 Propustnost. Propustnost je počet jednotek dat, které systém zpracuje za určitou dobu.
 Doba odezvy. doba odezvy měří, kolik času trvá systému, než zareaguje na dotaz nebo poptávku.
-Spolehlivost, dostupnost a provozuschopnost (RAS). RAS označuje schopnost softwaru trvale plnit své specifikace; jak dlouho funguje vzhledem k očekávanému množství; a jak snadno se dá opravit nebo udržovat. 
+Spolehlivost, dostupnost a provozuschopnost (RAS). RAS označuje schopnost softwaru trvale plnit své specifikace; jak dlouho funguje vzhledem k očekávanému množství; a jak snadno se dá opravit nebo udržovat.
 
 Ke zjištění těchto aspektů se využívají speciálně navržené programy, které posuzují relativní výkon daného objektu obvykle spušténím řady testů.
 Tento proces se nazývá benchmark. Není jednoduché vytvořit měřítka pro hodnocení výkonu počítaču, protože technologické vlastnosti se stále vývýjí a obměňují.
@@ -33,7 +33,8 @@ https://study.com/academy/lesson/computer-performance-evaluation-definition-chal
 
 \section*{Metriky k měření}
 
-Před každým měřením by mělo být jasně dáno co chceme měřit.
+Před každým měřením by mělo být jasně dáno jaké metriky budeme měřit a jakým způsobem se to bude vykonávat. Pokud metriky ani způsob nebude stanoven, tak je měření ztrátou času.
+Ověření těchto metrik se poté provádí testováním. Svoji důležitou roli hraje také složitost tesovaného softwaru. Mezi základní metriky k měření výkonu systému jsou:
 
 \subsection*{Doba spuštění a doba načítání}
 
@@ -48,7 +49,9 @@ V ideálním připadě by tato doba měla být pro uživatele neposřehnutelná.
 
 \subsection*{Omezené zatížení nebo špatná škálovatelnost}
 
-
+Aplikace by měly obsluhovat omezený počet zařízení nebo uživatelů bez snížení výkonu softwaru. Škálovatelnost pomáhá zajistit, aby aplikace měla prostředky pro podporu očekávaného počtu uživatelů.
+Testování výkonu hodnotí software při různých podmínkách zátěže. Nedostatečné zdroje, jako je nedostatečný výpočetní výkon, mohou způsobit špatnou škálovatelnost.
+Výkon softwaru je však prostředky plus návrh a mnoho problémů se škálovatelností vyplývá ze špatné architektury aplikací. Každá aplikace by měla být napsaná tak, aby se dala v budoucnu škálovat.
 
 \subsection*{Bottlenecks neboli uzká místa} napsat co to znamena v čestine
 
@@ -59,13 +62,45 @@ https://searchsoftwarequality.techtarget.com/answer/Required-prerequisites-for-p
 
 \section{Metody}
 
-Vyhodnocování výkonu počítačů je důležitou technologii pro výzkum v oblasti počítačů. Neustálý vývoj počítačů dělá tento úkol stále stále složitější.
+Vyhodnocování výkonu počítačů je důležitou technologii pro výzkum v oblasti počítačů. Neustálý vývoj počítačů dělá tento úkol stále složitější.
 Obecný problém rozvoje efektivní vyhodnocovací techniky lze vyjádřit jako hledání nejlepšího kompromisu mezi přesností a rychlostí. Tento kompromis závisí na
 použití vyhodnocovací metody. Správná efektivita může vést ke snížení nákladů při tvorbě systému pro běh aplikace.
 
-\section{Testy}
+\section{Testování}
 
+Vzhledem k velkému potenciálu hrozeb v souvislosti s výkonem softwaru, mohou různé testy zaměřené na výkon vyhodnitit specifické chování softwaru. Mezi důležité typy testů patří:
+\begin{itemize}
+    \item{zátěžový}
+    \item{odolnostní}
+    \item{spike}
+    \item{závislostní}
+\end{itemize}
+
+\subsection*{Zátěžové testy}
+
+Tento typ testů obecně měří pohyb dat, také nazývaný jako propustnost. Zátěživý test pomáhá ověřit zda daný software funguje správně za typických podmínek. Cílem zátěžového testování je zajistit,
+aby klíčové metriky výkonu, jako propustnost dat za sekundu nebo přístup disku za sekundu, zůstaly přijatelné, když se připojí více zařízení nebo více uživatelů. Pokud testování významně
+ovlivňuje metriky výkonu, tak je to signál k úpravě softwaru. Případně zjištění maximálního limitu softwaru.
+
+\subsection*{Odolnostní testy}
+
+Odolnostní testy jsou charakteristické tím, že se provádí po delčí dobu. Jejich cílem je ověřit, jestli se výkonnostní charakteristiky softwaru v průběhu provádění nemění. Odolnostní testy
+zachycují nedostatky jako je nedostatečná paměť. Při krátkém testování by se tento problém nemusel vůbec objevit.
+
+\subsection*{Spike testy}
+
+Spike testy simulují náhle změny uživatelské zátěže za účelem měření odezvy softwaru.
+
+\subsection*{Závislostní testy}
+
+Software zřídka funguje sám o sobě. Většinou spoléha na jiné aplikace nebo případně na databázi. Testy závislosti vyhodnocují výkon softwaru při zátěži, ale vztahují se na závislosti, nikoliv
+jen na software.
+
+https://searchsoftwarequality.techtarget.com/answer/Required-prerequisites-for-performance-testing
+
+\iffalse
 \subsection{Existující řešení}
+\fi
 
 \section{Přehled nástrojů}
 
@@ -105,7 +140,7 @@ Procesy, které běží v user spacu mají omezenou část paměti a také nemaj
 jedině přes rozhranní vystavenný kernel spacem - systémová volání. Pokud proces provede systémové volání, tak se do jádra odešle systémové přerušení a jádro poté obslouží
 příslušný proces. Jádro pokračuje ve své práci až po dokončení přerušení.
 
-\subsection{Netem}
+\subsection{Netem}\cite{netem}
 Netem je softwarová utilita pomocí které lze vykonávat síťovou emulaci. Síťovou emulaci lze využít k omezení internetových zdrojů pro měřenou aplikaci pro lepší testování.
 Netem umí simulovat zpomalení, ztrátu, poškození nebo duplikaci paketů a případně změnu pořadí paketů. Netem je řízen pomocí nástroje 'tc', který se ovládá pomocí příkazové řádky.
 Jeho aktuální distribuce je multiplatformě podporována.
@@ -156,11 +191,11 @@ Tento příkaz smaže všechno nastavení na rozhranní. Rozhranní bude poté f
     sudo tc qdisc del dev <interface> root
 \end{lstlisting}
 
-https://wiki.linuxfoundation.org/networking/netem
-
 \subsection{Virtuální počítač s omezenými zdroji}
 
 Pro zajištění více testovacích platforem je jedna z
 Bohužel výpočetní hardware bude stejný pro všechny virtuální platformy i když bude omezený.
 
+\iffalse
 \subsection*{Raspberry pi}
+\fi
