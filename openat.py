@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+import time
+
 from bcc import BPF
 
 write_counter = 0
@@ -7,7 +9,9 @@ read_counter = 0
 
 def handle_sys_enter_opanat(cpu, data, size):
     data = bpf["openat"].event(data)
-    print(f'Opentat pid is {data.pid} and data are {data.comm}')
+    file = data.comm.decode('UTF-8')
+    date = time.strftime("%H:%M:%S")
+    print(f'{date} Pid {data.pid} File {file}')
 
 
 def handle_sys_enter_write(cpu, data, size):
