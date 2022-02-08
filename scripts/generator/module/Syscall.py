@@ -11,13 +11,19 @@ class Syscall:
         self.parameters.append(Parameter(Types.INT ,'unused'))
 
     def addParameters(self, list: list) -> None:
-        i = 0
         for line in list:
-            print(f'{i} {line}')
-            i += 1
+            self.__parseLine(line)
 
-    def getSize(line: str) -> int:
-        pass
+    def __parseLine(self, line: str) -> None:
+        list = line.replace('\t', '').split(';')
+        list.pop()
+        if not list:
+            return
+        self.__getSizeOfParameter(list[2])
+        print(list)
+
+    def __getSizeOfParameter(self, line: str) -> int:
+        print(line)
 
     def __str__(self) -> str:
         return self.name
