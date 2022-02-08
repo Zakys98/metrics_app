@@ -19,11 +19,24 @@ class Syscall:
         list.pop()
         if not list:
             return
-        self.__getSizeOfParameter(list[2])
         print(list)
+        type, name = self.__getTypeAndName(list[0])
+        size = self.__getSizeOfParameter(list[2])
+        print(f'{type} {name} {size}')
+
+    def __getTypeAndName(self, line: str) -> tuple:
+        line = line.split(':')[1].split(' ')
+        name = line.pop()    
+        for x in line:
+            type = {
+                'int': Types.INT,
+                'char': Types.CHAR,
+                '*': Types.CHAR_POINTER
+            }.get(x, Types.UNKNOWN)
+        return type, name
 
     def __getSizeOfParameter(self, line: str) -> int:
-        print(line)
+        return line.split(':')[1]
 
     def __str__(self) -> str:
         return self.name

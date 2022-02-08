@@ -2,8 +2,10 @@
 import enum
 
 class Types(enum.Enum):
-    INT = 0
-    CHAR = 1
+    UNKNOWN = 0
+    INT = 1
+    CHAR = 2
+    CHAR_POINTER = 3
 
 class Parameter:
     
