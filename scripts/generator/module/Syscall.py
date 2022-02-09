@@ -7,8 +7,15 @@ class Syscall:
         self.name = line.split(' ')[1].strip()
         self.parameters = list()
 
+    def __str__(self) -> str:
+        output = f'struct {self.name} ' + '{\n'
+        for parameter in self.parameters:
+            output += f'\t{parameter.__str__()};\n'
+        output += '};\n\n'
+        return output
+
     def addUnusedParameter(self, list: list) -> None:
-        self.parameters.append(Parameter(Types.INT ,'unused'))
+        self.parameters.append(Parameter(Types.INT ,'unused', 8))
 
     def addParameters(self, list: list) -> None:
         for line in list:
@@ -19,10 +26,11 @@ class Syscall:
         list.pop()
         if not list:
             return
-        print(list)
+        #print(list)
         type, name = self.__getTypeAndName(list[0])
         size = self.__getSizeOfParameter(list[2])
-        print(f'{type} {name} {size}')
+        self.parameters.append(Parameter(type, name, size))
+        #print(f'{type} {name} {size}')
 
     def __getTypeAndName(self, line: str) -> tuple:
         line = line.split(':')[1].split(' ')
@@ -37,6 +45,3 @@ class Syscall:
 
     def __getSizeOfParameter(self, line: str) -> int:
         return line.split(':')[1]
-
-    def __str__(self) -> str:
-        return self.name

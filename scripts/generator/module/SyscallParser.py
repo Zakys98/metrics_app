@@ -12,3 +12,9 @@ class SyscallParser:
         syscall.addParameters(syscallList[8:])
         self.syscalls.append(syscall)
         print(syscall)
+
+    def generateFile(self, outputName: str) -> None:
+        with open(outputName, 'w') as file:
+            file.write('\n')
+            for syscall in self.syscalls:
+                file.write(syscall.__str__())
