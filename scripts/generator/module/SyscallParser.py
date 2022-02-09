@@ -1,6 +1,7 @@
 
 from .Syscall import Syscall
 
+
 class SyscallParser:
 
     def __init__(self) -> None:
