@@ -1,2 +1,3 @@
-1. Vyzkouset nejake nastroje pro zjisteni vyuziti systemu
-2.
+Host github.com
+  HostName github.com
+  IdentityFile ~/.ssh/virt_debian_mavenir

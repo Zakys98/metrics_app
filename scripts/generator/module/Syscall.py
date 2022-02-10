@@ -16,7 +16,7 @@ class Syscall:
         return output
 
     def addUnusedParameter(self, list: list) -> None:
-        self.parameters.append(Parameter(Types.INT, 'unused', 8))
+        self.parameters.append(Parameter(Types.LONG, 'unused', 8))
 
     def addParameters(self, list: list) -> None:
         for line in list:
@@ -27,21 +27,25 @@ class Syscall:
         list.pop()
         if not list:
             return
-        type, name = self.__getTypeAndName(list[0])
+        line = list[0].split(':')[1].split(' ')
+        name = self.__getNameOfParameter(line)
+        type = self.__getTypeofParameter(line)
         size = self.__getSizeOfParameter(list[2])
         self.parameters.append(Parameter(type, name, size))
         # print(f'{type} {name} {size}')
 
-    def __getTypeAndName(self, line: str) -> tuple:
-        line = line.split(':')[1].split(' ')
-        name = line.pop()
+    def __getNameOfParameter(self, line: str) -> str:
+        return line.pop()
+
+    def __getTypeofParameter(self, line: str) -> Types:
+        print(''.join(line))
         for x in line:
             type = {
                 'int': Types.INT,
                 'char': Types.CHAR,
                 '*': Types.CHAR_POINTER
             }.get(x, Types.UNKNOWN)
-        return type, name
+        return type
 
     def __getSizeOfParameter(self, line: str) -> int:
         return line.split(':')[1]

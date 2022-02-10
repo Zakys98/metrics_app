@@ -5,8 +5,9 @@ import enum
 class Types(enum.Enum):
     UNKNOWN = 0
     INT = 1
-    CHAR = 2
-    CHAR_POINTER = 3
+    LONG = 2
+    CHAR = 3
+    CHAR_POINTER = 4
 
 
 class Parameter:
@@ -17,13 +18,23 @@ class Parameter:
         self.size = size
 
     def __str__(self) -> str:
-        return str(f'{self.convert(self.type)} {self.name}')
+        return str(f'{self.convertToStr(self.type)} {self.name}')
 
     @staticmethod
-    def convert(type: Types) -> str:
+    def convertToTypes(type: str, size: int):
+        #if(type == )
+        type = {
+                'int': Types.INT,
+                'char': Types.CHAR,
+                '*': Types.CHAR_POINTER
+        }.get(type, Types.UNKNOWN)
+
+    @staticmethod
+    def convertToStr(type: Types) -> str:
         return {
             Types.UNKNOWN: 'int',
-            Types.INT: 'int',
+            Types.INT: 'u32',
+            Types.LONG: 'u64',
             Types.CHAR: 'char',
             Types.CHAR_POINTER: 'char *'
         }[type]
