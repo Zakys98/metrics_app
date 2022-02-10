@@ -16,7 +16,7 @@ class Syscall:
         return output
 
     def addUnusedParameter(self, list: list) -> None:
-        self.parameters.append(Parameter(Types.LONG, 'unused', 8))
+        self.parameters.append(Parameter(Types.LONG, 'unused'))
 
     def addParameters(self, list: list) -> None:
         for line in list:
@@ -29,23 +29,31 @@ class Syscall:
             return
         line = list[0].split(':')[1].split(' ')
         name = self.__getNameOfParameter(line)
-        type = self.__getTypeofParameter(line)
         size = self.__getSizeOfParameter(list[2])
-        self.parameters.append(Parameter(type, name, size))
-        # print(f'{type} {name} {size}')
+        type = self.__getTypeOfParameter(line, size)
+        self.parameters.append(Parameter(type, name))
 
     def __getNameOfParameter(self, line: str) -> str:
         return line.pop()
 
-    def __getTypeofParameter(self, line: str) -> Types:
-        print(''.join(line))
-        for x in line:
-            type = {
-                'int': Types.INT,
-                'char': Types.CHAR,
-                '*': Types.CHAR_POINTER
-            }.get(x, Types.UNKNOWN)
-        return type
-
-    def __getSizeOfParameter(self, line: str) -> int:
+    def __getSizeOfParameter(self, line: str) -> str:
         return line.split(':')[1]
+
+    def __getTypeOfParameter(self, line: str, size: str) -> str:
+        resolvedType = {
+            ('int', '4'): Types.INT,
+            ('int', '8'): Types.LONG,
+            ('long', '8'): Types.LONG,
+            ('pid_t', '8'): Types.LONG,
+            ('umode_t', '8'): Types.LONG,
+            ('unsigned', '8'): Types.LONG,
+            ('unsignedint', '8'): Types.LONG,
+            ('unsignedlong', '8'): Types.LONG,
+            ('size_t', '8'): Types.LONG,
+            ('char', '1'): Types.CHAR,
+            ('constchar*', '8'): Types.CHAR_POINTER,
+            ('char*', '8'): Types.CHAR_POINTER,
+        }.get((''.join(line), size), Types.UNKNOWN)
+        if(resolvedType == Types.UNKNOWN):
+            print(f'{line} {size}')
+        return resolvedType

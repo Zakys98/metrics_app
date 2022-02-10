@@ -12,7 +12,7 @@ class SyscallParser:
         syscall.addUnusedParameter(syscallList[3:7])
         syscall.addParameters(syscallList[8:])
         self.syscalls.append(syscall)
-        print(syscall)
+        # print(syscall)
 
     def generateFile(self, outputName: str) -> None:
         with open(outputName, 'w') as file:
