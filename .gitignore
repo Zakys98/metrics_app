@@ -1,6 +1,10 @@
 build
 __pycache__
 scripts/*/*.h
+.vscode
+main
+*.skel.h
+vmlinux.h
 
 # Latex
 *.toc
