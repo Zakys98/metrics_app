@@ -1,12 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/resource.h>
+#include <signal.h>
 
 #include "main.skel.h"
 #include "main.h"
 
-static void bump_memlock_rlimit(void)
-{
+static void signalHandler(){
+    printf("End");
+    exit(0);
+}
+
+static void bump_memlock_rlimit(void){
 	struct rlimit rlim_new = {
 		.rlim_cur	= RLIM_INFINITY,
 		.rlim_max	= RLIM_INFINITY,
@@ -22,13 +27,13 @@ static int handle(void *ctx, void *data, size_t size){
 	
     const struct Data *evt = data;
 
-    fprintf(stdout, "type: %d <> pid: %d file: %s\n", evt->type, evt->pid, evt->filename);
+    printf("type: %d <> pid: %d file: %s\n", evt->type, evt->pid, evt->filename);
 
     return 0;
 }
 
-int main(void)
-{
+int main(void){
+    signal(SIGINT, signalHandler);
     bump_memlock_rlimit();
 
     struct main_bpf *skel = main_bpf__open();
