@@ -1,16 +1,14 @@
 #include "vmlinux.h"
-#include <bpf/bpf_helpers.h>
 #include <bpf/bpf_core_read.h>
+#include <bpf/bpf_helpers.h>
 
-#include "syscall_structures.h"
 #include "main.h"
-
+#include "syscall_structures.h"
 
 struct {
     __uint(type, BPF_MAP_TYPE_RINGBUF);
     __uint(max_entries, 256 * 1024);
 } ring_buff SEC(".maps");
-
 
 struct exec_params_t {
     u64 __unused;
@@ -20,9 +18,8 @@ struct exec_params_t {
 };
 
 SEC("tp/syscalls/sys_enter_execve")
-int handle_execve(struct exec_params_t *params)
-{
-    struct task_struct *task = (struct task_struct*)bpf_get_current_task();
+int handle_execve(struct exec_params_t *params) {
+    struct task_struct *task = (struct task_struct *)bpf_get_current_task();
     struct Data *evt = {0};
 
     evt = bpf_ringbuf_reserve(&ring_buff, sizeof(*evt), 0);
@@ -40,9 +37,9 @@ int handle_execve(struct exec_params_t *params)
 }
 
 SEC("tp/syscalls/sys_enter_open")
-int handle_open(struct sys_enter_open *params){
-    
-    struct task_struct *task = (struct task_struct*)bpf_get_current_task();
+int handle_open(struct sys_enter_open *params) {
+
+    struct task_struct *task = (struct task_struct *)bpf_get_current_task();
     struct Data *data = {0};
 
     data = bpf_ringbuf_reserve(&ring_buff, sizeof(*data), 0);
@@ -61,9 +58,9 @@ int handle_open(struct sys_enter_open *params){
 }
 
 SEC("tp/syscalls/sys_enter_openat")
-int handle_openat(struct sys_enter_openat *params){
-    
-    struct task_struct *task = (struct task_struct*)bpf_get_current_task();
+int handle_openat(struct sys_enter_openat *params) {
+
+    struct task_struct *task = (struct task_struct *)bpf_get_current_task();
     struct Data *data = {0};
 
     data = bpf_ringbuf_reserve(&ring_buff, sizeof(*data), 0);

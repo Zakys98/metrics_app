@@ -21,8 +21,7 @@ class SyscallParser:
             for syscall in self.syscalls:
                 file.write(f'\t{syscall.name.upper()},\n')
             file.write(self.__enumFooter())
-            
-    
+
     def __enumHeader(self):
         output = '#ifndef __SYSCALL_ENUM_H__\n' \
                  '#define __SYSCALL_ENUM_H__\n\n' \

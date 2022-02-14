@@ -15,8 +15,10 @@ def argParserInit():
                         help='name of the output file',
                         required=True)
     group = parser.add_mutually_exclusive_group(required=True)
-    group.add_argument('--structure', action='store_true', help='generates file with syscalls structures')
-    group.add_argument('--enum', action='store_true', help='generates file with syscalls enum')
+    group.add_argument('--structure', action='store_true',
+                       help='generates file with syscalls structures')
+    group.add_argument('--enum', action='store_true',
+                       help='generates file with syscalls enum')
     return parser.parse_args()
 
 
