@@ -4,6 +4,8 @@ scripts/*/*.h
 .vscode
 main
 *.skel.h
+*syscall_structures.h
+*syscall_enum.h
 vmlinux.h
 
 # Latex

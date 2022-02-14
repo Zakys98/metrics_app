@@ -13,7 +13,10 @@ def argParserInit():
                         required=True)
     parser.add_argument('-n', '--name', type=str,
                         help='name of the output file',
-                        default='syscall_structures.h')
+                        required=True)
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument('--structure', action='store_true', help='generates file with syscalls structures')
+    group.add_argument('--enum', action='store_true', help='generates file with syscalls enum')
     return parser.parse_args()
 
 
@@ -23,9 +26,12 @@ def globSyscalls(pattern: str):
 
 if __name__ == "__main__":
     args = argParserInit()
-    syscallParser = SyscallParser()
+    syscallParser = SyscallParser(f'{args.name}.h')
     for syscall in globSyscalls(args.pattern):
         with open(syscall, "r") as file:
             syscallParser.addSyscall(file.readlines())
 
-    syscallParser.generateFile(args.name)
+    if(args.structure):
+        syscallParser.generateStructureFile()
+    elif(args.enum):
+        syscallParser.generateEnumFile()

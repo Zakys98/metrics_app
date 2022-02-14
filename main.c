@@ -3,6 +3,7 @@
 #include <sys/resource.h>
 
 #include "main.skel.h"
+#include "main.h"
 
 static void bump_memlock_rlimit(void)
 {
@@ -17,6 +18,15 @@ static void bump_memlock_rlimit(void)
 	}
 }
 
+static int handle(void *ctx, void *data, size_t size){
+	
+    const struct Data *evt = data;
+
+    fprintf(stdout, "type: %d <> pid: %d file: %s\n", evt->type, evt->pid, evt->filename);
+
+    return 0;
+}
+
 int main(void)
 {
     bump_memlock_rlimit();
@@ -25,7 +35,11 @@ int main(void)
     main_bpf__load(skel);
     main_bpf__attach(skel);
 
+	struct ring_buffer *rb = ring_buffer__new(bpf_map__fd(skel->maps.ring_buff), handle, NULL, NULL);
+
     for(;;) {
+        ring_buffer__poll(rb, 1000);
     }
+
     return 0;
 }
