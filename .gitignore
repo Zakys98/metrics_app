@@ -6,6 +6,7 @@ main
 *syscall_structures.h
 *syscall_enum.h
 vmlinux.h
+*sizer
 
 # Latex
 *.toc
