@@ -4,9 +4,9 @@
 #include "syscall_enum.h"
 
 struct Data {
+    enum Types type;
     pid_t pid;
     char filename[32];
-    enum Types type;
 };
 
 #endif

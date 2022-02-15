@@ -3,11 +3,13 @@
 #include <stdlib.h>
 #include <sys/resource.h>
 
-#include "main.h"
-#include "main.skel.h"
+#include "./include/main.h"
+#include "./include/main.skel.h"
+#include "./include/logger.h"
 
 static void signalHandler() {
-    printf("End");
+    printf("End\n");
+    //loggerFinish();
     exit(0);
 }
 
@@ -28,6 +30,7 @@ static int handle(void *ctx, void *data, size_t size) {
     const struct Data *evt = data;
 
     printf("type: %d <> pid: %d file: %s\n", evt->type, evt->pid, evt->filename);
+    //loggerLog
 
     return 0;
 }

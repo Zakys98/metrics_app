@@ -1,4 +1,5 @@
 APP=main
+PATTERN=sys_enter_*
 
 .PHONY: $(APP)
 $(APP): skel
@@ -6,23 +7,25 @@ $(APP): skel
 
 .PHONY: skel
 skel: bpf
-	bpftool gen skeleton main.bpf.o > main.skel.h
+	bpftool gen skeleton main.bpf.o > ./include/main.skel.h
 
 .PHONY: bpf
-bpf: vmlinux structures enum
-	clang -g -O3 -target bpf -c main.bpf.c -o main.bpf.o
+bpf: vmlinux structures #enum
+	clang -g -O3 -target bpf -c ./source/main.bpf.c -o main.bpf.o
 
 .PHONY: vmlinux
 vmlinux:
-	bpftool btf dump file /sys/kernel/btf/vmlinux format c > vmlinux.h
+	bpftool btf dump file /sys/kernel/btf/vmlinux format c > ./include/vmlinux.h
 
 .PHONY: structures
 structures:
-	sudo python3 scripts/generator/generator.py -p sys_enter_open* -n syscall_structures --structure
+	sudo python3 scripts/generator/generator.py -p $(PATTERN) -n syscall_structures --structure
+	mv -f syscall_structures.h ./include/
 
 .PHONY: enum
 enum:
-	sudo python3 scripts/generator/generator.py -p sys_enter_open* -n syscall_enum --enum
+	sudo python3 scripts/generator/generator.py -p $(PATTERN) -n syscall_enum --enum
+	mv -f syscall_enum.h ./include/
 
 .PHONY: run
 run: $(APP)
@@ -30,4 +33,4 @@ run: $(APP)
 
 .PHONY: clean
 clean:
-	-rm -rf *.o *.skel.h vmlinux.h syscall_structures.h syscall_enum.h $(APP)
+	-rm -rf *.o ./include/*.skel.h ./include/vmlinux.h ./include/syscall_structures.h ./include/syscall_enum.h $(APP)

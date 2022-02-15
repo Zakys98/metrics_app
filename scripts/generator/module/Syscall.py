@@ -16,7 +16,7 @@ class Syscall:
         return output
 
     def addUnusedParameter(self, list: list) -> None:
-        self.parameters.append(Parameter(Types.LONG, 'unused'))
+        self.parameters.append(Parameter(Types.LONG, 'unusedParams'))
 
     def addParameters(self, list: list) -> None:
         for line in list:
