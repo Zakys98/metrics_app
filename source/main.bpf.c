@@ -167,14 +167,16 @@ int handle_getpeername(struct sys_enter_getpeername *params){
 SEC("tp/syscalls/sys_enter_sendto")
 int handle_sendto(struct sys_enter_sendto *params){
     struct task_struct *task = (struct task_struct *)bpf_get_current_task();
-    struct Data *data = {0};
+    //struct Data *data = {0};
+    struct sys_enter_sendto_t *data = {0};
 
     data = bpf_ringbuf_reserve(&ring_buff, sizeof(*data), 0);
     if (!data) {
         bpf_printk("Ringbuffer not reserved\n");
         return 0;
     }
-    data->pid = BPF_CORE_READ(task, pid);
+    //data->pid = BPF_CORE_READ(task, pid);
+    data->len = params->len;
     data->type = SYS_ENTER_SENDTO;
     bpf_ringbuf_submit(data, 0);
 

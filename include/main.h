@@ -9,4 +9,16 @@ struct Data {
     char filename[32];
 };
 
+struct sys_enter_sendto_t {
+    enum Types type;
+	int unusedParams;
+	int __syscall_nr;
+	long fd;
+	int buff;
+	long len;
+	long flags;
+	int addr;
+	long addr_len;
+};
+
 #endif

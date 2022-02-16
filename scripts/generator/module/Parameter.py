@@ -3,8 +3,8 @@ import enum
 
 
 class Types(enum.Enum):
-    UNKNOWN = 'int'
-    INT = 'u32'
+    UNKNOWN = 'unsigned'
+    INT = 'int'
     LONG = 'u64'
     CHAR = 'char'
     CHAR_POINTER = 'char *'

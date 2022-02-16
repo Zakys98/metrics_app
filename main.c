@@ -7,10 +7,10 @@
 #include "./include/main.skel.h"
 #include "./include/logger.h"
 
+static bool running = false;
+
 static void signalHandler() {
-    printf("End\n");
-    //loggerFinish();
-    exit(0);
+    running = false;
 }
 
 static void bump_memlock_rlimit(void) {
@@ -29,8 +29,12 @@ static int handle(void *ctx, void *data, size_t size) {
 
     const struct Data *evt = data;
 
-    printf("type: %d <> pid: %d file: %s\n", evt->type, evt->pid, evt->filename);
-    //loggerLog
+    if(evt->type != SYS_ENTER_SENDTO)
+        printf("type: %d <> pid: %d file: %s\n", evt->type, evt->pid, evt->filename);
+    else {
+        const struct sys_enter_sendto_t *da = data;
+        printf("SYS_ENTER_SENDTO: %d <> file: \n", da->len);
+    }
 
     return 0;
 }
@@ -45,9 +49,13 @@ int main(void) {
 
     struct ring_buffer *rb = ring_buffer__new(bpf_map__fd(skel->maps.ring_buff), handle, NULL, NULL);
 
-    for (;;) {
+    running = true;
+    while (running) {
         ring_buffer__poll(rb, 1000);
     }
+
+    ring_buffer__free(rb);
+    printf("End\n");
 
     return 0;
 }

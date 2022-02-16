@@ -1,19 +1,20 @@
 
+from .TypeResolver import TypeResolver
 from .Syscall import Syscall
 
 
 class SyscallParser:
 
-    def __init__(self, outputName: str) -> None:
+    def __init__(self, outputName: str, typeResolver: TypeResolver) -> None:
         self.name = outputName
         self.syscalls = list()
+        self.typeResolver = typeResolver
 
     def addSyscall(self, syscallList: str) -> None:
-        syscall = Syscall(syscallList[0])
+        syscall = Syscall(syscallList[0], self.typeResolver)
         syscall.addUnusedParameter(syscallList[3:7])
         syscall.addParameters(syscallList[8:])
         self.syscalls.append(syscall)
-        # print(syscall)
 
     def generateEnumFile(self) -> None:
         with open(self.name, 'w') as file:

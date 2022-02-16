@@ -2,8 +2,10 @@
 
 import argparse
 import glob
+from typing import Type
 
 from module.SyscallParser import SyscallParser
+from module.TypeResolver import TypeResolver
 
 
 def argParserInit():
@@ -28,7 +30,9 @@ def globSyscalls(pattern: str):
 
 if __name__ == "__main__":
     args = argParserInit()
-    syscallParser = SyscallParser(f'{args.name}.h')
+    typeResolver = TypeResolver()
+    typeResolver.loadTypes('sizes')
+    syscallParser = SyscallParser(f'{args.name}.h', typeResolver)
     for syscall in globSyscalls(args.pattern):
         with open(syscall, "r") as file:
             syscallParser.addSyscall(file.readlines())
