@@ -2,12 +2,12 @@
 
 int main(){
 
-    printf("char:%d\n", sizeof(char));
-    printf("int:%d\n", sizeof(int));
-    printf("long:%d\n", sizeof(long));
-    printf("unsigned:%d\n", sizeof(unsigned));
-    printf("unsigned long:%d\n", sizeof(unsigned long));
-    printf("*:%d\n", sizeof(void*));
+    printf("char:%lu\n", sizeof(char));
+    printf("int:%lu\n", sizeof(int));
+    printf("long:%lu\n", sizeof(long));
+    printf("unsigned:%lu\n", sizeof(unsigned));
+    printf("unsigned long:%lu\n", sizeof(unsigned long));
+    printf("*:%lu\n", sizeof(void*));
 
     return 0;
 }

@@ -18,7 +18,7 @@ vmlinux:
 	bpftool btf dump file /sys/kernel/btf/vmlinux format c > ./include/vmlinux.h
 
 .PHONY: structures
-structures:
+structures: sizer
 	sudo python3 scripts/generator/generator.py -p $(PATTERN) -n syscall_structures --structure
 	mv -f syscall_structures.h ./include/
 
@@ -26,6 +26,11 @@ structures:
 enum:
 	sudo python3 scripts/generator/generator.py -p $(PATTERN) -n syscall_enum --enum
 	mv -f syscall_enum.h ./include/
+
+.PHONY: sizer
+sizer:
+	clang scripts/generator/sizer.c -o sizer
+	./sizer > sizes
 
 .PHONY: run
 run: $(APP)
