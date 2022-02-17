@@ -17,4 +17,4 @@ class Parameter:
         self.name = name
 
     def __str__(self) -> str:
-        return f'{self.type.value} {self.name}'
+        return f'{self.type} {self.name}'

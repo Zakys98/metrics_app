@@ -10,7 +10,7 @@ skel: bpf
 	bpftool gen skeleton main.bpf.o > ./include/main.skel.h
 
 .PHONY: bpf
-bpf: vmlinux structures #enum
+bpf: vmlinux structures enum
 	clang -g -O3 -target bpf -c ./source/main.bpf.c -o main.bpf.o
 
 .PHONY: vmlinux
@@ -38,4 +38,4 @@ run: $(APP)
 
 .PHONY: clean
 clean:
-	-rm -rf *.o ./include/*.skel.h ./include/vmlinux.h ./include/syscall_structures.h ./include/syscall_enum.h $(APP)
+	-rm -rf *.o ./include/*.skel.h ./include/vmlinux.h ./include/syscall_structures.h ./include/syscall_enum.h sizer sizes $(APP)
