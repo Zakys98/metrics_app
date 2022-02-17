@@ -2,8 +2,12 @@ APP=main
 PATTERN=sys_enter_*
 
 .PHONY: $(APP)
-$(APP): skel
-	clang main.c -lbpf -lelf -o $(APP)
+$(APP): skel logger.o
+	clang main.c logger.o -lbpf -lelf -o $(APP)
+
+.PHONY: logger.o
+logger.o: source/logger.c
+	clang -c source/logger.c -o logger.o
 
 .PHONY: skel
 skel: bpf

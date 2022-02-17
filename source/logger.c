@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "../include/logger.h"
 
@@ -21,6 +22,6 @@ void loggerLog(){
 
 }
 
-int loggerFinish(){
+void loggerDestroy(){
     fclose(logger.output);
 }

@@ -10,9 +10,8 @@ struct {
     __uint(max_entries, 256 * 1024);
 } ring_buff SEC(".maps");
 
-
 SEC("tp/syscalls/sys_enter_socket")
-int handle_socket(struct sys_enter_socket *params){
+int handle_socket(struct sys_enter_socket *params) {
     struct task_struct *task = (struct task_struct *)bpf_get_current_task();
     struct Data *data = {0};
 
@@ -29,7 +28,7 @@ int handle_socket(struct sys_enter_socket *params){
 }
 
 SEC("tp/syscalls/sys_enter_socketpair")
-int handle_socketpair(struct sys_enter_socketpair *params){
+int handle_socketpair(struct sys_enter_socketpair *params) {
     struct task_struct *task = (struct task_struct *)bpf_get_current_task();
     struct Data *data = {0};
 
@@ -46,7 +45,7 @@ int handle_socketpair(struct sys_enter_socketpair *params){
 }
 
 SEC("tp/syscalls/sys_enter_bind")
-int handle_bind(struct sys_enter_bind *params){
+int handle_bind(struct sys_enter_bind *params) {
     struct task_struct *task = (struct task_struct *)bpf_get_current_task();
     struct Data *data = {0};
 
@@ -63,7 +62,7 @@ int handle_bind(struct sys_enter_bind *params){
 }
 
 SEC("tp/syscalls/sys_enter_listen")
-int handle_listen(struct sys_enter_listen *params){
+int handle_listen(struct sys_enter_listen *params) {
     struct task_struct *task = (struct task_struct *)bpf_get_current_task();
     struct Data *data = {0};
 
@@ -80,7 +79,7 @@ int handle_listen(struct sys_enter_listen *params){
 }
 
 SEC("tp/syscalls/sys_enter_accept4")
-int handle_accept4(struct sys_enter_accept4 *params){
+int handle_accept4(struct sys_enter_accept4 *params) {
     struct task_struct *task = (struct task_struct *)bpf_get_current_task();
     struct Data *data = {0};
 
@@ -97,7 +96,7 @@ int handle_accept4(struct sys_enter_accept4 *params){
 }
 
 SEC("tp/syscalls/sys_enter_accept")
-int handle_accept(struct sys_enter_accept *params){
+int handle_accept(struct sys_enter_accept *params) {
     struct task_struct *task = (struct task_struct *)bpf_get_current_task();
     struct Data *data = {0};
 
@@ -114,7 +113,7 @@ int handle_accept(struct sys_enter_accept *params){
 }
 
 SEC("tp/syscalls/sys_enter_connect")
-int handle_connect(struct sys_enter_connect *params){
+int handle_connect(struct sys_enter_connect *params) {
     struct task_struct *task = (struct task_struct *)bpf_get_current_task();
     struct Data *data = {0};
 
@@ -131,7 +130,7 @@ int handle_connect(struct sys_enter_connect *params){
 }
 
 SEC("tp/syscalls/sys_enter_getsockname")
-int handle_getsockname(struct sys_enter_getsockname *params){
+int handle_getsockname(struct sys_enter_getsockname *params) {
     struct task_struct *task = (struct task_struct *)bpf_get_current_task();
     struct Data *data = {0};
 
@@ -148,7 +147,7 @@ int handle_getsockname(struct sys_enter_getsockname *params){
 }
 
 SEC("tp/syscalls/sys_enter_getpeername")
-int handle_getpeername(struct sys_enter_getpeername *params){
+int handle_getpeername(struct sys_enter_getpeername *params) {
     struct task_struct *task = (struct task_struct *)bpf_get_current_task();
     struct Data *data = {0};
 
@@ -167,24 +166,23 @@ int handle_getpeername(struct sys_enter_getpeername *params){
 SEC("tp/syscalls/sys_enter_sendto")
 int handle_sendto(struct sys_enter_sendto *params){
     struct task_struct *task = (struct task_struct *)bpf_get_current_task();
-    //struct Data *data = {0};
-    struct sys_enter_sendto_t *data = {0};
+    struct Data *data = {0};
 
     data = bpf_ringbuf_reserve(&ring_buff, sizeof(*data), 0);
     if (!data) {
         bpf_printk("Ringbuffer not reserved\n");
         return 0;
     }
-    //data->pid = BPF_CORE_READ(task, pid);
-    data->len = params->len;
+    data->pid = BPF_CORE_READ(task, pid);
     data->type = SYS_ENTER_SENDTO;
+    //memcpy(data->data, params->len, sizeof(long));
     bpf_ringbuf_submit(data, 0);
 
     return 0;
 }
 
 SEC("tp/syscalls/sys_enter_recvfrom")
-int handle_recvfrom(struct sys_enter_recvfrom *params){
+int handle_recvfrom(struct sys_enter_recvfrom *params) {
     struct task_struct *task = (struct task_struct *)bpf_get_current_task();
     struct Data *data = {0};
 
@@ -201,7 +199,7 @@ int handle_recvfrom(struct sys_enter_recvfrom *params){
 }
 
 SEC("tp/syscalls/sys_enter_setsockopt")
-int handle_setsockopt(struct sys_enter_setsockopt *params){
+int handle_setsockopt(struct sys_enter_setsockopt *params) {
     struct task_struct *task = (struct task_struct *)bpf_get_current_task();
     struct Data *data = {0};
 
@@ -218,7 +216,7 @@ int handle_setsockopt(struct sys_enter_setsockopt *params){
 }
 
 SEC("tp/syscalls/sys_enter_getsockopt")
-int handle_getsockopt(struct sys_enter_getsockopt *params){
+int handle_getsockopt(struct sys_enter_getsockopt *params) {
     struct task_struct *task = (struct task_struct *)bpf_get_current_task();
     struct Data *data = {0};
 
@@ -235,7 +233,7 @@ int handle_getsockopt(struct sys_enter_getsockopt *params){
 }
 
 SEC("tp/syscalls/sys_enter_shutdown")
-int handle_shutdown(struct sys_enter_shutdown *params){
+int handle_shutdown(struct sys_enter_shutdown *params) {
     struct task_struct *task = (struct task_struct *)bpf_get_current_task();
     struct Data *data = {0};
 

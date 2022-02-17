@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include <sys/resource.h>
 
+#include "./include/logger.h"
 #include "./include/main.h"
 #include "./include/main.skel.h"
-#include "./include/logger.h"
 
 static bool running = false;
 
@@ -26,22 +26,20 @@ static void bump_memlock_rlimit(void) {
 }
 
 static int handle(void *ctx, void *data, size_t size) {
-
     const struct Data *evt = data;
-
-    if(evt->type != SYS_ENTER_SENDTO)
-        printf("type: %d <> pid: %d file: %s\n", evt->type, evt->pid, evt->filename);
-    else {
-        const struct sys_enter_sendto_t *da = data;
-        printf("SYS_ENTER_SENDTO: %d <> file: \n", da->len);
-    }
-
+    printf("type: %d <> pid: %d <> data: %s\n", evt->type, evt->pid, evt->data);
+    //loggerLog
     return 0;
 }
 
 int main(void) {
     signal(SIGINT, signalHandler);
     bump_memlock_rlimit();
+
+    if (loggerInit("output.log") != 0) {
+        printf("Could not initialize logger\n");
+        return 1;
+    }
 
     struct main_bpf *skel = main_bpf__open();
     main_bpf__load(skel);
@@ -56,6 +54,7 @@ int main(void) {
 
     ring_buffer__free(rb);
     printf("End\n");
+    loggerDestroy();
 
     return 0;
 }

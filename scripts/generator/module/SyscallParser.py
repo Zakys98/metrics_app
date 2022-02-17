@@ -19,6 +19,8 @@ class SyscallParser:
     def generateEnumFile(self) -> None:
         with open(self.name, 'w') as file:
             file.write(self.__enumHeader())
+            file.write(self.__enumStructLen())
+            file.write('enum Types {\n')
             for syscall in self.syscalls:
                 file.write(f'\t{syscall.name.upper()},\n')
             file.write(self.__enumFooter())
@@ -26,12 +28,19 @@ class SyscallParser:
     def __enumHeader(self):
         output = '#ifndef __SYSCALL_ENUM_H__\n' \
                  '#define __SYSCALL_ENUM_H__\n\n' \
-                 'enum Types {\n'
+                 '#include "syscall_structures.h"\n\n'
         return output
 
     def __enumFooter(self):
         output = '};\n\n' \
                  '#endif // __SYSCALL_ENUM_H__'
+        return output
+
+    def __enumStructLen(self):
+        output = ''
+        for syscall in self.syscalls:
+            output += f'#define {syscall.name.upper()}_LEN sizeof(struct {syscall.name}) \n'
+        output += '\n'
         return output
 
     def generateStructureFile(self) -> None:
