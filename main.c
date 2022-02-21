@@ -26,8 +26,9 @@ static void bump_memlock_rlimit(void) {
 }
 
 static int handle(void *ctx, void *data, size_t size) {
-    const struct Data *evt = data;
+    const struct user_type *evt = data;
     //printf("type: %d <> pid: %d <> data: %s\n", evt->type, evt->pid, evt->data);
+    printf("type: %d <> data: \n", evt->type);
     //loggerLog
     return 0;
 }

@@ -47,4 +47,4 @@ run: $(APP)
 
 .PHONY: clean
 clean:
-	-rm -rf *.o ./include/*.skel.h ./include/vmlinux.h ./include/syscall_structures.h ./include/syscall_enum.h sizer sizes $(APP)
+	-rm -rf *.o ./include/*.skel.h ./include/vmlinux.h ./include/main.h ./include/syscall_structures.h ./include/syscall_enum.h sizer sizes $(APP)

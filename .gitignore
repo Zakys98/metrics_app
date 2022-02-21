@@ -2,6 +2,7 @@ build
 __pycache__
 .vscode
 main
+*main.h
 *.skel.h
 *syscall_structures.h
 *syscall_enum.h
