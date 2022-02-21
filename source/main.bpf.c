@@ -13,16 +13,17 @@ struct {
 SEC("tp/syscalls/sys_enter_socket")
 int handle_socket(struct sys_enter_socket *params) {
     struct task_struct *task = (struct task_struct *)bpf_get_current_task();
-    struct Data *data = {0};
+    struct USER_SYS_ENTER_SOCKET *data = {0};
 
     data = bpf_ringbuf_reserve(&ring_buff, sizeof(*data), 0);
     if (!data) {
         bpf_printk("Ringbuffer not reserved\n");
         return 0;
     }
-    data->pid = BPF_CORE_READ(task, pid);
+    //data->pid = BPF_CORE_READ(task, pid);
     data->type = SYS_ENTER_SOCKET;
     bpf_ringbuf_submit(data, 0);
+    bpf_printk("SOCKET\n");
 
     return 0;
 }
@@ -30,16 +31,16 @@ int handle_socket(struct sys_enter_socket *params) {
 SEC("tp/syscalls/sys_enter_socketpair")
 int handle_socketpair(struct sys_enter_socketpair *params) {
     struct task_struct *task = (struct task_struct *)bpf_get_current_task();
-    struct Data *data = {0};
+    struct USER_SYS_ENTER_SOCKETPAIR *data = {0};
 
     data = bpf_ringbuf_reserve(&ring_buff, sizeof(*data), 0);
     if (!data) {
         bpf_printk("Ringbuffer not reserved\n");
         return 0;
     }
-    data->pid = BPF_CORE_READ(task, pid);
     data->type = SYS_ENTER_SOCKETPAIR;
     bpf_ringbuf_submit(data, 0);
+    bpf_printk("SOCKETPAIR\n");
 
     return 0;
 }
@@ -47,16 +48,16 @@ int handle_socketpair(struct sys_enter_socketpair *params) {
 SEC("tp/syscalls/sys_enter_bind")
 int handle_bind(struct sys_enter_bind *params) {
     struct task_struct *task = (struct task_struct *)bpf_get_current_task();
-    struct Data *data = {0};
+    struct USER_SYS_ENTER_BIND *data = {0};
 
     data = bpf_ringbuf_reserve(&ring_buff, sizeof(*data), 0);
     if (!data) {
         bpf_printk("Ringbuffer not reserved\n");
         return 0;
     }
-    data->pid = BPF_CORE_READ(task, pid);
     data->type = SYS_ENTER_BIND;
     bpf_ringbuf_submit(data, 0);
+    bpf_printk("BIND\n");
 
     return 0;
 }
@@ -64,21 +65,21 @@ int handle_bind(struct sys_enter_bind *params) {
 SEC("tp/syscalls/sys_enter_listen")
 int handle_listen(struct sys_enter_listen *params) {
     struct task_struct *task = (struct task_struct *)bpf_get_current_task();
-    struct Data *data = {0};
+    struct USER_SYS_ENTER_LISTEN *data = {0};
 
     data = bpf_ringbuf_reserve(&ring_buff, sizeof(*data), 0);
     if (!data) {
         bpf_printk("Ringbuffer not reserved\n");
         return 0;
     }
-    data->pid = BPF_CORE_READ(task, pid);
     data->type = SYS_ENTER_LISTEN;
     bpf_ringbuf_submit(data, 0);
+    bpf_printk("LISTEN\n");
 
     return 0;
 }
 
-SEC("tp/syscalls/sys_enter_accept4")
+/*SEC("tp/syscalls/sys_enter_accept4")
 int handle_accept4(struct sys_enter_accept4 *params) {
     struct task_struct *task = (struct task_struct *)bpf_get_current_task();
     struct Data *data = {0};
@@ -247,7 +248,7 @@ int handle_shutdown(struct sys_enter_shutdown *params) {
     bpf_ringbuf_submit(data, 0);
 
     return 0;
-}
+}*/
 
 /*SEC("tp/syscalls/sys_enter_execve")
 int handle_execve(struct sys_enter_execve *params) {
@@ -288,13 +289,13 @@ int handle_open(struct sys_enter_open *params) {
     //bpf_printk("Open Called\n");
 
     return 0;
-}
+}*/
 
 SEC("tp/syscalls/sys_enter_openat")
 int handle_openat(struct sys_enter_openat *params) {
 
     struct task_struct *task = (struct task_struct *)bpf_get_current_task();
-    struct Data *data = {0};
+    struct USER_SYS_ENTER_OPENAT *data = {0};
 
     data = bpf_ringbuf_reserve(&ring_buff, sizeof(*data), 0);
     if (!data) {
@@ -302,13 +303,13 @@ int handle_openat(struct sys_enter_openat *params) {
         return 0;
     }
 
-    data->pid = BPF_CORE_READ(task, pid);
-    bpf_probe_read_user_str(data->filename, sizeof(data->filename), params->filename);
+    //data->pid = BPF_CORE_READ(task, pid);
+    //bpf_probe_read_user_str(data->filename, sizeof(data->filename), params->filename);
     data->type = SYS_ENTER_OPENAT;
     bpf_ringbuf_submit(data, 0);
-    //bpf_printk("Openat Called\n");
+    bpf_printk("Openat Called\n");
 
     return 0;
-}*/
+}
 
 char LICENSE[] SEC("license") = "GPL";

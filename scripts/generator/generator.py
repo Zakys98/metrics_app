@@ -21,6 +21,8 @@ def argParserInit():
                        help='generates file with syscalls structures')
     group.add_argument('--enum', action='store_true',
                        help='generates file with syscalls enum')
+    group.add_argument('--main', action='store_true',
+                       help='generates main.h file')
     return parser.parse_args()
 
 
@@ -41,3 +43,5 @@ if __name__ == "__main__":
         syscallParser.generateStructureFile()
     elif(args.enum):
         syscallParser.generateEnumFile()
+    elif(args.main):
+        syscallParser.generateMainHFile()

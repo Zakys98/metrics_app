@@ -14,22 +14,27 @@ skel: bpf
 	bpftool gen skeleton main.bpf.o > ./include/main.skel.h
 
 .PHONY: bpf
-bpf: vmlinux structures enum
+bpf: vmlinux headerMain
 	clang -g -O3 -target bpf -c ./source/main.bpf.c -o main.bpf.o
 
 .PHONY: vmlinux
 vmlinux:
 	bpftool btf dump file /sys/kernel/btf/vmlinux format c > ./include/vmlinux.h
 
+.PHONY: main
+headerMain: enum
+	sudo python3 scripts/generator/generator.py -p $(PATTERN) -n main --main
+	mv -f main.h ./include/
+
+.PHONY: enum
+enum: structures
+	sudo python3 scripts/generator/generator.py -p $(PATTERN) -n syscall_enum --enum
+	mv -f syscall_enum.h ./include/
+
 .PHONY: structures
 structures: sizer
 	sudo python3 scripts/generator/generator.py -p $(PATTERN) -n syscall_structures --structure
 	mv -f syscall_structures.h ./include/
-
-.PHONY: enum
-enum:
-	sudo python3 scripts/generator/generator.py -p $(PATTERN) -n syscall_enum --enum
-	mv -f syscall_enum.h ./include/
 
 .PHONY: sizer
 sizer:
