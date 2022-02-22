@@ -73,15 +73,14 @@ class SyscallParser:
         return output
 
     def __mainHStruct(self) -> str:
-        output = '#define GETLEN(x) x##_LEN\n\n'
-        output += '#define FUNC(x) \\\n'
-        output += '\tstruct USER_##x { \\\n'
-        output += '\t\tenum Types type; \\\n'
-        output += '\t\tchar data[GETLEN(x)]; \\\n'
-        output += '\t};\n\n'
-        output += 'struct user_type {\n'
-        output += '\tenum Types type;\n'
-        output += '};\n\n'
+        output = '#define GETLEN(x) x##_LEN\n\n' \
+                 '#define FUNC(x) \\\n' \
+                 '\tstruct USER_##x { \\\n' \
+                 '\t\tchar data[GETLEN(x)]; \\\n' \
+                 '\t};\n\n' \
+                 'struct user_type {\n' \
+                 '\tenum Types type;\n' \
+                 '};\n\n'
         return output
 
     def __mainHFooter(self) -> str:

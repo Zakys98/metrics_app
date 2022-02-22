@@ -4,6 +4,7 @@
 
 #include "../include/main.h"
 #include "../include/syscall_structures.h"
+#include "../include/syscall_enum.h"
 
 struct {
     __uint(type, BPF_MAP_TYPE_RINGBUF);
@@ -20,14 +21,16 @@ int handle_socket(struct sys_enter_socket *params) {
         bpf_printk("Ringbuffer not reserved\n");
         return 0;
     }
+    bpf_probe_read_kernel(data->data, SYS_ENTER_SOCKET_LEN, params);
     //data->pid = BPF_CORE_READ(task, pid);
-    data->type = SYS_ENTER_SOCKET;
+    bpf_printk("protocol: %ld <> family: %ld\n", params->protocol, params->family);
+    //data->type = SYS_ENTER_SOCKET;
     bpf_ringbuf_submit(data, 0);
 
     return 0;
 }
 
-SEC("tp/syscalls/sys_enter_socketpair")
+/*SEC("tp/syscalls/sys_enter_socketpair")
 int handle_socketpair(struct sys_enter_socketpair *params) {
     struct task_struct *task = (struct task_struct *)bpf_get_current_task();
     struct USER_SYS_ENTER_SOCKETPAIR *data = {0};
@@ -168,7 +171,7 @@ int handle_sendto(struct sys_enter_sendto *params){
         return 0;
     }
     data->type = SYS_ENTER_SENDTO;
-    //memcpy(data->data, params->len, sizeof(long));
+    bpf_probe_read_kernel(data->data, SYS_ENTER_SENDTO_LEN, params);
     bpf_ringbuf_submit(data, 0);
 
     return 0;
@@ -236,7 +239,7 @@ int handle_shutdown(struct sys_enter_shutdown *params) {
     bpf_ringbuf_submit(data, 0);
 
     return 0;
-}
+}*/
 
 /*SEC("tp/syscalls/sys_enter_execve")
 int handle_execve(struct sys_enter_execve *params) {
