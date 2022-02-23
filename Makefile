@@ -1,5 +1,6 @@
 APP=main
 PATTERN=sys_enter_*
+GENERATOR=scripts/generator/generator.py
 
 .PHONY: $(APP)
 $(APP): skel logger.o
@@ -23,19 +24,19 @@ vmlinux:
 
 .PHONY: kernel
 kernel: sizer
-	sudo python3 scripts/generator/generator.py -p $(PATTERN) -n ./source/main.bpf.c --bpf
+	sudo python3 $(GENERATOR) -p $(PATTERN) -n ./source/main.bpf.c --bpf
 
 .PHONY: user
 user: sizer
-	sudo python3 scripts/generator/generator.py -p $(PATTERN) -n ./include/user.h --user
+	sudo python3 $(GENERATOR) -p $(PATTERN) -n ./include/user.h --user
 
 .PHONY: enum
 enum: sizer
-	sudo python3 scripts/generator/generator.py -p $(PATTERN) -n ./include/syscall_enum.h --enum
+	sudo python3 $(GENERATOR) -p $(PATTERN) -n ./include/syscall_enum.h --enum
 
 .PHONY: structures
 structures: sizer
-	sudo python3 scripts/generator/generator.py -p $(PATTERN) -n ./include/syscall_structures.h --structure
+	sudo python3 $(GENERATOR) -p $(PATTERN) -n ./include/syscall_structures.h --structure
 
 .PHONY: sizer
 sizer:
@@ -48,4 +49,4 @@ run: $(APP)
 
 .PHONY: clean
 clean:
-	-rm -rf *.o ./include/*.skel.h ./include/vmlinux.h ./include/main.h ./include/syscall_structures.h ./include/syscall_enum.h sizer sizes $(APP)
+	-rm -rf *.o ./include/*.skel.h ./include/vmlinux.h ./include/user.h ./include/syscall_structures.h ./include/syscall_enum.h ./source/main.bpf.c sizer sizes $(APP)
