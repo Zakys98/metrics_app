@@ -2,7 +2,7 @@
 #include <bpf/bpf_core_read.h>
 #include <bpf/bpf_helpers.h>
 
-#include "../include/main.h"
+#include "../include/user.h"
 #include "../include/syscall_structures.h"
 #include "../include/syscall_enum.h"
 
@@ -24,13 +24,13 @@ int handle_socket(struct sys_enter_socket *params) {
     bpf_probe_read_kernel(data->data, SYS_ENTER_SOCKET_LEN, params);
     //data->pid = BPF_CORE_READ(task, pid);
     bpf_printk("protocol: %ld <> family: %ld\n", params->protocol, params->family);
-    //data->type = SYS_ENTER_SOCKET;
+    data->type = SYS_ENTER_SOCKET;
     bpf_ringbuf_submit(data, 0);
 
     return 0;
 }
 
-/*SEC("tp/syscalls/sys_enter_socketpair")
+SEC("tp/syscalls/sys_enter_socketpair")
 int handle_socketpair(struct sys_enter_socketpair *params) {
     struct task_struct *task = (struct task_struct *)bpf_get_current_task();
     struct USER_SYS_ENTER_SOCKETPAIR *data = {0};
@@ -177,7 +177,7 @@ int handle_sendto(struct sys_enter_sendto *params){
     return 0;
 }
 
-SEC("tp/syscalls/sys_enter_recvfrom")
+/*SEC("tp/syscalls/sys_enter_recvfrom")
 int handle_recvfrom(struct sys_enter_recvfrom *params) {
     struct task_struct *task = (struct task_struct *)bpf_get_current_task();
     struct USER_SYS_ENTER_RECVFROM *data = {0};

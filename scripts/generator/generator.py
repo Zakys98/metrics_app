@@ -21,8 +21,10 @@ def argParserInit():
                        help='generates file with syscalls structures')
     group.add_argument('--enum', action='store_true',
                        help='generates file with syscalls enum')
-    group.add_argument('--main', action='store_true',
-                       help='generates main.h file')
+    group.add_argument('--user', action='store_true',
+                       help='generates file with user space structures')
+    group.add_argument('--bpf', action='store_true',
+                       help='generates file with bpf program')
     return parser.parse_args()
 
 
@@ -34,7 +36,7 @@ if __name__ == "__main__":
     args = argParserInit()
     typeResolver = TypeResolver()
     typeResolver.loadTypes('sizes')
-    syscallParser = SyscallParser(f'{args.name}.h', typeResolver)
+    syscallParser = SyscallParser(args.name, typeResolver)
     for syscall in globSyscalls(args.pattern):
         with open(syscall, "r") as file:
             syscallParser.addSyscall(file.readlines())
@@ -43,5 +45,7 @@ if __name__ == "__main__":
         syscallParser.generateStructureFile()
     elif(args.enum):
         syscallParser.generateEnumFile()
-    elif(args.main):
-        syscallParser.generateMainHFile()
+    elif(args.user):
+        syscallParser.generateUserFile()
+    elif(args.bpf):
+        syscallParser.generateBpfFile()

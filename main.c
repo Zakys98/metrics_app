@@ -4,7 +4,7 @@
 #include <sys/resource.h>
 
 #include "./include/logger.h"
-#include "./include/main.h"
+#include "./include/user.h"
 #include "./include/main.skel.h"
 #include "./include/syscall_structures.h"
 
@@ -39,12 +39,11 @@ static void bump_memlock_rlimit(void) {
 static int handle(void *ctx, void *data, size_t size) {
     const struct user_type *evt = data;
     //printf("type: %d <> pid: %d <> data: %s\n", evt->type, evt->pid, evt->data);
-    //if(evt->type == SYS_ENTER_SOCKET){
-        char *neco = (char *)data + sizeof(enum Types);
-        struct sys_enter_socket_t *lala = (struct sys_enter_socket_t *)neco;
-        printf("protocol: %ld <> family: %ld\n", lala->protocol, lala->family);
-    //} else
-        //printf("type: %b <> data: \n", evt->type);
+    struct user_type *type = (struct user_type *)data;
+    printf("type: %d\n", type->type);
+    //char *neco = (char *)data + sizeof(enum Types) + sizeof(enum Types);
+    //struct sys_enter_socket_t *lala = (struct sys_enter_socket_t *)neco;
+    //printf("protocol: %ld <> family: %ld\n", lala->protocol, lala->family);
     //loggerLog
     return 0;
 }

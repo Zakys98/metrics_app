@@ -58,24 +58,25 @@ class SyscallParser:
     def __structuresFooter(self) -> str:
         return '#endif // __SYSCALL_STRUCTURES_H__'
 
-    def generateMainHFile(self) -> None:
+    def generateUserFile(self) -> None:
         with open(self.name, 'w') as file:
-            file.write(self.__mainHHeader())
-            file.write(self.__mainHStruct())
+            file.write(self.__userHeader())
+            file.write(self.__userStruct())
             for syscall in self.syscalls:
-                file.write(f'FUNC({syscall.name.upper()})\n')
-            file.write(self.__mainHFooter())
+                file.write(f'STRUCT({syscall.name.upper()})\n')
+            file.write(self.__userFooter())
 
-    def __mainHHeader(self) -> str:
+    def __userHeader(self) -> str:
         output = '#ifndef __MAIN_H__\n' \
                  '#define __MAIN_H__\n\n' \
                  '#include "syscall_enum.h"\n\n'
         return output
 
-    def __mainHStruct(self) -> str:
+    def __userStruct(self) -> str:
         output = '#define GETLEN(x) x##_LEN\n\n' \
-                 '#define FUNC(x) \\\n' \
+                 '#define STRUCT(x) \\\n' \
                  '\tstruct USER_##x { \\\n' \
+                 '\t\tenum Types type; \\\n' \
                  '\t\tchar data[GETLEN(x)]; \\\n' \
                  '\t};\n\n' \
                  'struct user_type {\n' \
@@ -83,5 +84,47 @@ class SyscallParser:
                  '};\n\n'
         return output
 
-    def __mainHFooter(self) -> str:
+    def __userFooter(self) -> str:
         return '\n#endif // __MAIN_H__'
+
+    def generateBpfFile(self) -> None:
+        with open(self.name, 'w') as file:
+            file.write(self.__bpfHeader())
+            file.write(self.__bpfMacroFunction())
+            for syscall in self.syscalls:
+                file.write(f'FUNCTION({syscall.name}, {syscall.name.upper()})\n')
+            file.write(self.__bpfFooter())
+
+    def __bpfHeader(self) -> str:
+        output = '#include "../include/vmlinux.h"\n' \
+                 '#include <bpf/bpf_core_read.h>\n' \
+                 '#include <bpf/bpf_helpers.h>\n\n' \
+                 '#include "../include/user.h"\n' \
+                 '#include "../include/syscall_structures.h"\n' \
+                 '#include "../include/syscall_enum.h"\n\n' \
+                 'struct {\n' \
+                 '    __uint(type, BPF_MAP_TYPE_RINGBUF);\n' \
+                 '    __uint(max_entries, 256 * 1024);\n' \
+                 '} ring_buff SEC(".maps");\n\n'
+        return output
+
+    def __bpfMacroFunction(self) -> str:
+        output = '#define FUNCTION(lower, upper) \\\n' \
+                 '\tSEC("tp/syscalls/" #lower "") \\\n' \
+                 '\tint handle_##lower(struct lower *params) { \\\n' \
+                 '\t\tstruct task_struct *task = (struct task_struct *)bpf_get_current_task(); \\\n' \
+                 '\t\tstruct USER_##upper *data = {0}; \\\n' \
+                 '\t\tdata = bpf_ringbuf_reserve(&ring_buff, sizeof(*data), 0); \\\n' \
+                 '\t\tif (!data) { \\\n' \
+                 '\t\t    bpf_printk("Ringbuffer not reserved\\n"); \\\n' \
+                 '\t\t    return 0; \\\n' \
+                 '\t\t} \\\n' \
+                 '\t\tdata->type = upper; \\\n' \
+                 '\t\tbpf_probe_read_kernel(data->data, upper##_LEN, params); \\\n' \
+                 '\t\tbpf_ringbuf_submit(data, 0); \\\n' \
+                 '\t\treturn 0; \\\n' \
+                 '\t}\n\n'
+        return output
+
+    def __bpfFooter(self) -> str:
+        return '\nchar LICENSE[] SEC("license") = "GPL";'

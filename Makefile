@@ -14,27 +14,28 @@ skel: bpf
 	bpftool gen skeleton main.bpf.o > ./include/main.skel.h
 
 .PHONY: bpf
-bpf: vmlinux headerMain
+bpf: kernel user enum structures vmlinux
 	clang -g -O3 -target bpf -c ./source/main.bpf.c -o main.bpf.o
 
 .PHONY: vmlinux
 vmlinux:
 	bpftool btf dump file /sys/kernel/btf/vmlinux format c > ./include/vmlinux.h
 
-.PHONY: main
-headerMain: enum
-	sudo python3 scripts/generator/generator.py -p $(PATTERN) -n main --main
-	mv -f main.h ./include/
+.PHONY: kernel
+kernel: sizer
+	sudo python3 scripts/generator/generator.py -p $(PATTERN) -n ./source/main.bpf.c --bpf
+
+.PHONY: user
+user: sizer
+	sudo python3 scripts/generator/generator.py -p $(PATTERN) -n ./include/user.h --user
 
 .PHONY: enum
-enum: structures
-	sudo python3 scripts/generator/generator.py -p $(PATTERN) -n syscall_enum --enum
-	mv -f syscall_enum.h ./include/
+enum: sizer
+	sudo python3 scripts/generator/generator.py -p $(PATTERN) -n ./include/syscall_enum.h --enum
 
 .PHONY: structures
 structures: sizer
-	sudo python3 scripts/generator/generator.py -p $(PATTERN) -n syscall_structures --structure
-	mv -f syscall_structures.h ./include/
+	sudo python3 scripts/generator/generator.py -p $(PATTERN) -n ./include/syscall_structures.h --structure
 
 .PHONY: sizer
 sizer:
