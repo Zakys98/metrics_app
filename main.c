@@ -67,8 +67,8 @@ int main(void) {
 
     ring_buffer__free(rb);
     main_bpf__destroy(skel);
-    printf("End\n");
     loggerDestroy();
+    printf("End\n");
 
     return 0;
 }

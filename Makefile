@@ -11,7 +11,7 @@ logger.o: source/logger.c
 	clang -c source/logger.c -o logger.o
 
 .PHONY: handler.o
-handler.o: source/handler.c handler
+handler.o: handler
 	clang -c source/handler.c -o handler.o
 
 .PHONY: skel
@@ -52,9 +52,9 @@ sizer:
 	./sizer > sizes
 
 .PHONY: run
-run: $(APP)
+run:
 	sudo ./$(APP)
 
 .PHONY: clean
 clean:
-	-rm -rf *.o ./include/*.skel.h ./include/vmlinux.h ./include/user.h ./include/syscall_structures.h ./include/syscall_enum.h ./source/main.bpf.c sizer sizes $(APP)
+	-rm -rf *.o ./include/*.skel.h ./include/vmlinux.h ./include/user.h ./include/syscall_structures.h ./source/handler.c ./include/syscall_enum.h ./source/main.bpf.c sizer sizes $(APP)
