@@ -4,21 +4,10 @@
 #include <sys/resource.h>
 
 #include "./include/logger.h"
-#include "./include/user.h"
 #include "./include/main.skel.h"
-#include "./include/syscall_structures.h"
+#include "./include/handler.h"
 
 static bool running = false;
-
-#pragma pack(push, 1)
-struct sys_enter_socket_t {
-	long unusedParams;
-	int __syscall_nr;
-	long family;
-	long type;
-	long protocol;
-};
-#pragma pack(pop)
 
 static void signalHandler() {
     running = false;
@@ -36,23 +25,31 @@ static void bump_memlock_rlimit(void) {
     }
 }
 
-static int handle(void *ctx, void *data, size_t size) {
-    const struct user_type *evt = data;
-    //printf("type: %d <> pid: %d <> data: %s\n", evt->type, evt->pid, evt->data);
+/*int old(void *ctx, void *data, size_t size) {
     struct user_type *type = (struct user_type *)data;
-    printf("type: %d\n", type->type);
-    //char *neco = (char *)data + sizeof(enum Types) + sizeof(enum Types);
-    //struct sys_enter_socket_t *lala = (struct sys_enter_socket_t *)neco;
-    //printf("protocol: %ld <> family: %ld\n", lala->protocol, lala->family);
-    //loggerLog
+    loggerLog(&type->type, sizeof(enum Types));
+    if (type->type == SYS_ENTER_SOCKET) {
+        printf("USER_SYS_ENTER_SOCKET: %lu, SYS_ENTER_SOCKET_LEN: %lu\n", sizeof(struct USER_SYS_ENTER_SOCKET), SYS_ENTER_SOCKET_LEN);
+        char *neco = (char *)data + sizeof(enum Types);
+        struct sys_enter_socket *lala = (struct sys_enter_socket *)neco;
+        printf("protocol: %ld <> family: %ld\n", lala->protocol, lala->family);
+        loggerLog(neco, SYS_ENTER_SOCKET_LEN);
+    } else if (type->type == SYS_ENTER_BIND) {
+        printf("USER_SYS_ENTER_BIND: %lu, SYS_ENTER_BIND_LEN: %lu\n", sizeof(struct USER_SYS_ENTER_BIND), SYS_ENTER_BIND_LEN);
+        char *neco = (char *)data + sizeof(enum Types);
+        struct sys_enter_bind *lala = (struct sys_enter_bind *)neco;
+        printf("fd: %ld <> addrlen: %ld\n", lala->fd, lala->addrlen);
+        loggerLog(neco, SYS_ENTER_BIND_LEN);
+    }
+
     return 0;
-}
+}*/
 
 int main(void) {
     signal(SIGINT, signalHandler);
     bump_memlock_rlimit();
 
-    if (loggerInit("output.log") != 0) {
+    if (loggerInit("output.bin") != 0) {
         printf("Could not initialize logger\n");
         return 1;
     }

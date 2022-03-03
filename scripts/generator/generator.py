@@ -25,6 +25,8 @@ def argParserInit():
                        help='generates file with user space structures')
     group.add_argument('--bpf', action='store_true',
                        help='generates file with bpf program')
+    group.add_argument('--handler', action='store_true',
+                       help='generates file with handler function')
     return parser.parse_args()
 
 
@@ -49,3 +51,5 @@ if __name__ == "__main__":
         syscallParser.generateUserFile()
     elif(args.bpf):
         syscallParser.generateBpfFile()
+    elif(args.handler):
+        syscallParser.generateHandlerFile()

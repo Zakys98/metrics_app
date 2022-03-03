@@ -56,13 +56,15 @@ int handle_bind(struct sys_enter_bind *params) {
         bpf_printk("Ringbuffer not reserved\n");
         return 0;
     }
+    bpf_probe_read_kernel(data->data, SYS_ENTER_BIND_LEN, params);
+    bpf_printk("fd: %ld <> addrlen: %ld\n", params->fd, params->addrlen);
     data->type = SYS_ENTER_BIND;
     bpf_ringbuf_submit(data, 0);
 
     return 0;
 }
 
-SEC("tp/syscalls/sys_enter_listen")
+/*SEC("tp/syscalls/sys_enter_listen")
 int handle_listen(struct sys_enter_listen *params) {
     struct task_struct *task = (struct task_struct *)bpf_get_current_task();
     struct USER_SYS_ENTER_LISTEN *data = {0};
@@ -175,7 +177,7 @@ int handle_sendto(struct sys_enter_sendto *params){
     bpf_ringbuf_submit(data, 0);
 
     return 0;
-}
+}*/
 
 /*SEC("tp/syscalls/sys_enter_recvfrom")
 int handle_recvfrom(struct sys_enter_recvfrom *params) {

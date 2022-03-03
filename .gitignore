@@ -10,6 +10,8 @@ main
 vmlinux.h
 *sizer
 *sizes
+*handler.c
+output.bin
 
 # Latex
 *.toc

@@ -3,12 +3,16 @@ PATTERN=sys_enter_*
 GENERATOR=scripts/generator/generator.py
 
 .PHONY: $(APP)
-$(APP): skel logger.o
-	clang main.c logger.o -lbpf -lelf -o $(APP)
+$(APP): skel logger.o handler.o main.c
+	clang main.c logger.o handler.o -lbpf -lelf -o $(APP)
 
 .PHONY: logger.o
 logger.o: source/logger.c
 	clang -c source/logger.c -o logger.o
+
+.PHONY: handler.o
+handler.o: source/handler.c handler
+	clang -c source/handler.c -o handler.o
 
 .PHONY: skel
 skel: bpf
@@ -21,6 +25,10 @@ bpf: kernel user enum structures vmlinux
 .PHONY: vmlinux
 vmlinux:
 	bpftool btf dump file /sys/kernel/btf/vmlinux format c > ./include/vmlinux.h
+
+.PHONY: handler
+handler: sizer
+	sudo python3 $(GENERATOR) -p $(PATTERN) -n ./source/handler.c --handler
 
 .PHONY: kernel
 kernel: sizer

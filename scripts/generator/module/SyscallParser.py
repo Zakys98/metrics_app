@@ -128,3 +128,32 @@ class SyscallParser:
 
     def __bpfFooter(self) -> str:
         return '\nchar LICENSE[] SEC("license") = "GPL";'
+
+    def generateHandlerFile(self) -> str:
+        with open(self.name, 'w') as file:
+            file.write(self.__handlerHeader())
+            for syscall in self.syscalls:
+                file.write(f'\t\tcase {syscall.name.upper()}:\n')
+                file.write(f'\t\t\tloggerLog(body, {syscall.name.upper()}_LEN);\n')
+                file.write('\t\t\tbreak;\n')
+            file.write(self.__handlerFooter())
+
+    def __handlerHeader(self) -> str:
+        output = '#include <stdio.h>\n\n' \
+                 '#include "../include/handler.h"\n\n' \
+                 '#include "../include/logger.h"\n' \
+                 '#include "../include/syscall_enum.h"\n' \
+                 '#include "../include/syscall_structures.h"\n' \
+                 '#include "../include/user.h"\n\n' \
+                 'int handle(void *ctx, void *data, size_t size) {\n' \
+                 '\tstruct user_type *type = (struct user_type *)data;\n' \
+                 '\tloggerLog(&type->type, sizeof(enum Types));\n' \
+                 '\tchar *body = (char *)data + sizeof(enum Types);\n' \
+                 '\tswitch(type->type){\n'
+        return output
+
+    def __handlerFooter(self) -> str:
+        output = '\t}\n' \
+                 '\treturn 0;\n' \
+                 '}\n'
+        return output
