@@ -2,6 +2,8 @@ APP=main
 PATTERN=sys_enter_*
 GENERATOR=scripts/generator/generator.py
 
+all: $(APP) run
+
 .PHONY: $(APP)
 $(APP): skel logger.o handler.o main.c
 	clang main.c logger.o handler.o -lbpf -lelf -o $(APP)
