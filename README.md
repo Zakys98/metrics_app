@@ -1,45 +1,29 @@
 # metrics_app
 
-Short project description, "what it does?"
+System that tracks all syscalls and logs them to output.bin
 
 ## Requirements
 
 Following dependencies must be installed on the host system
 
-* dependency1 [\>= version]
-* dependency2
+* Python3
+* libelf
+* libbpf-dev
+    - https://github.com/libbpf/libbpf
+    - sudo make install
+    - sudo patchelf --set-rpath /usr/lib64 main
+* llvm-strip
+* linux-tools-$(uname -r)
+* clang
 
 ## Build
 
 ```
-~~~
-mkdir -p _build && cd _build
-cmake ../
-make -j 8
-~~~
+sudo make
 ```
 
 ## Run
 
 ```
-./ProjectName --requiredArg <arg_val> [--optional_arg <arg_val> ...]
-```
-
-### Arguments
-
-* **-a | --arg1**: description
-
-### Cmake arguments
-
-* argument 1
-* argument 2
-
-## Tests
-
-Enable BRINGAUTO_TESTS in cmake and run ctests
-
-```
-cmake .. -DBRINGAUTO_TESTS=ON
-make
-ctest
+sudo ./main
 ```
