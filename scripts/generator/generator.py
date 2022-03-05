@@ -29,8 +29,10 @@ def argParserInit():
                        help='generates file with handler function')
     return parser.parse_args()
 
+
 def fileExists(filename: str):
     return exists(filename)
+
 
 def globSyscalls(pattern: str):
     return glob.iglob(f'/sys/kernel/tracing/events/syscalls/{pattern}/format')

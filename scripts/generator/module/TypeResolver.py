@@ -7,10 +7,12 @@ class Categories(enum.Enum):
     UNSIGNED = 1
     POINTER = 2
 
+
 class TypeResolver:
 
     def __init__(self) -> None:
-        self.types = {Categories.SIGNED: dict(), Categories.UNSIGNED: dict(), Categories.POINTER: dict()}
+        self.types = {Categories.SIGNED: dict(), Categories.UNSIGNED: dict(),
+                      Categories.POINTER: dict()}
 
     def loadTypes(self, filename: str) -> None:
         with open(filename) as file:
@@ -39,4 +41,4 @@ class TypeResolver:
         for key, value in self.types[category].items():
             if val == value:
                 return key
-        return 'Key does not exist' # throw exception
+        raise KeyError('Key does not exist')

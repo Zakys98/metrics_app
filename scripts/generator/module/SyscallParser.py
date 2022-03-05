@@ -39,7 +39,8 @@ class SyscallParser:
     def __enumStructLen(self) -> str:
         output = ''
         for syscall in self.syscalls:
-            output += f'#define {syscall.name.upper()}_LEN sizeof(struct {syscall.name}) \n'
+            output += f'#define {syscall.name.upper()}_LEN ' \
+                      f'sizeof(struct {syscall.name}) \n'
         output += '\n'
         return output
 
