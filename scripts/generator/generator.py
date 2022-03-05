@@ -2,7 +2,7 @@
 
 import argparse
 import glob
-from typing import Type
+from os.path import exists
 
 from module.SyscallParser import SyscallParser
 from module.TypeResolver import TypeResolver
@@ -29,6 +29,8 @@ def argParserInit():
                        help='generates file with handler function')
     return parser.parse_args()
 
+def fileExists(filename: str):
+    return exists(filename)
 
 def globSyscalls(pattern: str):
     return glob.iglob(f'/sys/kernel/tracing/events/syscalls/{pattern}/format')
@@ -38,6 +40,8 @@ if __name__ == "__main__":
     args = argParserInit()
     typeResolver = TypeResolver()
     typeResolver.loadTypes('sizes')
+    if(fileExists(args.name)):
+        exit()
     syscallParser = SyscallParser(args.name, typeResolver)
     for syscall in globSyscalls(args.pattern):
         with open(syscall, "r") as file:
