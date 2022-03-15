@@ -12,6 +12,7 @@ vmlinux.h
 *sizes
 *handler.c
 output.bin
+eval
 
 # Latex
 *.toc
