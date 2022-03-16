@@ -2,9 +2,6 @@
 
 #include <fstream>
 #include <unordered_map>
-#include <string>
-
-#include "syscall_enum.h"
 
 class FileReader {
 

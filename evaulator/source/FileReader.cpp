@@ -1,10 +1,12 @@
 #include "../include/FileReader.hpp"
+#include "../include/helper.h"
 
+#include <algorithm>
 #include <cstring>
+#include <iomanip>
 #include <iostream>
 #include <sstream>
-#include <iomanip>
-#include <map>
+#include <vector>
 
 FileReader::FileReader(const std::string &filename) {
     input.open("output.bin", std::ios::binary);
@@ -19,7 +21,7 @@ void FileReader::read() {
         uint32_t type;
         input.read((char *)&type, sizeof(uint32_t));
         auto it = map.find(type);
-        if(it == map.end()){
+        if (it == map.end()) {
             std::pair<uint32_t, long> pair{type, 1};
             map.insert(pair);
         } else {
@@ -31,9 +33,15 @@ void FileReader::read() {
     }
 }
 
+static bool compareElementsInMap(std::pair<uint32_t, long> &first,
+                                 std::pair<uint32_t, long> &second) {
+    return first.second > second.second;
+}
+
 void FileReader::print() {
-    std::map<uint32_t, long> ordered{map.begin(), map.end()};
+    std::vector<std::pair<uint32_t, long>> ordered{map.begin(), map.end()};
+    std::sort(ordered.begin(), ordered.end(), compareElementsInMap);
     for (const std::pair<uint32_t, long> &syscall : ordered) {
-        std::cout << std::setfill('0') << std::setw(3) << syscall.first << " " << syscall.second << "\n";
+        std::cout << std::setfill(' ') << std::setw(3) << syscall.first << std::setfill(' ') << std::setw(28) << syscallName[syscall.first] << std::setfill(' ') << std::setw(10) << syscall.second << "\n";
     }
 }

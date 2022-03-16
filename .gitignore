@@ -11,8 +11,9 @@ vmlinux.h
 *sizer
 *sizes
 *handler.c
-output.bin
+*.bin
 eval
+helper.h
 
 # Latex
 *.toc

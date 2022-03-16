@@ -20,7 +20,6 @@ class SyscallParser:
         with open(self.name, 'w') as file:
             file.write(self.__enumHeader())
             file.write(self.__enumStructLen())
-            file.write(self.__enumArray())
             file.write('enum Types {\n')
             for syscall in self.syscalls:
                 file.write(f'\t{syscall.name.upper()},\n')
@@ -38,14 +37,6 @@ class SyscallParser:
             output += f'#define {syscall.name.upper()}_LEN ' \
                       f'sizeof(struct {syscall.name}) \n'
         output += '\n'
-        return output
-
-    def __enumArray(self) -> str:
-        output = 'static int syscallSize[] = {\n'
-        for syscall in self.syscalls:
-                output += f'\t{syscall.name.upper()}_LEN,\n'
-        output = output[:-2]
-        output += '\n};\n\n'
         return output
 
     def __enumFooter(self) -> str:
@@ -166,4 +157,31 @@ class SyscallParser:
         output = '\t}\n' \
                  '\treturn 0;\n' \
                  '}\n'
+        return output
+
+    def generateHelperFile(self) -> None:
+        with open(self.name, 'w') as file:
+            file.write(self.__helperHeader())
+            file.write(self.__helperArrayLenght())
+            file.write(self.__helperArrayName())
+
+    def __helperHeader(self) -> str:
+        output = '#pragma once\n\n' \
+                 '#include "syscall_enum.h"\n\n'
+        return output
+
+    def __helperArrayLenght(self) -> str:
+        output = 'static int syscallSize[] = {\n'
+        for syscall in self.syscalls:
+                output += f'\t{syscall.name.upper()}_LEN,\n'
+        output = output[:-2]
+        output += '\n};\n\n'
+        return output
+
+    def __helperArrayName(self) -> str:
+        output = 'static char syscallName[][50] = {\n'
+        for syscall in self.syscalls:
+                output += f'\t"{syscall.name.upper()}",\n'
+        output = output[:-2]
+        output += '\n};\n\n'
         return output
