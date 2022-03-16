@@ -25,21 +25,31 @@ static void bump_memlock_rlimit(void) {
     }
 }
 
-/*int old(void *ctx, void *data, size_t size) {
+/*struct user_type {
+	enum Types type;
+};
+
+int old(void *ctx, void *data, size_t size) {
     struct user_type *type = (struct user_type *)data;
     loggerLog(&type->type, sizeof(enum Types));
     if (type->type == SYS_ENTER_SOCKET) {
-        printf("USER_SYS_ENTER_SOCKET: %lu, SYS_ENTER_SOCKET_LEN: %lu\n", sizeof(struct USER_SYS_ENTER_SOCKET), SYS_ENTER_SOCKET_LEN);
+        printf("socket: %lu, SYS_ENTER_SOCKET_LEN: %lu\n", sizeof(struct sys_enter_socket), SYS_ENTER_SOCKET_LEN);
         char *neco = (char *)data + sizeof(enum Types);
         struct sys_enter_socket *lala = (struct sys_enter_socket *)neco;
-        printf("protocol: %ld <> family: %ld\n", lala->protocol, lala->family);
+        //printf("protocol: %ld <> family: %ld\n", lala->protocol, lala->family);
         loggerLog(neco, SYS_ENTER_SOCKET_LEN);
     } else if (type->type == SYS_ENTER_BIND) {
-        printf("USER_SYS_ENTER_BIND: %lu, SYS_ENTER_BIND_LEN: %lu\n", sizeof(struct USER_SYS_ENTER_BIND), SYS_ENTER_BIND_LEN);
+        printf("bind: %lu, sys_enter_bind: %lu\n", sizeof(struct sys_enter_bind), SYS_ENTER_BIND_LEN);
         char *neco = (char *)data + sizeof(enum Types);
         struct sys_enter_bind *lala = (struct sys_enter_bind *)neco;
-        printf("fd: %ld <> addrlen: %ld\n", lala->fd, lala->addrlen);
+        //printf("fd: %ld <> addrlen: %ld\n", lala->fd, lala->addrlen);
         loggerLog(neco, SYS_ENTER_BIND_LEN);
+    } else if (type->type == SYS_ENTER_SOCKETPAIR) {
+        printf("socketpair: %lu, sys_enter_socketpair: %lu\n", sizeof(struct sys_enter_socketpair), SYS_ENTER_SOCKETPAIR_LEN);
+        char *neco = (char *)data + sizeof(enum Types);
+        struct sys_enter_socketpair *lala = (struct sys_enter_socketpair *)neco;
+        //printf("family: %ld <> type: %ld\n", lala->family, lala->type);
+        loggerLog(neco, SYS_ENTER_SOCKETPAIR_LEN);
     }
 
     return 0;
@@ -68,7 +78,7 @@ int main(void) {
     ring_buffer__free(rb);
     main_bpf__destroy(skel);
     loggerDestroy();
-    printf("End\n");
+    printf("Catching syscalls ended\n");
 
     return 0;
 }
