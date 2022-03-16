@@ -1,4 +1,4 @@
-#include "FileReader.hpp"
+#include "../include/FileReader.hpp"
 
 #include <cstring>
 #include <iostream>

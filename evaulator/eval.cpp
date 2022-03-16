@@ -1,6 +1,4 @@
-#include <iostream>
-
-#include "FileReader.hpp"
+#include "./include/FileReader.hpp"
 
 int main(int argc, char **argv){
 	FileReader fileReader{std::string("../output.bin")};
