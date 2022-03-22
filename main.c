@@ -25,36 +25,6 @@ static void bump_memlock_rlimit(void) {
     }
 }
 
-/*struct user_type {
-	enum Types type;
-};
-
-int old(void *ctx, void *data, size_t size) {
-    struct user_type *type = (struct user_type *)data;
-    loggerLog(&type->type, sizeof(enum Types));
-    if (type->type == SYS_ENTER_SOCKET) {
-        printf("socket: %lu, SYS_ENTER_SOCKET_LEN: %lu\n", sizeof(struct sys_enter_socket), SYS_ENTER_SOCKET_LEN);
-        char *neco = (char *)data + sizeof(enum Types);
-        struct sys_enter_socket *lala = (struct sys_enter_socket *)neco;
-        //printf("protocol: %ld <> family: %ld\n", lala->protocol, lala->family);
-        loggerLog(neco, SYS_ENTER_SOCKET_LEN);
-    } else if (type->type == SYS_ENTER_BIND) {
-        printf("bind: %lu, sys_enter_bind: %lu\n", sizeof(struct sys_enter_bind), SYS_ENTER_BIND_LEN);
-        char *neco = (char *)data + sizeof(enum Types);
-        struct sys_enter_bind *lala = (struct sys_enter_bind *)neco;
-        //printf("fd: %ld <> addrlen: %ld\n", lala->fd, lala->addrlen);
-        loggerLog(neco, SYS_ENTER_BIND_LEN);
-    } else if (type->type == SYS_ENTER_SOCKETPAIR) {
-        printf("socketpair: %lu, sys_enter_socketpair: %lu\n", sizeof(struct sys_enter_socketpair), SYS_ENTER_SOCKETPAIR_LEN);
-        char *neco = (char *)data + sizeof(enum Types);
-        struct sys_enter_socketpair *lala = (struct sys_enter_socketpair *)neco;
-        //printf("family: %ld <> type: %ld\n", lala->family, lala->type);
-        loggerLog(neco, SYS_ENTER_SOCKETPAIR_LEN);
-    }
-
-    return 0;
-}*/
-
 int main(void) {
     signal(SIGINT, signalHandler);
     bump_memlock_rlimit();
