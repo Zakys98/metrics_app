@@ -1,5 +1,3 @@
-\chapter{Úvod}
-
 \chapter{Rozbor řešené problematiky}
 
 Počítačový výkon je ůčinnost daného systému neboli jak dobře funguje, když se vezmou v úvahu všechny možné aspokty.
@@ -182,6 +180,17 @@ print fmt: "dfd: 0x%08lx, filename: 0x%08lx, flags: 0x%08lx, mode: 0x%08lx", ((u
 
 \iffalse
 https://www.kernel.org/doc/Documentation/trace/events.rst
+\fi
+
+\subsection{Systémová volání}
+
+V moderních operačních systémech poskytuje jádro sadu rozhranní pomocí kterého procesy běžící v uživatelském prostoru můžou interagovat
+se systémem. Tato rozhranní poskytují aplikacím přístup k hardwaru, což je mechanismus, díky kterému se dají vytvářet nové procesy,
+komunikova se stávájícími a výžádat si operační systém o další zdroje. Existence těchto rozhranní a faktem, že aplikace si nemohou přímo
+dělat, co chtějí, je klíč ke stabilnímu systému.
+
+\iffalse
+BOOK Linux Kernel Development 3rd edition page 69
 \fi
 
 \subsection{Rozdíl mezi user spacem a kernal spacem}
