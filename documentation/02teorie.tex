@@ -136,7 +136,22 @@ https://man7.org/linux/man-pages/man2/bpf.2.html
 https://ebpf.io/
 \fi
 
-\section{Tracepoint - sledovací bod}
+\subsection{Rozdíl mezi uživatelským prostorem a prostorem jádra}
+
+\subsection*{Prostor jádra}
+Prostor jádra(angl. kernel space) je prostor kde je uložen kód jádra a kde je vykonáván.
+
+\subsection*{Uživatelský prostor}
+Uživatelský prostor(angl. user space) je sada míst, kde běží uživatelské procesy(všechno ostatní kromě jádra). Jádro řídí aplikace v tomto prostoru tak, aby se nepletly mezi sebou.
+Procesy, které běží v uživatelském prostoru mají omezenou část paměti a také nemají přístup do prostoru jádra. Procesy běžící v uživatelském prostoru mohou přistupovat do prostoru jádra
+jedině přes rozhranní vystavenné prostorem jádra - systémová volání. Pokud proces provede systémové volání, tak se do jádra odešle systémové přerušení a jádro poté obslouží
+příslušný proces. Jádro pokračuje ve své práci až po dokončení přerušení.
+
+\iffalse
+www.linfo.org/kernel_space.html
+\fi
+
+\subsection{Tracepoint - sledovací bod}
 Sledovací bod umístěný ve zdrojovém kódu poskytuje tzv. háček pro volání funkce(sondy) poskytnutou za běhu aplikace. Sledovací bod může
 být zapnutý, pokud je k němu připojena nějaká sonda nebo vypnutý, jestliže k němu žádná sonda připojená není. Když je sledovací bod
 zapnutý, tak volá poskytnutou funkci, pokaždé když je sledovací bod spustěň v kontextu provádění volajícího. Když poskytnutá funkce
@@ -148,7 +163,7 @@ Lze je využít pro sledování sýstému nebo výkonu.
 https://www.kernel.org/doc/Documentation/trace/tracepoints.rst
 \fi
 
-\section{Sledování událostí}
+\subsection {Sledování událostí}
 Sledovací body lze využít ke připojení funkce k určité události.
 
 \subsection*{Formát}
@@ -160,7 +175,7 @@ field:field-type field-name; offset:N;velikost:N;
 Offset je posun pole v záznamu trasování a velikost je velikost dané datové položky určená v bajtech.
 
 Jako příklad je uvedena událost(systémové volání) sys_enter_openat:
-```
+\begin{lstlisting}[language=bash]
 name: sys_enter_openat
 ID: 623
 format:
@@ -176,7 +191,7 @@ format:
 	field:umode_t mode;	offset:40;	size:8;	signed:0;
 
 print fmt: "dfd: 0x%08lx, filename: 0x%08lx, flags: 0x%08lx, mode: 0x%08lx", ((unsigned long)(REC->dfd)), ((unsigned long)(REC->filename)), ((unsigned long)(REC->flags)), ((unsigned long)(REC->mode))
-```
+\end{lstlisting}
 
 \iffalse
 https://www.kernel.org/doc/Documentation/trace/events.rst
@@ -192,16 +207,6 @@ dělat, co chtějí, je klíč ke stabilnímu systému.
 \iffalse
 BOOK Linux Kernel Development 3rd edition page 69
 \fi
-
-\subsection{Rozdíl mezi user spacem a kernal spacem}
-\subsection*{kernel space}
-Kernel space je prostor kde je uložen kód kernelu a kde je vykonáván.
-
-\subsection*{user space}
-User space je sada míst, kde běží uživatelské procesy(všechno ostatní kromě jádra). Jádro řídí aplikace v tomto prostoru tak, aby se nepletly mezi sebou.
-Procesy, které běží v user spacu mají omezenou část paměti a také nemají přístup ke kernel spacu. Procesy běžící v user spacu mohou přistupovat do kernel spacu
-jedině přes rozhranní vystavenný kernel spacem - systémová volání. Pokud proces provede systémové volání, tak se do jádra odešle systémové přerušení a jádro poté obslouží
-příslušný proces. Jádro pokračuje ve své práci až po dokončení přerušení.
 
 \subsection{Netem}\cite{netem}
 Netem je softwarová utilita pomocí které lze vykonávat síťovou emulaci. Síťovou emulaci lze využít k omezení internetových zdrojů pro měřenou aplikaci pro lepší testování.
