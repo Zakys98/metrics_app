@@ -4,7 +4,7 @@
 #include <sys/resource.h>
 
 #include "./include/logger.h"
-#include "./include/main.skel.h"
+#include "./include/track.skel.h"
 #include "./include/handler.h"
 
 static bool running = false;
@@ -34,9 +34,9 @@ int main(void) {
         return 1;
     }
 
-    struct main_bpf *skel = main_bpf__open();
-    main_bpf__load(skel);
-    main_bpf__attach(skel);
+    struct track_bpf *skel = track_bpf__open();
+    track_bpf__load(skel);
+    track_bpf__attach(skel);
 
     struct ring_buffer *rb = ring_buffer__new(bpf_map__fd(skel->maps.ring_buff), handle, NULL, NULL);
 
@@ -46,7 +46,7 @@ int main(void) {
     }
 
     ring_buffer__free(rb);
-    main_bpf__destroy(skel);
+    track_bpf__destroy(skel);
     loggerDestroy();
     printf("Catching syscalls ended\n");
 

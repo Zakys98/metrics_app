@@ -1,12 +1,12 @@
-APP=main
+APP=track
 PATTERN=sys_enter_*
 GENERATOR=scripts/generator/generator.py
 
 all: $(APP) run
 
 .PHONY: $(APP)
-$(APP): skel logger.o handler.o main.c
-	clang main.c logger.o handler.o -lbpf -lelf -o $(APP)
+$(APP): skel logger.o handler.o track.c
+	clang track.c logger.o handler.o -lbpf -lelf -o $(APP)
 
 .PHONY: logger.o
 logger.o: source/logger.c
@@ -18,11 +18,11 @@ handler.o: handler
 
 .PHONY: skel
 skel: bpf
-	bpftool gen skeleton main.bpf.o > ./include/main.skel.h
+	bpftool gen skeleton track.bpf.o > ./include/track.skel.h
 
 .PHONY: bpf
 bpf: kernel user enum structures vmlinux
-	clang -g -O3 -target bpf -c ./source/main.bpf.c -o main.bpf.o
+	clang -g -O3 -target bpf -c ./source/track.bpf.c -o track.bpf.o
 
 .PHONY: vmlinux
 vmlinux:
@@ -34,7 +34,7 @@ handler: sizer
 
 .PHONY: kernel
 kernel: sizer
-	sudo python3 $(GENERATOR) -p $(PATTERN) -n ./source/main.bpf.c --bpf
+	sudo python3 $(GENERATOR) -p $(PATTERN) -n ./source/track.bpf.c --bpf
 
 .PHONY: user
 user: sizer
@@ -59,4 +59,4 @@ run:
 
 .PHONY: clean
 clean:
-	-rm -rf *.o ./include/*.skel.h ./include/vmlinux.h ./include/user.h ./include/syscall_structures.h ./source/handler.c ./include/syscall_enum.h ./source/main.bpf.c sizer sizes $(APP)
+	-rm -rf *.o ./include/*.skel.h ./include/vmlinux.h ./include/user.h ./include/syscall_structures.h ./source/handler.c ./include/syscall_enum.h ./source/track.bpf.c sizer sizes $(APP)
