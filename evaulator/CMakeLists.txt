@@ -3,6 +3,9 @@ PROJECT(evaulator CXX)
 
 SET(CMAKE_CXX_STANDARD 17)
 
+SET(GENERATOR ../../scripts/generator/generator.py)
+SET(PATTERN "sys_enter_*")
+
 FIND_PACKAGE(Python3 REQUIRED)
 
 FILE(GLOB_RECURSE source_files "source/*")
@@ -14,9 +17,9 @@ ADD_CUSTOM_TARGET(
     structures ALL
     COMMAND clang ../../scripts/generator/sizer.c -o sizer
     COMMAND ./sizer > sizes
-    COMMAND sudo ${PYTHON_EXECUTABLE} ../../scripts/generator/generator.py "-p" "sys_enter_*" "-n" "../include/syscall_structures.h" "--structure"
-    COMMAND sudo ${PYTHON_EXECUTABLE} ../../scripts/generator/generator.py "-p" "sys_enter_*" "-n" "../include/syscall_enum.h" "--enum"
-    COMMAND sudo ${PYTHON_EXECUTABLE} ../../scripts/generator/generator.py "-p" "sys_enter_*" "-n" "../include/helper.h" "--helper"
+    COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "../include/syscall_structures.h" "--structure"
+    COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "../include/syscall_enum.h" "--enum"
+    COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "../include/helper.h" "--helper"
     BYPRODUCTS syscall_structures.h syscall_enum.h helper.h sizer sizes
     COMMENT "Generating syscall_structures.h syscall_enum.h helper.h"
 )
