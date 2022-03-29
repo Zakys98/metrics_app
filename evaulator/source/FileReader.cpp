@@ -7,7 +7,7 @@
 #include <vector>
 
 FileReader::FileReader(const std::string &filename) {
-    input.open("output.bin", std::ios::binary);
+    input.open(filename, std::ios::binary);
 }
 
 FileReader::~FileReader() {
