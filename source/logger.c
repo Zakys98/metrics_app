@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "../include/logger.h"
+#include <logger.h>
 
 struct {
     FILE *output;

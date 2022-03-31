@@ -1,5 +1,5 @@
-#include "../include/FileReader.hpp"
-#include "../include/helper.h"
+#include <FileReader.hpp>
+#include <helper.h>
 
 #include <algorithm>
 #include <iomanip>

@@ -3,9 +3,9 @@
 #include <stdlib.h>
 #include <sys/resource.h>
 
-#include "./include/logger.h"
-#include "./include/track.skel.h"
-#include "./include/handler.h"
+#include <logger.h>
+#include <track.skel.h>
+#include <handler.h>
 
 static bool running = false;
 

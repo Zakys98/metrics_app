@@ -1,6 +1,6 @@
 # metrics_app
 
-System, which tracks system and after tells, if operating system and hardware is able to run all
+System, which tracks system and detects, if operating system and hardware is able to run all
 applications, we need. With this feature compute units can be swapped or system can be updated
 without worrying about performance and enviroment stability.
 
@@ -13,7 +13,7 @@ Following dependencies must be installed on the host system
 * libbpf-dev
     - https://github.com/libbpf/libbpf
     - sudo make install
-    - sudo patchelf --set-rpath /usr/lib64 main
+    - sudo patchelf --set-rpath /usr/lib64 track
 * llvm-strip
 * linux-tools-$(uname -r)
 * clang

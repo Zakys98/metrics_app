@@ -10,10 +10,8 @@ FIND_PACKAGE(Python3 REQUIRED)
 
 FILE(GLOB_RECURSE source_files "source/*")
 
-ADD_EXECUTABLE(${PROJECT_NAME} eval.cpp ${source_files})
-TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME} PUBLIC "include/*")
-
-message(STATUS "asd" ${CMAKE_CURRENT_SOURCE_DIR})
+ADD_EXECUTABLE(${PROJECT_NAME} evaluator.cpp ${source_files})
+TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME} PUBLIC "include/")
 
 ADD_CUSTOM_TARGET(
     sizer ALL

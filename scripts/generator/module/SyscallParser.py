@@ -141,11 +141,11 @@ class SyscallParser:
 
     def __handlerHeader(self) -> str:
         output = '#include <stdio.h>\n\n' \
-                 '#include "../include/handler.h"\n\n' \
-                 '#include "../include/logger.h"\n' \
-                 '#include "../include/syscall_enum.h"\n' \
-                 '#include "../include/syscall_structures.h"\n' \
-                 '#include "../include/user.h"\n\n' \
+                 '#include <handler.h>\n\n' \
+                 '#include <logger.h>\n' \
+                 '#include <syscall_enum.h>\n' \
+                 '#include <syscall_structures.h>\n' \
+                 '#include <user.h>\n\n' \
                  'int handle(void *ctx, void *data, size_t size) {\n' \
                  '\tstruct user_type *type = (struct user_type *)data;\n' \
                  '\tloggerLog(&type->type, sizeof(enum Types));\n' \
