@@ -24,10 +24,10 @@ ADD_CUSTOM_COMMAND(
 
 ADD_CUSTOM_TARGET(
     sizer ALL
-    COMMAND ${CMAKE_C_COMPILER} ../scripts/generator/sizer.c -o sizer
+    COMMAND ${CMAKE_C_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/scripts/generator/sizer.c -o sizer
     COMMAND ./sizer > sizes
     BYPRODUCTS sizer sizes
-    COMMENT "Genereting sizer"
+    COMMENT "Generating sizer"
 )
 
 ADD_CUSTOM_TARGET(
@@ -44,7 +44,7 @@ ADD_CUSTOM_TARGET(
     bpf ALL
     COMMAND bpftool btf dump file /sys/kernel/btf/vmlinux format c > ../include/vmlinux.h
     COMMAND ${CMAKE_C_COMPILER} -g -O3 -target bpf -c track.bpf.c -o track.bpf.o
-    COMMAND bpftool gen skeleton track.bpf.o > ../include/track.skel.h
+    COMMAND bpftool gen skeleton track.bpf.o > ${CMAKE_CURRENT_SOURCE_DIR}/include/track.skel.h
     BYPRODUCTS vmlinux.h track.bpf.o track.skel.h
     COMMENT "Generating track.skel.h vmlinux.h"
 )
