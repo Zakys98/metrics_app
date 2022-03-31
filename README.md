@@ -50,7 +50,10 @@ CONFIG_IKHEADERS=y
 
 Track:
 ```
-sudo make
+mkdir build
+cd build
+cmake .. -DCMAKE_C_COMPILER=clang
+make
 ```
 Evaulator:
 ```
@@ -60,11 +63,13 @@ cmake ..
 make
 ```
 
+If it does not work, try to use this command first: sudo chmod +r sudo
+
 ## Run
 
 Track:
 ```
-sudo ./main
+sudo ./track
 ```
 Evaulator:
 ```

@@ -29,7 +29,6 @@ ADD_CUSTOM_TARGET(
     BYPRODUCTS syscall_structures.h syscall_enum.h helper.h
     COMMENT "Generating syscall_structures.h syscall_enum.h helper.h"
 )
-#probably needed: sudo chmod +r sudo
 
 ADD_DEPENDENCIES(${PROJECT_NAME} generated)
 ADD_DEPENDENCIES(generated sizer)
