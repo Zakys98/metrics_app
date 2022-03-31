@@ -14,7 +14,7 @@ ADD_EXECUTABLE(${PROJECT_NAME} eval.cpp ${source_files})
 TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME} PUBLIC "include/*")
 
 ADD_CUSTOM_TARGET(
-    structures ALL
+    generated ALL
     COMMAND clang ../../scripts/generator/sizer.c -o sizer
     COMMAND ./sizer > sizes
     COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "../include/syscall_structures.h" "--structure"
@@ -25,4 +25,4 @@ ADD_CUSTOM_TARGET(
 )
 #probably needed: sudo chmod +r sudo
 
-ADD_DEPENDENCIES(${PROJECT_NAME} structures)
+ADD_DEPENDENCIES(${PROJECT_NAME} generated)

@@ -21,7 +21,7 @@ Following dependencies must be installed on the host system
 
 Minimum supported kernel version: 4.1
 
-Kernel config options that have to be enabled:
+Kernel config options that must be enabled:
 
 ```
 CONFIG_BPF=y
