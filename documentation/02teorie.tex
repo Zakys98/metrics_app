@@ -1,5 +1,7 @@
 \chapter{Rozbor řešené problematiky}
 
+TOTALNE PREKOPAT TENTO UVOD ROZBORU
+
 Počítačový výkon je ůčinnost daného systému neboli jak dobře funguje, když se vezmou v úvahu všechny možné aspokty.
 Hodnocení výkonu počítače je definováno jako proces při kterém se posuzují zdroje a výstupy počítače, aby se zjistilo,
 jestli systém funguje na optimální úrovni.
@@ -136,6 +138,70 @@ https://man7.org/linux/man-pages/man2/bpf.2.html
 https://ebpf.io/
 \fi
 
+\subsection{Netem}\cite{netem}
+Netem je softwarová utilita pomocí které lze vykonávat síťovou emulaci. Síťovou emulaci lze využít k omezení internetových zdrojů pro měřenou aplikaci pro lepší testování.
+Netem umí simulovat zpomalení, ztrátu, poškození nebo duplikaci paketů a případně změnu pořadí paketů. Netem je řízen pomocí nástroje 'tc', který se ovládá pomocí příkazové řádky.
+Jeho aktuální distribuce je multiplatformě podporována.
+
+\subsection*{Zpoždění paketů}
+Tento příkaz přidá zpoždění všech paketů o 100 milisekund. Toto nastavení je ještě omezeno rozlišením jádra.
+\begin{lstlisting}[language=bash]
+    $ tc qdisc add dev <interface> root netem delay 100ms
+\end{lstlisting}
+
+Lze i nastavit zpoždění pomocí rozdělení. Příklad s normalním rozdělením:
+\begin{lstlisting}[language=bash]
+    $ tc qdisc change dev <interface> root netem delay 100ms 20ms distribution normal
+\end{lstlisting}
+
+\subsection*{Ztráta paketů}
+Tento příkaz zajistí ztrátu paketů. 1 paket z 1000 je zahozen. Nejnižší možná nastavitelná hodnota je 0.0000000232%.
+\begin{lstlisting}[language=bash]
+    $ tc qdisc change dev <interface> root netem loss 0.1%
+\end{lstlisting}
+
+\subsection*{Duplikace paketů}
+Příkaz pro duplikaci paketů je podobný jako příkaz pro ztrátu paketů.
+\begin{lstlisting}[language=bash]
+    $ tc qdisc change dev <interface> root netem duplicate 1%
+\end{lstlisting}
+
+\subsection*{Poškození paketů}
+Tímto příkazem lze nastavit poškození paketů. Ten zavede bitovou chybu v náhodném offsetu v paketu.
+\begin{lstlisting}[language=bash]
+    $ tc qdisc change dev <interface> root netem corrupt 0.1%
+\end{lstlisting}
+
+\subsection*{Přeuspořádání paketů}
+Existují dva způsoby jak nastavit přeuřpořádání paketů.
+První způsob je pomocí metody gap, která používá přednastavenou sequekci a změní pořadí každého Ntýho paketu.
+\begin{lstlisting}[language=bash]
+    $ tc qdisc change dev <interface> root netem gap 5 delay 10ms
+\end{lstlisting}
+Druhá metoda je reorder způsobí, že určité procento paketů se špatně seřadí.
+\begin{lstlisting}[language=bash]
+    $ tc qdisc change dev <interface> root netem delay 10ms reorder 25% 50%
+\end{lstlisting}
+
+\subsection*{Obnovení rozhranní}
+Tento příkaz smaže všechno nastavení na rozhranní. Rozhranní bude poté fungovat jako by na něm žádné nastavení nebylo.
+\begin{lstlisting}[language=bash]
+    sudo tc qdisc del dev <interface> root
+\end{lstlisting}
+
+\subsection{Virtuální počítač s omezenými zdroji}
+
+Pro zajištění více testovacích platforem je jedna z
+Bohužel výpočetní hardware bude stejný pro všechny virtuální platformy i když bude omezený.
+
+\iffalse
+\subsection*{Raspberry pi}
+\fi
+
+
+
+\section{Fungování systému linux}
+
 \subsection{Rozdíl mezi uživatelským prostorem a prostorem jádra}
 
 \subsection*{Prostor jádra}
@@ -206,64 +272,4 @@ dělat, co chtějí, je klíč ke stabilnímu systému.
 
 \iffalse
 BOOK Linux Kernel Development 3rd edition page 69
-\fi
-
-\subsection{Netem}\cite{netem}
-Netem je softwarová utilita pomocí které lze vykonávat síťovou emulaci. Síťovou emulaci lze využít k omezení internetových zdrojů pro měřenou aplikaci pro lepší testování.
-Netem umí simulovat zpomalení, ztrátu, poškození nebo duplikaci paketů a případně změnu pořadí paketů. Netem je řízen pomocí nástroje 'tc', který se ovládá pomocí příkazové řádky.
-Jeho aktuální distribuce je multiplatformě podporována.
-
-\subsection*{Zpoždění paketů}
-Tento příkaz přidá zpoždění všech paketů o 100 milisekund. Toto nastavení je ještě omezeno rozlišením jádra.
-\begin{lstlisting}[language=bash]
-    $ tc qdisc add dev <interface> root netem delay 100ms
-\end{lstlisting}
-
-Lze i nastavit zpoždění pomocí rozdělení. Příklad s normalním rozdělením:
-\begin{lstlisting}[language=bash]
-    $ tc qdisc change dev <interface> root netem delay 100ms 20ms distribution normal
-\end{lstlisting}
-
-\subsection*{Ztráta paketů}
-Tento příkaz zajistí ztrátu paketů. 1 paket z 1000 je zahozen. nejnižší možná nastavitelná hodnota je 0.0000000232%.
-\begin{lstlisting}[language=bash]
-    $ tc qdisc change dev <interface> root netem loss 0.1%
-\end{lstlisting}
-
-\subsection*{Duplikace paketů}
-Příkaz pro duplikaci paketů je podobný jako příkaz pro ztrátu paketů.
-\begin{lstlisting}[language=bash]
-    $ tc qdisc change dev <interface> root netem duplicate 1%
-\end{lstlisting}
-
-\subsection*{Poškození paketů}
-Tímto příkazem lze nastavit poškození paketů. Ten zavede bitovou chybu v náhodném offsetu v paketu.
-\begin{lstlisting}[language=bash]
-    $ tc qdisc change dev <interface> root netem corrupt 0.1%
-\end{lstlisting}
-
-\subsection*{Přeuspořádání paketů}
-Existují dva způsoby jak nastavit přeuřpořádání paketů.
-První způsob je pomocí metody gap, která používá přednastavenou sequekci a změní pořadí každého Ntýho paketu.
-\begin{lstlisting}[language=bash]
-    $ tc qdisc change dev <interface> root netem gap 5 delay 10ms
-\end{lstlisting}
-Druhá metoda je reorder způsobí, že určité procento paketů se špatně seřadí.
-\begin{lstlisting}[language=bash]
-    $ tc qdisc change dev <interface> root netem delay 10ms reorder 25% 50%
-\end{lstlisting}
-
-\subsection*{Obnovení rozhranní}
-Tento příkaz smaže všechno nastavení na rozhranní. Rozhranní bude poté fungovat jako by na něm žádné nastavení nebylo.
-\begin{lstlisting}[language=bash]
-    sudo tc qdisc del dev <interface> root
-\end{lstlisting}
-
-\subsection{Virtuální počítač s omezenými zdroji}
-
-Pro zajištění více testovacích platforem je jedna z
-Bohužel výpočetní hardware bude stejný pro všechny virtuální platformy i když bude omezený.
-
-\iffalse
-\subsection*{Raspberry pi}
 \fi
