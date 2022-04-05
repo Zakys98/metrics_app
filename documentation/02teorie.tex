@@ -189,6 +189,11 @@ Tento příkaz smaže všechno nastavení na rozhranní. Rozhranní bude poté f
     sudo tc qdisc del dev <interface> root
 \end{lstlisting}
 
+
+Mozna pridat do testovani a ne tady
+
+testovano na debian, ubuntu, Raspberry
+
 \subsection{Virtuální počítač s omezenými zdroji}
 
 Pro zajištění více testovacích platforem je jedna z
@@ -196,26 +201,65 @@ Bohužel výpočetní hardware bude stejný pro všechny virtuální platformy i
 
 \iffalse
 \subsection*{Raspberry pi}
+github.com/raspberrypi
 \fi
 
 
 
-\section{Fungování systému linux}
+\chapter{Fungování operačního systému linux}
 
-\subsection{Rozdíl mezi uživatelským prostorem a prostorem jádra}
+Aby bylo možné s operačním systémem linux pracovat je potřeba vědět jak vlastně celý systém funguje. Při tvorbě běžných aplikací není potřeba
+znát operační systém linux nějak dokonale. Ovšem pokud aplikace pracuje v prostoru jádra(PRIDAT ODKAZ), je nutností vědět jak linuxový operační
+systém funguje a poté vyhodnotit zda aplikace nemůže nějakým způsobem poškodit tento systém. Aplikace, které jakkoliv pracují v prostou
+jádra musí být spuštěny s příkazem sudo(ODKAZ) jako super uživatel. Tímto způsobem aplikace získá možnost pracovat v prostoru jádra bez
+omezení.
 
-\subsection*{Prostor jádra}
-Prostor jádra(angl. kernel space) je prostor kde je uložen kód jádra a kde je vykonáván.
+\subsection{Vrsty linuxového systému}
 
-\subsection*{Uživatelský prostor}
-Uživatelský prostor(angl. user space) je sada míst, kde běží uživatelské procesy(všechno ostatní kromě jádra). Jádro řídí aplikace v tomto prostoru tak, aby se nepletly mezi sebou.
-Procesy, které běží v uživatelském prostoru mají omezenou část paměti a také nemají přístup do prostoru jádra. Procesy běžící v uživatelském prostoru mohou přistupovat do prostoru jádra
-jedině přes rozhranní vystavenné prostorem jádra - systémová volání. Pokud proces provede systémové volání, tak se do jádra odešle systémové přerušení a jádro poté obslouží
-příslušný proces. Jádro pokračuje ve své práci až po dokončení přerušení.
+Linuxový systém se skládá ze 3 úrovní, které můžeme vidět na obrázku níže.(ODKAZ na obrazek)
+Jak je již zmíněno výše, tak aplikace mohou pracovat v uživatelském prostoru nebo v prostoru jádra.
+
+\begin{figure}
+    \centering
+    \includegraphics{obrazky-figures/linux_structure.png}
+    \caption{}
+    \label{}
+\end{figure}
+
+\subsection{Hardware}
+Hardware je základ každé výpočetní jednotky. Skládá se z paměti, procesor, disku a síťového rozhranní. Tato úroveň je nejnižší z těchto tří
+úroveňí.
+
+\subsection{Linuxové jádro}
+Další úrovní je linuxové jádro, což je také jádro operačního systému. Jádro je umístěné v paměti, která se také nayývá prostor jádra
+(angl. kernel space). Je zde uložen a vykonávám kód jádra, který taktéž řídí procesor a říká mu co má dělat.
+Jádro především funguje jako rozhranní mezi hardwarem a jakýkoliv spuštěným programem. Zároveň také jádro spravuje hardware.
+
+\subsection{Uživatelské procesy}
+Běžící programy, které jádro spravuje, tvoří nejvyšší úroveň systému. Je také nazýván jako uživatelský prostor.
+Uživatelský prostor(angl. user space) je sada míst, kde běží uživatelské procesy(všechno ostatní kromě jádra). Jádro řídí aplikace v tomto
+prostoru tak, aby se nepletly mezi sebou. Procesy, které běží v uživatelském prostoru mají omezenou část paměti a také nemají přístup do
+prostoru jádra. Procesy běžící v uživatelském prostoru mohou přistupovat do prostoru jádra jedině přes rozhranní vystavenné prostorem
+jádra - systémová volání(ODKAZ NA SYSTEMOVA VOLANI). Pokud proces provede systémové volání, tak se do jádra odešle systémové přerušení
+a jádro poté obslouží příslušný proces. Jádro pokračuje ve své práci až po dokončení přerušení.
+
+\subsection*{Rozdíly}
+Kód běžící v prostoru jádra má neomezený přístup k hlavní paměti a procesoru. Toto je velice silné, ale zároveň velmi nebezpečné privilegium.
+Procesy, které zde běží, mohou snadno havarovat celý systém a tím ho nenávratně poškodit.
+
+Naopak v uživatelském prostoru je přístup do paměti omezený na malou podmnožinu a bezpečné operace v procesoru. Jestliže proces z nějakého
+důvodu udělá chybu a havaruje, tak jeho následky jsou omezené a jádro je může vyčistit.
+
+Ovšem proces v uživatelském prostoru může také způsobit poškození. Když bude mít vyšší oprávnění než jiné procesy, tak může třeba přepsat
+data uložená na disku. Proto je i toto potřeba, dávat si pozor.
 
 \iffalse
 www.linfo.org/kernel_space.html
+kniha How linux works
 \fi
+
+ringbuffer = popsat, slozitost
+popsat i ostatni datove struktury
 
 \subsection{Tracepoint - sledovací bod}
 Sledovací bod umístěný ve zdrojovém kódu poskytuje tzv. háček pro volání funkce(sondy) poskytnutou za běhu aplikace. Sledovací bod může
@@ -273,3 +317,5 @@ dělat, co chtějí, je klíč ke stabilnímu systému.
 \iffalse
 BOOK Linux Kernel Development 3rd edition page 69
 \fi
+
+POPSAT sudo = superuser
