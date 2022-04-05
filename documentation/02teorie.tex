@@ -214,7 +214,7 @@ systém funguje a poté vyhodnotit zda aplikace nemůže nějakým způsobem po�
 jádra musí být spuštěny s příkazem sudo(ODKAZ) jako super uživatel. Tímto způsobem aplikace získá možnost pracovat v prostoru jádra bez
 omezení.
 
-\subsection{Vrsty linuxového systému}
+\section{Vrsty linuxového systému}
 
 Linuxový systém se skládá ze 3 úrovní, které můžeme vidět na obrázku níže.(ODKAZ na obrazek)
 Jak je již zmíněno výše, tak aplikace mohou pracovat v uživatelském prostoru nebo v prostoru jádra.
@@ -284,8 +284,9 @@ Pole v souboru "format" má tvar:
 field:field-type field-name; offset:N;velikost:N;
 Offset je posun pole v záznamu trasování a velikost je velikost dané datové položky určená v bajtech.
 
-Jako příklad je uvedena událost(systémové volání) sys_enter_openat:
-\begin{lstlisting}[language=bash]
+Jako příklad je uvedena událost(systémové volání):
+
+\begin{verbatim}
 name: sys_enter_openat
 ID: 623
 format:
@@ -301,7 +302,7 @@ format:
 	field:umode_t mode;	offset:40;	size:8;	signed:0;
 
 print fmt: "dfd: 0x%08lx, filename: 0x%08lx, flags: 0x%08lx, mode: 0x%08lx", ((unsigned long)(REC->dfd)), ((unsigned long)(REC->filename)), ((unsigned long)(REC->flags)), ((unsigned long)(REC->mode))
-\end{lstlisting}
+\end{verbatim}
 
 \iffalse
 https://www.kernel.org/doc/Documentation/trace/events.rst
