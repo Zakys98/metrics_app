@@ -7,7 +7,7 @@ Hodnocení výkonu počítače je definováno jako proces při kterém se posuzu
 jestli systém funguje na optimální úrovni.
 
 Počítačové vyhodnocování je složitý proces. Při vyhodnoconváůní výkonu počítače se k určení využívá řada aspektů.
-\paragraph{Hlavní aspekty}\cite{metricsToday}
+\paragraph{Hlavní aspekty}\cite{MetricsToday}
 \begin{itemize}
     \item{škálovatelnost}
     \item{stabilita}
@@ -138,8 +138,8 @@ https://man7.org/linux/man-pages/man2/bpf.2.html
 https://ebpf.io/
 \fi
 
-\subsection{Netem}\cite{netem}
-Netem je softwarová utilita pomocí které lze vykonávat síťovou emulaci. Síťovou emulaci lze využít k omezení internetových zdrojů pro měřenou aplikaci pro lepší testování.
+\subsection{Netem}
+Netem\cite{Netem} je softwarová utilita pomocí které lze vykonávat síťovou emulaci. Síťovou emulaci lze využít k omezení internetových zdrojů pro měřenou aplikaci pro lepší testování.
 Netem umí simulovat zpomalení, ztrátu, poškození nebo duplikaci paketů a případně změnu pořadí paketů. Netem je řízen pomocí nástroje 'tc', který se ovládá pomocí příkazové řádky.
 Jeho aktuální distribuce je multiplatformě podporována.
 
@@ -258,14 +258,15 @@ www.linfo.org/kernel_space.html
 kniha How linux works
 \fi
 
+\subsection{Datové struktury}
 ringbuffer = popsat, slozitost
 popsat i ostatni datove struktury
 
-\subsection{Tracepoint - sledovací bod}
-Sledovací bod umístěný ve zdrojovém kódu poskytuje tzv. háček pro volání funkce(sondy) poskytnutou za běhu aplikace. Sledovací bod může
-být zapnutý, pokud je k němu připojena nějaká sonda nebo vypnutý, jestliže k němu žádná sonda připojená není. Když je sledovací bod
-zapnutý, tak volá poskytnutou funkci, pokaždé když je sledovací bod spustěň v kontextu provádění volajícího. Když poskytnutá funkce
-ukončí své provádění, tak se vrací k volajícímu(pokračuje z místa sledovacího bodu).
+\subsection{Sledovací bod}
+Sledovací bod(angl. tracepoint) umístěný ve zdrojovém kódu poskytuje tzv. háček pro volání funkce(sondy) poskytnutou za běhu aplikace.
+Sledovací bod může být zapnutý, pokud je k němu připojena nějaká sonda nebo vypnutý, jestliže k němu žádná sonda připojená není. Když je
+sledovací bod zapnutý, tak volá poskytnutou funkci, pokaždé když je sledovací bod spustěň v kontextu provádění volajícího. Když poskytnutá
+funkce ukončí své provádění, tak se vrací k volajícímu(pokračuje z místa sledovacího bodu).
 
 Lze je využít pro sledování sýstému nebo výkonu.
 
@@ -284,7 +285,7 @@ Pole v souboru "format" má tvar:
 field:field-type field-name; offset:N;velikost:N;
 Offset je posun pole v záznamu trasování a velikost je velikost dané datové položky určená v bajtech.
 
-Jako příklad je uvedena událost(systémové volání):
+Jako příklad je uvedena událost(systémové volání) openat:
 
 \begin{verbatim}
 name: sys_enter_openat
@@ -308,15 +309,21 @@ print fmt: "dfd: 0x%08lx, filename: 0x%08lx, flags: 0x%08lx, mode: 0x%08lx", ((u
 https://www.kernel.org/doc/Documentation/trace/events.rst
 \fi
 
-\subsection{Systémová volání}
+\subsection{Systémové volání}
 
 V moderních operačních systémech poskytuje jádro sadu rozhranní pomocí kterého procesy běžící v uživatelském prostoru můžou interagovat
 se systémem. Tato rozhranní poskytují aplikacím přístup k hardwaru, což je mechanismus, díky kterému se dají vytvářet nové procesy,
 komunikova se stávájícími a výžádat si operační systém o další zdroje. Existence těchto rozhranní a faktem, že aplikace si nemohou přímo
 dělat, co chtějí, je klíč ke stabilnímu systému.
 
-\iffalse
-BOOK Linux Kernel Development 3rd edition page 69
-\fi
+Systémové volání\cite{LinuxKernelDevelopment} jsou typicky přístupné přes funkce v C knihovně a mají předem definované chování. Mají nula
+a více argumentů a můžou mít i návratové hodnoty. Obvykle v typu long. Nula je většinou značení pro uspěch a záporná hodnota značí chybu.
+Pokud systémové volání vrátí chybu, tak vloží speciální chybnou hodnoru do globalní proměné zvané \emph{errno}. Hodnotu lze přeložit do
+lidsky čitelné podoby pomocí funkce \emph{perror()}. Každé systémové volání má konvenci pojmenování, že začíná s \emph{sys_}.
+
+\subsection*{Komunikace s kernelem}
+
+
+
 
 POPSAT sudo = superuser
