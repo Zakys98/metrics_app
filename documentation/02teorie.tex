@@ -35,14 +35,15 @@ https://study.com/academy/lesson/computer-performance-evaluation-definition-chal
 
 \section*{Metriky k měření}
 
-Před každým měřením by mělo být jasně dáno jaké metriky budeme měřit a jakým způsobem se to bude vykonávat. Pokud metriky ani způsob nebude stanoven, tak je měření ztrátou času.
-Ověření těchto metrik se poté provádí testováním. Svoji důležitou roli hraje také složitost tesovaného softwaru. Mezi základní metriky k měření výkonu systému jsou:
+Před každým měřením by mělo být jasně dáno jaké metriky budeme měřit a jakým způsobem se to bude vykonávat. Pokud metriky ani způsob nebude
+stanoven, tak je měření ztrátou času. Ověření těchto metrik se poté provádí testováním. Svoji důležitou roli hraje také složitost tesovaného
+softwaru. Mezi základní metriky k měření výkonu systému jsou:
 
 \subsection*{Doba spuštění a doba načítání}
 
-Každý software vyžaduje nějaký čas k jeho načtení a zahájení provozu. Koncový uživatelé během této doby obvykle vidí animovaný kurzor nebo načítání obrazovky.
-Složité programy mohou vyžadovat nastavení a konfiguraci než uživatele pustí do práce. Software například kontroluje závislost s jiným softwarem nebo existenci potřebných souborů.
-Toto zvyšuje jeho dobu načítání. Doba načítání by proto měla být co nejkratší.
+Každý software vyžaduje nějaký čas k jeho načtení a zahájení provozu. Koncový uživatelé během této doby obvykle vidí animovaný kurzor nebo
+načítání obrazovky. Složité programy mohou vyžadovat nastavení a konfiguraci než uživatele pustí do práce. Software například kontroluje
+závislost s jiným softwarem nebo existenci potřebných souborů. Toto zvyšuje jeho dobu načítání. Doba načítání by proto měla být co nejkratší.
 
 \subsection*{Doba odezvy nebo latence}
 
@@ -138,10 +139,14 @@ https://man7.org/linux/man-pages/man2/bpf.2.html
 https://ebpf.io/
 \fi
 
+\subsection{bpftool}
+
+
+
 \subsection{Netem}
-Netem\cite{Netem} je softwarová utilita pomocí které lze vykonávat síťovou emulaci. Síťovou emulaci lze využít k omezení internetových zdrojů pro měřenou aplikaci pro lepší testování.
-Netem umí simulovat zpomalení, ztrátu, poškození nebo duplikaci paketů a případně změnu pořadí paketů. Netem je řízen pomocí nástroje 'tc', který se ovládá pomocí příkazové řádky.
-Jeho aktuální distribuce je multiplatformě podporována.
+Netem\cite{Netem} je softwarová utilita pomocí které lze vykonávat síťovou emulaci. Síťovou emulaci lze využít k omezení internetových zdrojů
+pro měřenou aplikaci pro lepší testování. Netem umí simulovat zpomalení, ztrátu, poškození nebo duplikaci paketů a případně změnu pořadí
+paketů. Netem je řízen pomocí nástroje 'tc', který se ovládá pomocí příkazové řádky. Jeho aktuální distribuce je multiplatformě podporována.
 
 \subsection*{Zpoždění paketů}
 Tento příkaz přidá zpoždění všech paketů o 100 milisekund. Toto nastavení je ještě omezeno rozlišením jádra.
@@ -190,6 +195,11 @@ Tento příkaz smaže všechno nastavení na rozhranní. Rozhranní bude poté f
 \end{lstlisting}
 
 
+\section{Kontext zjišťování výkonu}
+
+
+
+\iffalse
 Mozna pridat do testovani a ne tady
 
 testovano na debian, ubuntu, Raspberry
@@ -199,7 +209,6 @@ testovano na debian, ubuntu, Raspberry
 Pro zajištění více testovacích platforem je jedna z
 Bohužel výpočetní hardware bude stejný pro všechny virtuální platformy i když bude omezený.
 
-\iffalse
 \subsection*{Raspberry pi}
 github.com/raspberrypi
 \fi
@@ -240,7 +249,7 @@ Běžící programy, které jádro spravuje, tvoří nejvyšší úroveň systé
 Uživatelský prostor(angl. user space) je sada míst, kde běží uživatelské procesy(všechno ostatní kromě jádra). Jádro řídí aplikace v tomto
 prostoru tak, aby se nepletly mezi sebou. Procesy, které běží v uživatelském prostoru mají omezenou část paměti a také nemají přístup do
 prostoru jádra. Procesy běžící v uživatelském prostoru mohou přistupovat do prostoru jádra jedině přes rozhranní vystavenné prostorem
-jádra - systémová volání(ODKAZ NA SYSTEMOVA VOLANI). Pokud proces provede systémové volání, tak se do jádra odešle systémové přerušení
+jádra - \hyperref[sec:systemoveVolani]{systémové volání}. Pokud proces provede systémové volání, tak se do jádra odešle systémové přerušení
 a jádro poté obslouží příslušný proces. Jádro pokračuje ve své práci až po dokončení přerušení.
 
 \subsection*{Rozdíly}
@@ -257,10 +266,6 @@ data uložená na disku. Proto je i toto potřeba, dávat si pozor.
 www.linfo.org/kernel_space.html
 kniha How linux works
 \fi
-
-\subsection{Datové struktury}
-ringbuffer = popsat, slozitost
-popsat i ostatni datove struktury
 
 \subsection{Sledovací bod}
 Sledovací bod(angl. tracepoint) umístěný ve zdrojovém kódu poskytuje tzv. háček pro volání funkce(sondy) poskytnutou za běhu aplikace.
@@ -310,6 +315,7 @@ https://www.kernel.org/doc/Documentation/trace/events.rst
 \fi
 
 \subsection{Systémové volání}
+\label{sec:systemoveVolani}
 
 V moderních operačních systémech poskytuje jádro sadu rozhranní pomocí kterého procesy běžící v uživatelském prostoru můžou interagovat
 se systémem. Tato rozhranní poskytují aplikacím přístup k hardwaru, což je mechanismus, díky kterému se dají vytvářet nové procesy,
@@ -323,7 +329,20 @@ lidsky čitelné podoby pomocí funkce \emph{perror()}. Každé systémové vol�
 
 \subsection*{Komunikace s kernelem}
 
+Systémové volání představují vrstvu mezi hardwarem a uživatelskými procesy. Tato vrsta je prímárně na tří účely. První učel poskytuje
+abstraktní hardwarovou vrstu pro uživatelský prostor. Když aplikace zapisuje nebo čte z diskem, tak neví s jakým diskem vlastně pracuje
+nebo jaký je souborový systém na kterém je soubor uložen. Druhý učel je na poskytnutí stability a zabezpečení. Tento účel zabraňuje, aby
+aplikace nesprávně používali hardware, nebraly zdroje jiným aplikacím či nepřistupovali k souborům ke kterým nemají povolení. Poslední
+účel umožnuje zpracovávat poskytnutý virtualizovaný systém. Kdyby aplikace měly možnost přistupovat ke systémovým zdrojům jak se jim zachce,
+tak by bylo nemožné zpracovávat více procesů současně nebo zajistit stabilitu a bezpečnost operačního systému. V linuxových operačních
+systémech jsou systémové volání jediný legální vstupní bod k jádru pro uživatelské procesy.
 
+\subsection{Datové struktury}
+popsat datove struktury
+popsat ringbuffer, ktery neni datova struktura = popsat, slozitost
 
+\subsection{BTF}
 
+\iffalse
 POPSAT sudo = superuser
+\fi
