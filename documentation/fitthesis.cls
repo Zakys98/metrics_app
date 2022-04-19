@@ -1309,6 +1309,7 @@ Management}{\@fit@EN}%
   showspaces=false,
   showtabs=false,
   breaklines=true,
+  tabsize=4,
   showstringspaces=false,
   breakatwhitespace=true,
   escapeinside={(*@}{@*)},
