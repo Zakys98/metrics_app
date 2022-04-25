@@ -144,7 +144,6 @@ class SyscallParser:
                  '#include <handler.h>\n\n' \
                  '#include <logger.h>\n' \
                  '#include <syscall_enum.h>\n' \
-                 '#include <syscall_structures.h>\n' \
                  '#include <user.h>\n\n' \
                  'int handle(void *ctx, void *data, size_t size) {\n' \
                  '\tstruct user_type *type = (struct user_type *)data;\n' \
