@@ -14,6 +14,20 @@ FileReader::~FileReader() {
     input.close();
 }
 
+void FileReader::readNoData() {
+    while (!input.eof()) {
+        uint32_t type;
+        input.read((char *)&type, sizeof(uint32_t));
+        auto it = map.find(type);
+        if (it == map.end()) {
+            std::pair<uint32_t, long> pair{type, 1};
+            map.insert(pair);
+        } else {
+            map[type] = it->second + 1;
+        }
+    }
+}
+
 void FileReader::read() {
     while (!input.eof()) {
         uint32_t type;

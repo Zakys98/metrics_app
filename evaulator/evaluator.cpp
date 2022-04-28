@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 
 #include <FileReader.hpp>
 
@@ -9,7 +10,11 @@ int main(int argc, char **argv) {
     }
 
     FileReader fileReader{std::string(argv[1])};
-    fileReader.read();
+    if(argc == 3 && strcmp(argv[2], "--no-data") == 0){
+        fileReader.readNoData();
+    } else {
+        fileReader.read();
+    }
     fileReader.print();
 
     return 0;

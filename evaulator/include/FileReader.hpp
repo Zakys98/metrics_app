@@ -11,13 +11,19 @@ class FileReader {
 
     /**
      * @brief Reads input file and stores data
-     * 
+     *
+     */
+    void readNoData();
+
+    /**
+     * @brief Reads input file and stores data
+     *
      */
     void read();
 
     /**
      * @brief Prints formatted data
-     * 
+     *
      */
     void print();
 

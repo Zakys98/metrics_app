@@ -10,36 +10,59 @@ ENDIF()
 SET(GENERATOR "${CMAKE_CURRENT_SOURCE_DIR}/scripts/generator/generator.py")
 SET(PATTERN "sys_enter_*")
 
+OPTION(DATA_SECTION "Syscalls with their data" OFF)
+
 FILE(GLOB_RECURSE source_files "source/*")
 
 ADD_EXECUTABLE(${PROJECT_NAME} track.c handler.c ${source_files})
 TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME} PUBLIC "include/")
 TARGET_LINK_LIBRARIES(${PROJECT_NAME} PUBLIC bpf elf)
 
-ADD_CUSTOM_COMMAND(
-    OUTPUT handler.c
-    COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "handler.c" "--handler"
-    BYPRODUCTS handler.c
-    COMMENT "Generating handler.c"
-)
+IF(DATA_SECTION)
+    ADD_CUSTOM_COMMAND(
+        OUTPUT handler.c
+        COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "handler.c" "--handler"
+        BYPRODUCTS handler.c
+        COMMENT "Generating handler.c"
+    )
+ELSE()
+    ADD_CUSTOM_COMMAND(
+        OUTPUT handler.c
+        COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "handler.c" "--handler_without_data"
+        BYPRODUCTS handler.c
+        COMMENT "Generating handler.c without data"
+    )
+ENDIF()
 
 ADD_CUSTOM_TARGET(
     sizer ALL
-    COMMAND ${CMAKE_C_COMPILER} ${CMAKE_CURRENT_SOURCE_DIR}/scripts/generator/sizer.c -o sizer
-    COMMAND ./sizer > sizes
+    COMMAND cc ${CMAKE_CURRENT_SOURCE_DIR}/scripts/generator/sizer.c -o sizer
+    COMMAND ./sizer
     BYPRODUCTS sizer sizes
     COMMENT "Generating sizer"
 )
 
-ADD_CUSTOM_TARGET(
-    generated ALL
-    COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "${CMAKE_CURRENT_SOURCE_DIR}/include/syscall_structures.h" "--structure"
-    COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "${CMAKE_CURRENT_SOURCE_DIR}/include/syscall_enum.h" "--enum"
-    COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "${CMAKE_CURRENT_SOURCE_DIR}/include/user.h" "--user"
-    COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "track.bpf.c" "--bpf"
-    BYPRODUCTS syscall_structures.h syscall_enum.h user.h track.bpf.c
-    COMMENT "Generating syscall_structures.h syscall_enum.h user.h track.bpf.c"
-)
+IF(DATA_SECTION)
+    ADD_CUSTOM_TARGET(
+        generated ALL
+        COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "${CMAKE_CURRENT_SOURCE_DIR}/include/syscall_structures.h" "--structure"
+        COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "${CMAKE_CURRENT_SOURCE_DIR}/include/syscall_enum.h" "--enum"
+        COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "${CMAKE_CURRENT_SOURCE_DIR}/include/user.h" "--user"
+        COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "track.bpf.c" "--bpf"
+        BYPRODUCTS syscall_structures.h syscall_enum.h user.h track.bpf.c
+        COMMENT "Generating syscall_structures.h syscall_enum.h user.h track.bpf.c"
+    )
+ELSE()
+    ADD_CUSTOM_TARGET(
+        generated ALL
+        COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "${CMAKE_CURRENT_SOURCE_DIR}/include/syscall_structures.h" "--structure"
+        COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "${CMAKE_CURRENT_SOURCE_DIR}/include/syscall_enum.h" "--enum"
+        COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "${CMAKE_CURRENT_SOURCE_DIR}/include/user.h" "--user"
+        COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "track.bpf.c" "--bpf_without_data"
+        BYPRODUCTS syscall_structures.h syscall_enum.h user.h track.bpf.c
+        COMMENT "Generating syscall_structures.h syscall_enum.h user.h track.bpf.c without data"
+    )
+ENDIF()
 
 ADD_CUSTOM_TARGET(
     bpf ALL

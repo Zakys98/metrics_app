@@ -16,7 +16,7 @@ TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME} PUBLIC "include/")
 ADD_CUSTOM_TARGET(
     sizer ALL
     COMMAND cc ${CMAKE_CURRENT_SOURCE_DIR}/../scripts/generator/sizer.c -o sizer
-    COMMAND ./sizer > sizes
+    COMMAND ./sizer
     BYPRODUCTS sizer sizes
     COMMENT "Generating sizer"
 )

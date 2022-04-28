@@ -92,8 +92,9 @@ class SyscallParser:
         with open(self.name, 'w') as file:
             file.write(self.__bpfHeader())
             file.write(self.__bpfMacroFunction())
-            for syscall in self.syscalls:
-                file.write(f'FUNCTION({syscall.name}, {syscall.name.upper()})\n')
+            #for syscall in self.syscalls:
+            #    file.write(f'FUNCTION({syscall.name}, {syscall.name.upper()})\n')
+            file.write(self.__bpfMacroGenerate())
             file.write(self.__bpfFooter())
 
     def __bpfHeader(self) -> str:
@@ -107,6 +108,12 @@ class SyscallParser:
                  '    __uint(type, BPF_MAP_TYPE_RINGBUF);\n' \
                  '    __uint(max_entries, 256 * 1024);\n' \
                  '} ring_buff SEC(".maps");\n\n'
+        return output
+
+    def __bpfMacroGenerate(self) -> str:
+        output = ''
+        for syscall in self.syscalls:
+            output += f'FUNCTION({syscall.name}, {syscall.name.upper()})\n'
         return output
 
     def __bpfMacroFunction(self) -> str:
@@ -130,13 +137,40 @@ class SyscallParser:
     def __bpfFooter(self) -> str:
         return '\nchar LICENSE[] SEC("license") = "GPL";'
 
+    def generateBpfWithoutDataFile(self) -> str:
+        with open(self.name, 'w') as file:
+            file.write(self.__bpfHeader())
+            file.write(self.__bpfWithoutDataMacroFunction())
+            file.write(self.__bpfMacroGenerate())
+            file.write(self.__bpfFooter())
+
+    def __bpfWithoutDataMacroFunction(self) -> str:
+        output = '#define FUNCTION(lower, upper) \\\n' \
+                 '\tSEC("tp/syscalls/" #lower "") \\\n' \
+                 '\tint handle_##lower(struct lower *params) { \\\n' \
+                 '\t\tstruct task_struct *task = (struct task_struct *)bpf_get_current_task(); \\\n' \
+                 '\t\tstruct user_type *data = {0}; \\\n' \
+                 '\t\tdata = bpf_ringbuf_reserve(&ring_buff, sizeof(*data), 0); \\\n' \
+                 '\t\tif (!data) { \\\n' \
+                 '\t\t    bpf_printk("Ringbuffer not reserved\\n"); \\\n' \
+                 '\t\t    return 0; \\\n' \
+                 '\t\t} \\\n' \
+                 '\t\tdata->type = upper; \\\n' \
+                 '\t\tbpf_ringbuf_submit(data, 0); \\\n' \
+                 '\t\treturn 0; \\\n' \
+                 '\t}\n\n'
+        return output
+
     def generateHandlerFile(self) -> str:
         with open(self.name, 'w') as file:
             file.write(self.__handlerHeader())
+            file.write('\tchar *body = (char *)data + sizeof(enum Types);\n')
+            file.write('\tswitch(type->type){\n')
             for syscall in self.syscalls:
                 file.write(f'\t\tcase {syscall.name.upper()}:\n')
                 file.write(f'\t\t\tloggerLog(body, {syscall.name.upper()}_LEN);\n')
                 file.write('\t\t\tbreak;\n')
+            file.write('\t}\n')
             file.write(self.__handlerFooter())
 
     def __handlerHeader(self) -> str:
@@ -147,16 +181,18 @@ class SyscallParser:
                  '#include <user.h>\n\n' \
                  'int handle(void *ctx, void *data, size_t size) {\n' \
                  '\tstruct user_type *type = (struct user_type *)data;\n' \
-                 '\tloggerLog(&type->type, sizeof(enum Types));\n' \
-                 '\tchar *body = (char *)data + sizeof(enum Types);\n' \
-                 '\tswitch(type->type){\n'
+                 '\tloggerLog(&type->type, sizeof(enum Types));\n'
         return output
 
     def __handlerFooter(self) -> str:
-        output = '\t}\n' \
-                 '\treturn 0;\n' \
+        output = '\treturn 0;\n' \
                  '}\n'
         return output
+
+    def generateHandlerWithoutDataFile(self) -> str:
+        with open(self.name, 'w') as file:
+            file.write(self.__handlerHeader())
+            file.write(self.__handlerFooter())
 
     def generateHelperFile(self) -> None:
         with open(self.name, 'w') as file:
