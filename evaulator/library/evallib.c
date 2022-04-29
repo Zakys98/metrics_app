@@ -10,8 +10,3 @@ int getSyscallSize(int pos){
 int getSizeOfEnumTypes(){
     return ENUM_TYPES_LEN;
 }
-
-char *getSyscallName(int pos){
-    printf("C :%s\n", syscallName[pos]);
-    return syscallName[pos];
-}

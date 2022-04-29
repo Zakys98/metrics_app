@@ -1,5 +1,6 @@
 from ctypes import cdll
-import matplotlib.pyplot as plt
+from module.ArgumentParser import argParserInit
+from module.Grapher import Grapher
 
 
 def syscallNameLoader(fileName : str) -> list:
@@ -12,7 +13,9 @@ def syscallNameLoader(fileName : str) -> list:
             listOfNames.append(line[0:-1])
     return listOfNames
 
-def readNoData(fileName : str) -> dict:
+def readWithData(fileName : str) -> dict:
+    print("data")
+    exit()
     dictOfNames = dict()
     size = mylib.getSizeOfEnumTypes()
     with open(fileName, 'rb') as file:
@@ -27,28 +30,40 @@ def readNoData(fileName : str) -> dict:
                 dictOfNames[type] = 1
     return dictOfNames
 
-def sortDictonary(dict : dict) -> dict:
-    return sorted(dict.items(), key=lambda x: x[1], reverse=True)
+def readNoData(fileName : str) -> dict:
+    dictOfNames = dict()
+    size = mylib.getSizeOfEnumTypes()
+    with open(fileName, 'rb') as file:
+        while True:
+            time = file.read(8)
+            byte = file.read(size)
+            if not byte:
+                break
+            time = int.from_bytes(time, "little")
+            if(time not in dictOfNames):
+                dictOfNames[time] = dict()
+            type = int.from_bytes(byte, "little")
+            if(type in dictOfNames[time]):
+                dictOfNames[time][type] = dictOfNames[time][type] + 1
+            else:
+                dictOfNames[time][type] = 1
+    return dictOfNames
 
-def showHistogram(myDictionary):
-    ax = plt.axes()
-    students = list()
-    for key, value in dictOfNames.items():
-        lal = len('sys_enter_')
-        students.append(listOfNames[key][lal:])
-    print(students)
-    ax.set_xlabel('Syscall names')
-    ax.set_ylabel('Number of calls')
-    #figure(figsize=(13, 8), dpi=100)
-    plt.bar(students, myDictionary.values(), width=0.5)
-    plt.show()
 
 if __name__ == '__main__':
+    args = argParserInit()
     mylib = cdll.LoadLibrary('./build/libevaulator.so')
+    listOfSyscallNames = syscallNameLoader('build/syscall_names')
 
-    listOfNames = syscallNameLoader('build/syscall_names')
-    dictOfNames = readNoData('../build/output.bin')
-    #dictOfNames = sortDictonary(dictOfNames)
-    dictOfNames.pop(67)
-    dictOfNames = {key: val for key, val in dictOfNames.items() if val > 1000}
-    showHistogram(dictOfNames)
+    if(args.data):
+        parsedSyscalls = readWithData(args.name)
+    else:
+        parsedSyscalls = readNoData(args.name)
+
+    grapher = Grapher(listOfSyscallNames, parsedSyscalls)
+    if(args.hist):
+        grapher.showHistogram()
+    if(args.count):
+        grapher.countSyscalls()
+    if(args.graph):
+        grapher.showDifirencialGraph()

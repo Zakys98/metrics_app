@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 #include <logger.h>
 
@@ -19,6 +20,8 @@ int loggerInit(const char *filename){
 }
 
 void loggerLog(void *buffer, size_t size){
+    time_t seconds = time(NULL);
+    fwrite(&seconds, 1, 8, logger.output);
     fwrite(buffer, 1, size, logger.output);
 }
 
