@@ -39,6 +39,12 @@ def readWithData(fileName : str) -> dict:
             body = file.read(mylib.getSyscallSize(type))
             if not body:
                 break
+            if(time not in dictOfNames):
+                dictOfNames[time] = dict()
+            if(type in dictOfNames[time]):
+                dictOfNames[time][type] = dictOfNames[time][type] + 1
+            else:
+                dictOfNames[time][type] = 1
     return dictOfNames
 
 def readNoData(fileName : str) -> dict:
