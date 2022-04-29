@@ -14,35 +14,46 @@ def syscallNameLoader(fileName : str) -> list:
     return listOfNames
 
 def readWithData(fileName : str) -> dict:
-    print("data")
-    exit()
     dictOfNames = dict()
-    size = mylib.getSizeOfEnumTypes()
+    sizeOfEnum = mylib.getSizeOfEnumTypes()
     with open(fileName, 'rb') as file:
         while True:
-            byte = file.read(size)
-            if not byte:
+            time = file.read(8)
+            if not time:
                 break
-            type = int.from_bytes(byte, "little")
-            if(type in dictOfNames):
-                dictOfNames[type] = dictOfNames[type] + 1
+            time = int.from_bytes(time, "little")
+            type = file.read(sizeOfEnum)
+            if not type:
+                break
+            if(time not in dictOfNames):
+                dictOfNames[time] = dict()
+            type = int.from_bytes(type, "little")
+            if(type in dictOfNames[time]):
+                dictOfNames[time][type] = dictOfNames[time][type] + 1
             else:
-                dictOfNames[type] = 1
+                dictOfNames[time][type] = 1
+            time = file.read(8)
+            if not time:
+                break
+            time = int.from_bytes(time, "little")
+            body = file.read(mylib.getSyscallSize(type))
+            if not body:
+                break
     return dictOfNames
 
 def readNoData(fileName : str) -> dict:
     dictOfNames = dict()
-    size = mylib.getSizeOfEnumTypes()
+    sizeOfEnum = mylib.getSizeOfEnumTypes()
     with open(fileName, 'rb') as file:
         while True:
             time = file.read(8)
-            byte = file.read(size)
-            if not byte:
+            type = file.read(sizeOfEnum)
+            if not type:
                 break
             time = int.from_bytes(time, "little")
             if(time not in dictOfNames):
                 dictOfNames[time] = dict()
-            type = int.from_bytes(byte, "little")
+            type = int.from_bytes(type, "little")
             if(type in dictOfNames[time]):
                 dictOfNames[time][type] = dictOfNames[time][type] + 1
             else:
