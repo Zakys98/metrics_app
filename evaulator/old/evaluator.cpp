@@ -16,6 +16,7 @@ int main(int argc, char **argv) {
         fileReader.read();
     }
     fileReader.printHistogram();
+    fileReader.print();
 
     return 0;
 }

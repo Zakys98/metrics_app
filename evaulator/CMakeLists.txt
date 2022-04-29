@@ -1,5 +1,8 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.18)
-PROJECT(evaulator CXX)
+project(evaulator)
+
+FILE(GLOB_RECURSE source_files "library/*")
+ADD_LIBRARY(${PROJECT_NAME} SHARED ${source_files})
 
 SET(CMAKE_CXX_STANDARD 17)
 
@@ -7,11 +10,6 @@ SET(GENERATOR ${CMAKE_CURRENT_SOURCE_DIR}/../scripts/generator/generator.py)
 SET(PATTERN "sys_enter_*")
 
 FIND_PACKAGE(Python3 REQUIRED)
-
-FILE(GLOB_RECURSE source_files "source/*")
-
-ADD_EXECUTABLE(${PROJECT_NAME} evaluator.cpp ${source_files})
-TARGET_INCLUDE_DIRECTORIES(${PROJECT_NAME} PUBLIC "include/")
 
 ADD_CUSTOM_TARGET(
     sizer ALL
@@ -23,11 +21,12 @@ ADD_CUSTOM_TARGET(
 
 ADD_CUSTOM_TARGET(
     generated ALL
-    COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "${CMAKE_CURRENT_SOURCE_DIR}/include/syscall_structures.h" "--structure"
-    COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "${CMAKE_CURRENT_SOURCE_DIR}/include/syscall_enum.h" "--enum"
-    COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "${CMAKE_CURRENT_SOURCE_DIR}/include/helper.h" "--helper"
-    BYPRODUCTS syscall_structures.h syscall_enum.h helper.h
-    COMMENT "Generating syscall_structures.h syscall_enum.h helper.h"
+    COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "${CMAKE_CURRENT_SOURCE_DIR}/library/syscall_structures.h" "--structure"
+    COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "${CMAKE_CURRENT_SOURCE_DIR}/library/syscall_enum.h" "--enum"
+    COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "${CMAKE_CURRENT_SOURCE_DIR}/library/helper.h" "--helper"
+    COMMAND sudo ${PYTHON_EXECUTABLE} ${GENERATOR} "-p" ${PATTERN} "-n" "${CMAKE_CURRENT_SOURCE_DIR}/build/syscall_names" "--syscall_name"
+    BYPRODUCTS syscall_structures.h syscall_enum.h helper.h syscall_names
+    COMMENT "Generating syscall_structures.h syscall_enum.h helper.h syscall_names"
 )
 
 ADD_DEPENDENCIES(${PROJECT_NAME} generated)

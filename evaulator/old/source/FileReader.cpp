@@ -78,7 +78,7 @@ void FileReader::printHistogram() {
     for (int i = largest; i > 0; i--) {
         for (int j = 0; j < histogram.size(); j++) {
             if (i * 1000 <= histogram[j].second)
-                std::cout << " *  ";
+                std::cout << " #  ";
             else
                 std::cout << "    ";
         }

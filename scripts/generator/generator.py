@@ -33,6 +33,8 @@ def argParserInit():
                        help='generates file with handler function which resolves only types of syscalls')
     group.add_argument('--helper', action='store_true',
                        help='generates file with array with lenght of syscalls and array with names of syscalls')
+    group.add_argument('--syscall_name', action='store_true',
+                       help='generates file with names of syscalls')
     return parser.parse_args()
 
 
@@ -72,3 +74,5 @@ if __name__ == "__main__":
         syscallParser.generateHandlerWithoutDataFile()
     elif(args.helper):
         syscallParser.generateHelperFile()
+    elif(args.syscall_name):
+        syscallParser.generateSyscallNamesFile()

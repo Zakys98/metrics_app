@@ -202,7 +202,8 @@ class SyscallParser:
 
     def __helperHeader(self) -> str:
         output = '#pragma once\n\n' \
-                 '#include "syscall_enum.h"\n\n'
+                 '#include "syscall_enum.h"\n\n' \
+                 '#define ENUM_TYPES_LEN sizeof(enum Types)\n\n'
         return output
 
     def __helperArrayLenght(self) -> str:
@@ -220,3 +221,8 @@ class SyscallParser:
         output = output[:-2]
         output += '\n};\n\n'
         return output
+
+    def generateSyscallNamesFile(self) -> None:
+        with open(self.name, 'w') as file:
+            for syscall in self.syscalls:
+                file.write(f'{syscall.name.upper()}\n')
