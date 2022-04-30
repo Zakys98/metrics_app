@@ -168,7 +168,7 @@ class SyscallParser:
             file.write('\tswitch(type->type){\n')
             for syscall in self.syscalls:
                 file.write(f'\t\tcase {syscall.name.upper()}:\n')
-                file.write(f'\t\t\tloggerLog(body, {syscall.name.upper()}_LEN);\n')
+                file.write(f'\t\t\tloggerLogData(body, {syscall.name.upper()}_LEN);\n')
                 file.write('\t\t\tbreak;\n')
             file.write('\t}\n')
             file.write(self.__handlerFooter())
@@ -181,7 +181,7 @@ class SyscallParser:
                  '#include <user.h>\n\n' \
                  'int handle(void *ctx, void *data, size_t size) {\n' \
                  '\tstruct user_type *type = (struct user_type *)data;\n' \
-                 '\tloggerLog(&type->type, sizeof(enum Types));\n'
+                 '\tloggerLogType(&type->type, sizeof(enum Types));\n'
         return output
 
     def __handlerFooter(self) -> str:

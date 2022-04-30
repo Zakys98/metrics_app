@@ -1,4 +1,6 @@
 from ctypes import cdll
+from os.path import exists
+
 from module.ArgumentParser import argParserInit
 from module.Grapher import Grapher
 
@@ -32,19 +34,9 @@ def readWithData(fileName : str) -> dict:
                 dictOfNames[time][type] = dictOfNames[time][type] + 1
             else:
                 dictOfNames[time][type] = 1
-            time = file.read(8)
-            if not time:
-                break
-            time = int.from_bytes(time, "little")
             body = file.read(mylib.getSyscallSize(type))
             if not body:
                 break
-            if(time not in dictOfNames):
-                dictOfNames[time] = dict()
-            if(type in dictOfNames[time]):
-                dictOfNames[time][type] = dictOfNames[time][type] + 1
-            else:
-                dictOfNames[time][type] = 1
     return dictOfNames
 
 def readNoData(fileName : str) -> dict:
@@ -66,9 +58,15 @@ def readNoData(fileName : str) -> dict:
                 dictOfNames[time][type] = 1
     return dictOfNames
 
+def fileExists(filename: str):
+    return exists(filename)
+
 
 if __name__ == '__main__':
     args = argParserInit()
+    if not(fileExists('sizes')):
+        print('File with sizes of data type called sizes does not exist')
+        exit()
     mylib = cdll.LoadLibrary('./build/libevaulator.so')
     listOfSyscallNames = syscallNameLoader('build/syscall_names')
 

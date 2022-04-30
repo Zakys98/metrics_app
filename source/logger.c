@@ -19,9 +19,13 @@ int loggerInit(const char *filename){
     return 0;
 }
 
-void loggerLog(void *buffer, size_t size){
+void loggerLogType(void *buffer, size_t size){
     time_t seconds = time(NULL);
     fwrite(&seconds, 1, 8, logger.output);
+    fwrite(buffer, 1, size, logger.output);
+}
+
+void loggerLogData(void *buffer, size_t size){
     fwrite(buffer, 1, size, logger.output);
 }
 
