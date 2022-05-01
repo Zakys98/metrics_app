@@ -64,7 +64,7 @@ def fileExists(filename: str):
 
 if __name__ == '__main__':
     args = argParserInit()
-    if not(fileExists('sizes')):
+    if not(fileExists(args.name)):
         print('File with sizes of data type called sizes does not exist')
         exit()
     mylib = cdll.LoadLibrary('./build/libevaulator.so')

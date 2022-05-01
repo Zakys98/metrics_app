@@ -1,3 +1,4 @@
+from turtle import color
 import matplotlib.pyplot as plt
 
 
@@ -38,8 +39,23 @@ class Grapher:
             remainingSyscalls.append(self.listOfSyscallNames[key][strip:])
         ax.set_xlabel('Syscall names')
         ax.set_ylabel('Number of calls')
+        plt.title('Histogram')
         plt.bar(remainingSyscalls, syscalls.values(), width=0.5)
         plt.show()
 
     def showDifirencialGraph(self) -> None:
-        print("diff")
+        times = list(i for i in range(len(self.parsedSyscalls)))
+        syscalls = self.__countAllSyclass(self.parsedSyscalls)
+        syscalls = {key: val for key, val in syscalls.items() if val > 1000}
+        for key in syscalls:
+            if key == 67:
+                continue
+            ls = list()
+            for _, calls in self.parsedSyscalls.items():
+                ls.append(calls[key])
+            plt.plot(times, ls, label=self.listOfSyscallNames[key])
+        plt.ylabel('Number of calls')
+        plt.xlabel('Seconds')
+        plt.title('Diferencial graph')
+        plt.legend()
+        plt.show()
