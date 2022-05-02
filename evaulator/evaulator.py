@@ -15,7 +15,7 @@ def syscallNameLoader(fileName : str) -> list:
             listOfNames.append(line[0:-1])
     return listOfNames
 
-def readWithData(fileName : str) -> dict:
+def readData(fileName : str) -> dict:
     dictOfNames = dict()
     sizeOfEnum = mylib.getSizeOfEnumTypes()
     with open(fileName, 'rb') as file:
@@ -71,7 +71,7 @@ if __name__ == '__main__':
     listOfSyscallNames = syscallNameLoader('build/syscall_names')
 
     if(args.data):
-        parsedSyscalls = readWithData(args.name)
+        parsedSyscalls = readData(args.name)
     else:
         parsedSyscalls = readNoData(args.name)
 

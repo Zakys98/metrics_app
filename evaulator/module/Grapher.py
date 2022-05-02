@@ -47,9 +47,8 @@ class Grapher:
         times = list(i for i in range(len(self.parsedSyscalls)))
         syscalls = self.__countAllSyclass(self.parsedSyscalls)
         syscalls = {key: val for key, val in syscalls.items() if val > 1000}
+        syscalls.pop(67)
         for key in syscalls:
-            if key == 67:
-                continue
             ls = list()
             for _, calls in self.parsedSyscalls.items():
                 ls.append(calls[key])
