@@ -198,7 +198,6 @@ class SyscallParser:
         with open(self.name, 'w') as file:
             file.write(self.__helperHeader())
             file.write(self.__helperArrayLenght())
-            file.write(self.__helperArrayName())
 
     def __helperHeader(self) -> str:
         output = '#pragma once\n\n' \
@@ -210,14 +209,6 @@ class SyscallParser:
         output = 'static int syscallSize[] = {\n'
         for syscall in self.syscalls:
                 output += f'\t{syscall.name.upper()}_LEN,\n'
-        output = output[:-2]
-        output += '\n};\n\n'
-        return output
-
-    def __helperArrayName(self) -> str:
-        output = 'static char syscallName[][50] = {\n'
-        for syscall in self.syscalls:
-                output += f'\t"{syscall.name.upper()}",\n'
         output = output[:-2]
         output += '\n};\n\n'
         return output
