@@ -73,5 +73,5 @@ sudo ./track
 ```
 Evaulator:
 ```
-./evaulator <filename>
+python3 evaulator.py -n ../build/output.bin --no-data --count --graph --hist
 ```
