@@ -2,7 +2,7 @@ import argparse
 
 def argParserInit():
     parser = argparse.ArgumentParser(description='Syscall generator')
-    parser.add_argument('-n', '--name', type=str,
+    parser.add_argument('-i', '--input', type=str,
                         help='name of the input file',
                         required=True)
     parser.add_argument('--hist', action='store_true',

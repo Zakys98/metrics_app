@@ -7,6 +7,7 @@ class Grapher:
     def __init__(self, listOfSyscallNames : list, parsedSyscalls : dict) -> None:
         self.listOfSyscallNames = listOfSyscallNames
         self.parsedSyscalls = parsedSyscalls
+        self.epollWait = listOfSyscallNames.index('SYS_ENTER_EPOLL_WAIT')
 
     def sortDictonary(dict : dict) -> dict:
         return sorted(dict.items(), key=lambda x: x[1], reverse=True)
@@ -39,7 +40,7 @@ class Grapher:
     def showHistogram(self) -> None:
         syscalls = self.__countAllSyclass(self.parsedSyscalls)
         syscalls = {key: val for key, val in syscalls.items() if val > 1000}
-        syscalls.pop(67)
+        syscalls.pop(self.epollWait)
         ax = plt.axes()
         remainingSyscalls = list()
         for key, _ in syscalls.items():
@@ -55,7 +56,7 @@ class Grapher:
         times = list(i for i in range(len(self.parsedSyscalls)))
         syscalls = self.__countAllSyclass(self.parsedSyscalls)
         syscalls = {key: val for key, val in syscalls.items() if val > 1000}
-        syscalls.pop(67)
+        syscalls.pop(self.epollWait)
         for key in syscalls:
             ls = list()
             for _, calls in self.parsedSyscalls.items():

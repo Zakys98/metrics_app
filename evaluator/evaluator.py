@@ -58,22 +58,25 @@ def readNoData(fileName : str) -> dict:
                 dictOfNames[time][type] = 1
     return dictOfNames
 
-def fileExists(filename: str):
+def fileExists(filename: str) -> bool:
     return exists(filename)
 
 
 if __name__ == '__main__':
     args = argParserInit()
-    if not(fileExists(args.name)):
+    if not(fileExists(args.input)):
         print('File with sizes of data type called sizes does not exist')
+        exit()
+    if not(fileExists('./build/libevaulator.so')):
+        print('Library does not exist')
         exit()
     mylib = cdll.LoadLibrary('./build/libevaulator.so')
     listOfSyscallNames = syscallNameLoader('build/syscall_names')
 
     if(args.data):
-        parsedSyscalls = readData(args.name)
+        parsedSyscalls = readData(args.input)
     else:
-        parsedSyscalls = readNoData(args.name)
+        parsedSyscalls = readNoData(args.input)
 
     grapher = Grapher(listOfSyscallNames, parsedSyscalls)
     if(args.count):

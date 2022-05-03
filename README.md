@@ -4,7 +4,7 @@ System, which tracks system and detects, if operating system and hardware is abl
 applications, we need. With this feature compute units can be swapped or system can be updated
 without worrying about performance and enviroment stability.
 
-## Requirements
+## Requirements for track app
 
 Following dependencies must be installed on the host system
 
@@ -37,10 +37,18 @@ CONFIG_BPF_EVENTS=y
 CONFIG_IKHEADERS=y
 ```
 
+## Requirements for evaluator app
+
+Following dependencies must be installed on the host system
+
+* Python3
+* python3-tk
+* matplotlib for Python3
+
 ## Directory structure
 
 * documentation - everything you need to know about this app
-* evaulator - directory with evaulator app
+* evaluator - directory with evaluator app
 * include - header files of track app
 * source - source files of track app
 * scripts - helper scripts
@@ -55,7 +63,8 @@ cd build
 cmake .. -DCMAKE_C_COMPILER=clang
 make
 ```
-Evaulator:
+
+Evaluator library:
 ```
 mkdir build
 cd build
@@ -71,7 +80,8 @@ Track:
 ```
 sudo ./track
 ```
-Evaulator:
+
+Evaluator:
 ```
-python3 evaulator.py -n ../build/output.bin --no-data --count --graph --hist
+python3 evaluator.py -n ../build/output.bin --no-data --count --graph --hist
 ```
