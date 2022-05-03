@@ -76,9 +76,11 @@ if __name__ == '__main__':
         parsedSyscalls = readNoData(args.name)
 
     grapher = Grapher(listOfSyscallNames, parsedSyscalls)
-    if(args.hist):
-        grapher.showHistogram()
     if(args.count):
         grapher.countSyscalls()
+    if(args.called):
+        grapher.calledSyscall()
+    if(args.hist):
+        grapher.showHistogram()
     if(args.graph):
         grapher.showDifirencialGraph()

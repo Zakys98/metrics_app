@@ -11,6 +11,8 @@ def argParserInit():
                         help='show diferencial graph')
     parser.add_argument('--count', action='store_true',
                         help='count all syscalls')
+    parser.add_argument('--called', action='store_true',
+                        help='Show how many times were all syscalls called')
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('--data', action='store_true',
                        help='parses syscalls with their data')

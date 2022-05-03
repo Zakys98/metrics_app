@@ -28,6 +28,14 @@ class Grapher:
             num = num + value
         print(f'Number of called syscalls: {num}')
 
+    def calledSyscall(self) -> None:
+        syscalls = self.__countAllSyclass(self.parsedSyscalls)
+        for name, value in sorted(syscalls.items(), key=lambda item: item[1], reverse=True):
+            lenght = len(self.listOfSyscallNames[name])
+            name = self.listOfSyscallNames[name] + ' ' * (28 - lenght)
+            print(f'{name}: {value}')
+
+
     def showHistogram(self) -> None:
         syscalls = self.__countAllSyclass(self.parsedSyscalls)
         syscalls = {key: val for key, val in syscalls.items() if val > 1000}
