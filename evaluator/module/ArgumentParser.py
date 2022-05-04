@@ -10,9 +10,9 @@ def argParserInit():
     parser.add_argument('--graph', action='store_true',
                         help='show diferencial graph')
     parser.add_argument('--count', action='store_true',
-                        help='count all syscalls')
+                        help='count all syscalls and print')
     parser.add_argument('--called', action='store_true',
-                        help='Show how many times were all syscalls called')
+                        help='print how many times were all syscalls called')
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('--data', action='store_true',
                        help='parses syscalls with their data')
