@@ -20,20 +20,16 @@ Following dependencies must be installed on the host system
 
 Minimum supported kernel version: 4.1
 
-Kernel config options that must be enabled:
+Kernel config option that must be enabled:
 
 ```
-CONFIG_BPF=y
-CONFIG_BPF_SYSCALL=y
-CONFIG_NET_CLS_BPF=m
-CONFIG_NET_ACT_BPF=m
-CONFIG_BPF_JIT=y
-# [for Linux kernel versions 4.1 through 4.6]
-CONFIG_HAVE_BPF_JIT=y
-# [for Linux kernel versions 4.7 and later]
-CONFIG_HAVE_EBPF_JIT=y
-CONFIG_BPF_EVENTS=y
-CONFIG_IKHEADERS=y
+CONFIG_DEBUG_INFO_BTF=y
+```
+
+You need to find config and then use folowwing command to see if your kernel was build with that option.
+
+```
+grep BTF .config
 ```
 
 ## Requirements for evaluator app
