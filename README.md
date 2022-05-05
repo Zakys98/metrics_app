@@ -38,7 +38,9 @@ Following dependencies must be installed on the host system
 
 * Python3
 * python3-tk
+    - sudo apt install
 * matplotlib for Python3
+    - pip3 with requirements.txt
 
 ## Directory structure
 
