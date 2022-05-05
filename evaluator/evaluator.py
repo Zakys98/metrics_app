@@ -6,6 +6,12 @@ from module.Grapher import Grapher
 
 
 def syscallNameLoader(fileName : str) -> list:
+    """
+    Load syscall names
+
+    param fileName: input file
+    return: list with syscall names
+    """
     listOfNames = list()
     with open(fileName, 'r') as file:
         while True:
@@ -16,6 +22,12 @@ def syscallNameLoader(fileName : str) -> list:
     return listOfNames
 
 def readData(fileName : str) -> dict:
+    """
+    Read time, syscall type and syscall information
+
+    param fileName: input file
+    return: dict with syscall information
+    """
     dictOfNames = dict()
     sizeOfEnum = mylib.getSizeOfEnumTypes()
     with open(fileName, 'rb') as file:
@@ -40,6 +52,12 @@ def readData(fileName : str) -> dict:
     return dictOfNames
 
 def readNoData(fileName : str) -> dict:
+    """
+    Read time and syscall type
+
+    param fileName: input file
+    return: dict with syscall information
+    """
     dictOfNames = dict()
     sizeOfEnum = mylib.getSizeOfEnumTypes()
     with open(fileName, 'rb') as file:
@@ -59,6 +77,12 @@ def readNoData(fileName : str) -> dict:
     return dictOfNames
 
 def fileExists(filename: str) -> bool:
+    """
+    Checks if file exists
+
+    param fileName: input file
+    return: true if exists otherwise false
+    """
     return exists(filename)
 
 

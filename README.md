@@ -38,9 +38,9 @@ Following dependencies must be installed on the host system
 
 * Python3
 * python3-tk
-    - sudo apt install
+    - sudo apt install python3-tk
 * matplotlib for Python3
-    - pip3 with requirements.txt
+    - pip3 install -r requirements.txt
 
 ## Directory structure
 
@@ -89,7 +89,7 @@ sudo patchelf --set-rpath /usr/lib64 track
 
 Evaluator:
 ```
-python3 evaluator.py -n ../build/output.bin --no-data --count --graph --hist
+python3 evaluator.py -i ../build/output.bin --no-data --count --graph --hist
 ```
 
 ### Options

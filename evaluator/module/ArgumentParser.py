@@ -1,6 +1,11 @@
 import argparse
 
 def argParserInit():
+    """
+    Initialize argument parser
+
+    return: argument parser
+    """
     parser = argparse.ArgumentParser(description='Syscall generator')
     parser.add_argument('-i', '--input', type=str,
                         help='name of the input file',
