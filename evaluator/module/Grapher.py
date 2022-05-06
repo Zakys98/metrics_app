@@ -71,7 +71,11 @@ class Grapher:
         remainingSyscalls = list()
         for key, _ in syscalls.items():
             strip = len('sys_enter_')
-            remainingSyscalls.append(self.listOfSyscallNames[key][strip:])
+            try:
+                remainingSyscalls.append(self.listOfSyscallNames[key][strip:])
+            except:
+                print('Bad usage of --data or --no-data argument')
+                exit(1)
         ax.set_xlabel('Syscall names')
         ax.set_ylabel('Number of calls')
         plt.title('Histogram')
@@ -90,9 +94,9 @@ class Grapher:
             syscall = list()
             for _, calls in self.parsedSyscalls.items():
                 if (key not in calls):
-                    print('Bad usege of --data or --no-data argument')
-                    exit()
-                syscall.append(calls[key])
+                    syscall.append(0)
+                else:
+                    syscall.append(calls[key])
             plt.plot(times, syscall, label=self.listOfSyscallNames[key])
         plt.ylabel('Number of calls')
         plt.xlabel('Seconds')

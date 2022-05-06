@@ -1,5 +1,6 @@
 import argparse
 
+
 def argParserInit():
     """
     Initialize argument parser

@@ -5,7 +5,7 @@ from module.ArgumentParser import argParserInit
 from module.Grapher import Grapher
 
 
-def syscallNameLoader(fileName : str) -> list:
+def syscallNameLoader(fileName: str) -> list:
     """
     Load syscall names
 
@@ -21,7 +21,8 @@ def syscallNameLoader(fileName : str) -> list:
             listOfNames.append(line[0:-1])
     return listOfNames
 
-def readData(fileName : str) -> dict:
+
+def readData(fileName: str) -> dict:
     """
     Read time, syscall type and syscall information
 
@@ -30,9 +31,13 @@ def readData(fileName : str) -> dict:
     """
     dictOfNames = dict()
     sizeOfEnum = library.getSizeOfEnumTypes()
+    sizeOfTime = library.getSizeOfTime()
     with open(fileName, 'rb') as file:
+        file.seek(0, 2)
+        eof = file.tell()
+        file.seek(0, 0)
         while True:
-            time = file.read(8)
+            time = file.read(sizeOfTime)
             if not time:
                 break
             time = int.from_bytes(time, "little")
@@ -46,12 +51,17 @@ def readData(fileName : str) -> dict:
                 dictOfNames[time][type] = dictOfNames[time][type] + 1
             else:
                 dictOfNames[time][type] = 1
-            body = file.read(library.getSyscallSize(type))
+            sizeOfSyscallStruct = library.getSyscallSize(type)
+            if(sizeOfSyscallStruct == -1):
+                print('Bad usage of --data or --no-data argument')
+                exit(-1)
+            body = file.read(sizeOfSyscallStruct)
             if not body:
                 break
     return dictOfNames
 
-def readNoData(fileName : str) -> dict:
+
+def readNoData(fileName: str) -> dict:
     """
     Read time and syscall type
 
@@ -60,9 +70,10 @@ def readNoData(fileName : str) -> dict:
     """
     dictOfNames = dict()
     sizeOfEnum = library.getSizeOfEnumTypes()
+    sizeOfTime = library.getSizeOfTime()
     with open(fileName, 'rb') as file:
         while True:
-            time = file.read(8)
+            time = file.read(sizeOfTime)
             type = file.read(sizeOfEnum)
             if not type:
                 break
@@ -75,6 +86,7 @@ def readNoData(fileName : str) -> dict:
             else:
                 dictOfNames[time][type] = 1
     return dictOfNames
+
 
 def fileExists(filename: str) -> bool:
     """
@@ -104,11 +116,11 @@ if __name__ == '__main__':
         parsedSyscalls = readNoData(args.input)
 
     grapher = Grapher(listOfSyscallNames, parsedSyscalls)
-    if(args.count):
-        grapher.countSyscalls()
-    if(args.called):
-        grapher.calledSyscall()
     if(args.hist):
         grapher.showHistogram()
     if(args.graph):
         grapher.showDifirencialGraph()
+    if(args.count):
+        grapher.countSyscalls()
+    if(args.called):
+        grapher.calledSyscall()

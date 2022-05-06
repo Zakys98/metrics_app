@@ -14,3 +14,10 @@ int getSyscallSize(int pos);
  * @return int
  */
 int getSizeOfEnumTypes();
+
+/**
+ * @brief Get the size of time_t
+ *
+ * @return int
+ */
+int getSizeOfTime();
