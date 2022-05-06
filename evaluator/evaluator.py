@@ -89,7 +89,7 @@ def fileExists(filename: str) -> bool:
 if __name__ == '__main__':
     args = argParserInit()
     if not(fileExists(args.input)):
-        print('File with sizes of data type called sizes does not exist')
+        print('Input file does not exist')
         exit()
     if not(fileExists('./build/libevaulator.so')):
         print('Library does not exist')
