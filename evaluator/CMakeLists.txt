@@ -1,10 +1,8 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.18)
-project(evaluator)
+project(evaluator C)
 
 FILE(GLOB_RECURSE source_files "library/*")
 ADD_LIBRARY(${PROJECT_NAME} SHARED ${source_files})
-
-SET(CMAKE_CXX_STANDARD 17)
 
 SET(GENERATOR ${CMAKE_CURRENT_SOURCE_DIR}/../scripts/generator/generator.py)
 SET(PATTERN "sys_enter_*")
