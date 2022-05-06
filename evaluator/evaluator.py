@@ -29,7 +29,7 @@ def readData(fileName : str) -> dict:
     return: dict with syscall information
     """
     dictOfNames = dict()
-    sizeOfEnum = mylib.getSizeOfEnumTypes()
+    sizeOfEnum = library.getSizeOfEnumTypes()
     with open(fileName, 'rb') as file:
         while True:
             time = file.read(8)
@@ -46,7 +46,7 @@ def readData(fileName : str) -> dict:
                 dictOfNames[time][type] = dictOfNames[time][type] + 1
             else:
                 dictOfNames[time][type] = 1
-            body = file.read(mylib.getSyscallSize(type))
+            body = file.read(library.getSyscallSize(type))
             if not body:
                 break
     return dictOfNames
@@ -59,7 +59,7 @@ def readNoData(fileName : str) -> dict:
     return: dict with syscall information
     """
     dictOfNames = dict()
-    sizeOfEnum = mylib.getSizeOfEnumTypes()
+    sizeOfEnum = library.getSizeOfEnumTypes()
     with open(fileName, 'rb') as file:
         while True:
             time = file.read(8)
@@ -88,13 +88,14 @@ def fileExists(filename: str) -> bool:
 
 if __name__ == '__main__':
     args = argParserInit()
+    libraryName = './build/libevaluator.so'
     if not(fileExists(args.input)):
         print('Input file does not exist')
         exit()
-    if not(fileExists('./build/libevaulator.so')):
+    if not(fileExists(libraryName)):
         print('Library does not exist')
         exit()
-    mylib = cdll.LoadLibrary('./build/libevaulator.so')
+    library = cdll.LoadLibrary(libraryName)
     listOfSyscallNames = syscallNameLoader('build/syscall_names')
 
     if(args.data):

@@ -1,5 +1,5 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.18)
-project(evaulator)
+project(evaluator)
 
 FILE(GLOB_RECURSE source_files "library/*")
 ADD_LIBRARY(${PROJECT_NAME} SHARED ${source_files})
