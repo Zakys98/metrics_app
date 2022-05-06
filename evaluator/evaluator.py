@@ -33,9 +33,6 @@ def readData(fileName: str) -> dict:
     sizeOfEnum = library.getSizeOfEnumTypes()
     sizeOfTime = library.getSizeOfTime()
     with open(fileName, 'rb') as file:
-        file.seek(0, 2)
-        eof = file.tell()
-        file.seek(0, 0)
         while True:
             time = file.read(sizeOfTime)
             if not time:
