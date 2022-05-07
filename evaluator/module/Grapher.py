@@ -76,8 +76,8 @@ class Grapher:
             except:
                 print('Bad usage of --data or --no-data argument')
                 exit(1)
-        ax.set_xlabel('Syscall names')
-        ax.set_ylabel('Number of calls')
+        ax.set_xlabel('Systémové volání')
+        ax.set_ylabel('Počet volání')
         plt.title('Histogram')
         plt.bar(remainingSyscalls, syscalls.values(), width=0.5)
         plt.show()
@@ -98,8 +98,8 @@ class Grapher:
                 else:
                     syscall.append(calls[key])
             plt.plot(times, syscall, label=self.listOfSyscallNames[key])
-        plt.ylabel('Number of calls')
-        plt.xlabel('Seconds')
-        plt.title('Diferencial graph')
+        plt.ylabel('Počet volání')
+        plt.xlabel('Sekundy')
+        plt.title('Diferenciální graf')
         plt.legend()
         plt.show()
