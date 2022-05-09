@@ -9,6 +9,11 @@ from module.TypeResolver import TypeResolver
 
 
 def argParserInit():
+    """
+    Initialize argument parser
+
+    return: argument parser
+    """
     parser = argparse.ArgumentParser(description='Syscall generator')
     parser.add_argument('-p', '--pattern', type=str, metavar='WORD',
                         help='matching pattern in glob',
@@ -39,10 +44,22 @@ def argParserInit():
 
 
 def fileExists(filename: str):
+    """
+    Checks if file exists
+
+    param filename: input file
+    return: true if exists otherwise false
+    """
     return exists(filename)
 
 
 def globSyscalls(pattern: str):
+    """
+    Creates iterator in path /sys/kernel/tracing/events/syscalls/{pattern}/format for matching pattern
+
+    param pattern: pattern, that is matched
+    return: iterator
+    """
     return glob.iglob(f'/sys/kernel/tracing/events/syscalls/{pattern}/format')
 
 
