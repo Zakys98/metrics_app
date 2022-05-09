@@ -26,12 +26,6 @@ Kernel config option that must be enabled:
 CONFIG_DEBUG_INFO_BTF=y
 ```
 
-You need to find config and then use folowwing command to see if your kernel was build with that option.
-
-```
-grep BTF .config
-```
-
 ## Requirements for evaluator app
 
 Following dependencies must be installed on the host system
