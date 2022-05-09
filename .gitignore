@@ -1,14 +1,20 @@
 build
 __pycache__
 .vscode
-main
-*main.h
+track
+track.bpf.c
+*user.h
 *.skel.h
-*syscall_structures.h
-*syscall_enum.h
+syscall_structures.h
+syscall_enum.h
 vmlinux.h
-*sizer
-*sizes
+sizer
+sizes
+*handler.c
+*.bin
+eval
+helper.h
+metrics_app.pdf
 
 # Latex
 *.toc

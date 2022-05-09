@@ -2,12 +2,14 @@
 
 int main(){
 
-    printf("char:%lu\n", sizeof(char));
-    printf("int:%lu\n", sizeof(int));
-    printf("long:%lu\n", sizeof(long));
-    printf("unsigned:%lu\n", sizeof(unsigned));
-    printf("unsigned long:%lu\n", sizeof(unsigned long));
-    printf("void *:%lu\n", sizeof(void*));
+    FILE *file = fopen("sizes", "w");
+    fprintf(file, "char:%lu\n", sizeof(char));
+    fprintf(file, "int:%lu\n", sizeof(int));
+    fprintf(file, "long:%lu\n", sizeof(long));
+    fprintf(file, "unsigned:%lu\n", sizeof(unsigned));
+    fprintf(file, "unsigned long:%lu\n", sizeof(unsigned long));
+    fprintf(file, "void *:%lu\n", sizeof(void*));
+    fclose(file);
 
     return 0;
 }
